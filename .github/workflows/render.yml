@@ -1,0 +1,51 @@
+name: render
+on:
+  push:
+    paths: ["audio/**"]
+  workflow_dispatch:
+concurrency:
+  group: render
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null
+          pip install --quiet pillow
+          gunzip -kf render.py.gz
+          python -c "from PIL import features; print('raqm', features.check('raqm'))"
+      - name: Fonts and background
+        run: |
+          G=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl
+          mkdir -p fonts
+          curl -fsSL -o fonts/MPLUSRounded1c-Bold.ttf   "$G/mplusrounded1c/MPLUSRounded1c-Bold.ttf"
+          curl -fsSL -o fonts/MPLUSRounded1c-Medium.ttf "$G/mplusrounded1c/MPLUSRounded1c-Medium.ttf"
+          curl -fsSL -o fonts/NotoSansMyanmar.ttf       "$G/notosansmyanmar/NotoSansMyanmar%5Bwdth%2Cwght%5D.ttf"
+          [ -f rio_bg.jpg ] || curl -fsSL -o rio_bg.jpg "https://drive.google.com/uc?export=download&id=1it4dd3QQ20mjsoFqObSLZZX0ox5BzwLv" || true
+          python -c "from PIL import Image; Image.open('rio_bg.jpg').verify()" || rm -f rio_bg.jpg
+      - name: Render new videos
+        run: |
+          shopt -s nullglob
+          for wav in audio/*.wav; do
+            key=$(basename "$wav" .wav)
+            [ -f "videos/$key.mp4" ] && continue
+            [ -f "text/$key.txt" ] || { echo "no text for $key"; continue; }
+            python render.py "text/$key.txt" "$wav" "videos/$key.mp4" || echo "render failed for $key"
+          done
+      - name: Commit
+        run: |
+          shopt -s nullglob
+          mkdir -p videos
+          git config user.name "rio-bot"
+          git config user.email "rio-bot@users.noreply.github.com"
+          # keep only the 10 newest videos and drop rendered audio
+          ls -t videos/*.mp4 2>/dev/null | tail -n +11 | xargs -r git rm -q
+          for wav in audio/*.wav; do key=$(basename "$wav" .wav); if [ -f "videos/$key.mp4" ]; then git rm -q "$wav"; fi; done
+          git add -A videos
+          git diff --cached --quiet || git commit -q -m "render videos"
+          git pull -q --rebase && git push -q
