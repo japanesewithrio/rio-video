@@ -1,0 +1,26 @@
+name: backtest
+on:
+  push:
+    paths: ["fx/bt_trigger.txt"]
+  workflow_dispatch:
+concurrency:
+  group: fx
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  bt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pip install --quiet yfinance pandas numpy
+      - name: Backtest
+        run: gunzip -c backtest.py.gz > backtest.py && python backtest.py
+      - name: Commit
+        run: |
+          git config user.name "rio-bot"
+          git config user.email "rio-bot@users.noreply.github.com"
+          git add fx/backtest.json
+          git diff --cached --quiet || git commit -q -m "backtest result"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
