@@ -1,0 +1,26 @@
+name: research
+on:
+  push:
+    paths: ["fx/research_trigger.txt"]
+  workflow_dispatch:
+concurrency:
+  group: fx
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pip install --quiet yfinance pandas numpy
+      - name: Research
+        run: gunzip -c research.py.gz > research.py && python research.py
+      - name: Commit
+        run: |
+          git config user.name "rio-bot"
+          git config user.email "rio-bot@users.noreply.github.com"
+          git add fx/research.json
+          git diff --cached --quiet || git commit -q -m "research result"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
