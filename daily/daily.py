@@ -12,11 +12,15 @@ DRY = os.environ.get("DRY", "") == "1"
 CHANNEL = "@japanesewithrio"
 TIKTOK_ID, YOUTUBE_ID = "6ab3bf2d8d284ffb2134135b", "6ab3bf7c8d284ffb21341619"
 REPO_RAW = "https://raw.githubusercontent.com/japanesewithrio/rio-video/main/"
-TEXT_MODEL, FAST_MODEL, TTS_MODEL = "gemini-2.5-pro", "gemini-3.6-flash", "gemini-3.1-flash-tts-preview"
+TEXT_CHAIN = ["gemini-3.1-pro-preview", "gemini-pro-latest", "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-2.5-flash"]
+FAST_CHAIN = ["gemini-3.6-flash", "gemini-3.8-flash", "gemini-3.5-flash", "gemini-flash-latest", "gemini-2.5-flash"]
+TTS_CHAIN = ["gemini-3.1-flash-tts-preview", "gemini-3.8-flash-tts", "gemini-2.5-flash-preview-tts", "gemini-2.5-pro-preview-tts"]
+DEAD = set()
 API = "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent"
 JST = dt.timezone(dt.timedelta(hours=9))
 WEAK = ["てる", "とか", "なんだ"]
 LOG = []
+WARN = []
 
 
 def log(*a):
@@ -51,20 +55,36 @@ def pick(models, want, pattern, avoid=("tts", "image", "live", "embedding", "aud
     return cand[0] if cand else want
 
 
-def gemini(model, body, tries=5):
-    for i in range(tries):
-        try:
-            r = requests.post(API % model, params={"key": GKEY}, json=body, timeout=600)
-            if r.status_code == 200:
-                return r.json()
-            LAST_ERR[0] = "%s %s %s" % (model, r.status_code, r.text[:300])
-            log("gemini", LAST_ERR[0])
-            if r.status_code in (400, 403, 404):
-                break
-        except Exception as e:
-            LAST_ERR[0] = "%s %s" % (model, type(e).__name__)
-            log("gemini", LAST_ERR[0])
-        time.sleep(20 * (i + 1))
+def gemini(models, body, tries=3):
+    if isinstance(models, str):
+        models = [models]
+    for model in models:
+        if model in DEAD:
+            continue
+        for i in range(tries):
+            try:
+                r = requests.post(API % model, params={"key": GKEY}, json=body, timeout=600)
+                if r.status_code == 200:
+                    j = r.json()
+                    if j.get("candidates") and j["candidates"][0].get("content", {}).get("parts"):
+                        return j
+                    LAST_ERR[0] = "%s empty answer %s" % (model, str(j)[:200])
+                else:
+                    LAST_ERR[0] = "%s %s %s" % (model, r.status_code, r.text[:300])
+                log("gemini", LAST_ERR[0])
+                if r.status_code in (403, 404):
+                    DEAD.add(model)
+                    break
+                if r.status_code == 400:
+                    break
+                if r.status_code == 429 and ("limit: 0" in r.text or "PerDay" in r.text):
+                    DEAD.add(model)
+                    break
+            except Exception as e:
+                LAST_ERR[0] = "%s %s" % (model, type(e).__name__)
+                log("gemini", LAST_ERR[0])
+            time.sleep(15 * (i + 1))
+        log("gemini: giving up on", model)
     raise RuntimeError("gemini failed: " + LAST_ERR[0])
 
 
@@ -73,7 +93,7 @@ def text_of(resp):
 
 
 def ask(prompt, model=None):
-    return text_of(gemini(model or TEXT_MODEL, {"contents": [{"parts": [{"text": prompt}]}]})).strip()
+    return text_of(gemini(model or TEXT_CHAIN, {"contents": [{"parts": [{"text": prompt}]}]})).strip()
 
 
 def sec(raw, a):
@@ -163,7 +183,12 @@ def make_lesson(topic, level):
             out = clean_file(ask(prompt))
             if "===END===" in out:
                 raw = out
-    raise RuntimeError("lesson failed validation: %s" % err)
+    hard = [e for e in err if e.startswith(("section", "SCRIPT has", "every SCRIPT", "FLOW must", "CHAIN must", "TAIL must", "the last two"))]
+    if hard:
+        raise RuntimeError("lesson failed validation: %s" % err)
+    log("WARNING: posting with small problems:", err)
+    WARN.extend(err)
+    return raw
 
 
 VOICES = {"multiSpeakerVoiceConfig": {"speakerVoiceConfigs": [
@@ -181,7 +206,7 @@ P_TAIL = ("TTS the following short lines between two close Japanese friends arou
 
 
 def tts(text, path):
-    r = gemini(TTS_MODEL, {"contents": [{"parts": [{"text": text}]}],
+    r = gemini(TTS_CHAIN, {"contents": [{"parts": [{"text": text}]}],
                            "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": VOICES}})
     part = [p for p in r["candidates"][0]["content"]["parts"] if "inlineData" in p][0]["inlineData"]
     pcm = base64.b64decode(part["data"])
@@ -200,14 +225,14 @@ def timestamps(wav, script, out):
     prompt = ("This audio is a Japanese conversation between Rio (young man) and Yui (young woman). The script lines, in order and separated by "
               "a slash, are: " + " / ".join(script) + " . Listen carefully and return, for every script line in order, the exact start and end "
               "time in seconds (2 decimals) where it is spoken. Output only JSON: a list of objects {\"line\": number starting at 1, \"start\": seconds, \"end\": seconds}.")
-    for model in (FAST_MODEL, TEXT_MODEL):
+    for model in (FAST_CHAIN, TEXT_CHAIN):
         try:
             r = gemini(model, {"contents": [{"parts": [{"inline_data": {"mime_type": "audio/wav", "data": b64}}, {"text": prompt}]}],
                                "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}, tries=3)
             arr = json.loads(text_of(r))
             if len(arr) == len(script):
                 json.dump(arr, open(out, "w"))
-                log("timestamps ok", model)
+                log("timestamps ok")
                 return True
             log("timestamps wrong count", len(arr), len(script))
         except Exception as e:
@@ -251,15 +276,13 @@ def push(msg, paths):
 
 
 def main():
-    global TEXT_MODEL, FAST_MODEL, TTS_MODEL
+    global TEXT_CHAIN, FAST_CHAIN, TTS_CHAIN
     ms = list_models()
     if ms:
-        TEXT_MODEL = pick(ms, TEXT_MODEL, r"^gemini-[\d.]+-pro")
-        if TEXT_MODEL not in ms:
-            TEXT_MODEL = pick(ms, "none", r"^gemini-[\d.]+-flash")
-        FAST_MODEL = pick(ms, FAST_MODEL, r"^gemini-[\d.]+-flash")
-        TTS_MODEL = pick(ms, TTS_MODEL, r"tts", avoid=())
-    log("using", TEXT_MODEL, FAST_MODEL, TTS_MODEL)
+        TEXT_CHAIN = [m for m in TEXT_CHAIN if m in ms] or [pick(ms, "none", r"^gemini-[\d.]+-(pro|flash)")]
+        FAST_CHAIN = [m for m in FAST_CHAIN if m in ms] or [pick(ms, "none", r"^gemini-[\d.]+-flash")]
+        TTS_CHAIN = [m for m in TTS_CHAIN if m in ms] or [pick(ms, "none", r"tts", avoid=())]
+    log("using", TEXT_CHAIN, FAST_CHAIN, TTS_CHAIN)
     st = json.load(open("daily/topics.json", encoding="utf-8"))
     todo = [t for t in st["topics"] if t["status"] == "todo"]
     if DRY:
@@ -320,7 +343,9 @@ def main():
                                 "publishNow": True})
     summary = "✅ Learn with Rio %s %s\n%s\nTikTok: %s / YouTube: %s" % (
         "TEST" if DRY else "posted", key, title, ok.get("tiktok", "-"), ok.get("youtube", "-"))
-    if OWNER and not DRY:
+    if WARN:
+        summary += "\n(small problems: %s)" % "; ".join(WARN)[:600]
+    if OWNER:
         tg("sendMessage", {"chat_id": OWNER, "text": summary})
     log(summary)
 
