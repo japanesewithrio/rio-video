@@ -1,0 +1,27 @@
+{
+ "time_jst": "2026-09-25 09:15",
+ "price": 158.778,
+ "change_24h": 0.722,
+ "high_24h": 159.036,
+ "low_24h": 157.791,
+ "week_change": 2.836,
+ "trend": "up",
+ "rsi": 58.9,
+ "atr": 0.205,
+ "paper": {
+  "balance": 1000.0,
+  "start": 1000.0,
+  "day_pnl": 0.0,
+  "halted_today": false,
+  "open_position": null,
+  "trades_24h": [],
+  "total_trades": 0,
+  "win_rate": null,
+  "backtest_30d": {
+   "trades": 33,
+   "pnl": 29.67,
+   "win_rate": 36.4
+  },
+  "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30"
+ }
+}
