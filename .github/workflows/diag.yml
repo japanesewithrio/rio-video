@@ -1,0 +1,28 @@
+name: diag
+on:
+  push:
+    paths: [".github/workflows/diag.yml", "diag/go.txt"]
+  workflow_run:
+    workflows: ["daily"]
+    types: [completed]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          R: ${{ github.repository }}
+        run: |
+          mkdir -p diag
+          gh run list -R "$R" -L 10 > diag/runs.txt || true
+          id=$(gh run list -R "$R" -w daily -L 1 --json databaseId -q '.[0].databaseId')
+          gh run view "$id" -R "$R" --log > /tmp/full.txt 2>&1 || true
+          grep -v -E 'key=|Authorization' /tmp/full.txt | tail -c 60000 > diag/last_daily.txt
+          git config user.name rio-bot
+          git config user.email rio-bot@users.noreply.github.com
+          git add diag
+          git commit -qm "diag" && (git pull -q --rebase; git push -q) || true
