@@ -1,0 +1,102 @@
+{
+ "period": "2023-12-21 10:00:00+00:00 -> 2026-09-25 03:00:00+01:00",
+ "bars": 16937,
+ "results": {
+  "A_current": {
+   "trades": 938,
+   "pnl": 160.53,
+   "win_rate": 33.9,
+   "profit_factor": 1.03,
+   "max_drawdown": 430.96,
+   "pnl_first_half": 172.03,
+   "pnl_second_half": -11.5,
+   "losing_months": 17,
+   "months": 34,
+   "worst_month": -140.08
+  },
+  "B_realistic(spread+weekend)": {
+   "trades": 1000,
+   "pnl": -81.37,
+   "win_rate": 35.0,
+   "profit_factor": 0.99,
+   "max_drawdown": 529.23,
+   "pnl_first_half": 15.81,
+   "pnl_second_half": -97.18,
+   "losing_months": 19,
+   "months": 34,
+   "worst_month": -158.41
+  },
+  "C_B+breakeven": {
+   "trades": 1098,
+   "pnl": -216.9,
+   "win_rate": 30.2,
+   "profit_factor": 0.96,
+   "max_drawdown": 557.63,
+   "pnl_first_half": -84.78,
+   "pnl_second_half": -132.12,
+   "losing_months": 19,
+   "months": 34,
+   "worst_month": -148.57
+  },
+  "D_B+trailing": {
+   "trades": 1518,
+   "pnl": -546.62,
+   "win_rate": 34.8,
+   "profit_factor": 0.92,
+   "max_drawdown": 691.05,
+   "pnl_first_half": -252.56,
+   "pnl_second_half": -294.06,
+   "losing_months": 20,
+   "months": 34,
+   "worst_month": -163.85
+  },
+  "E_B+sessions": {
+   "trades": 868,
+   "pnl": 75.74,
+   "win_rate": 35.7,
+   "profit_factor": 1.01,
+   "max_drawdown": 331.33,
+   "pnl_first_half": 23.64,
+   "pnl_second_half": 52.1,
+   "losing_months": 17,
+   "months": 34,
+   "worst_month": -188.51
+  },
+  "F_B+ema200": {
+   "trades": 875,
+   "pnl": 91.51,
+   "win_rate": 36.0,
+   "profit_factor": 1.02,
+   "max_drawdown": 507.2,
+   "pnl_first_half": 308.3,
+   "pnl_second_half": -216.78,
+   "losing_months": 19,
+   "months": 34,
+   "worst_month": -118.92
+  },
+  "G_B+tp1.5R": {
+   "trades": 1235,
+   "pnl": -327.3,
+   "win_rate": 40.2,
+   "profit_factor": 0.96,
+   "max_drawdown": 545.08,
+   "pnl_first_half": -199.45,
+   "pnl_second_half": -127.85,
+   "losing_months": 20,
+   "months": 34,
+   "worst_month": -133.91
+  },
+  "H_B+tp3R": {
+   "trades": 789,
+   "pnl": 127.9,
+   "win_rate": 29.4,
+   "profit_factor": 1.02,
+   "max_drawdown": 465.72,
+   "pnl_first_half": 120.91,
+   "pnl_second_half": 6.99,
+   "losing_months": 18,
+   "months": 34,
+   "worst_month": -128.48
+  }
+ }
+}
