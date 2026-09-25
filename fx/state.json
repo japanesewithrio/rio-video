@@ -5,5 +5,19 @@
  "day": "2026-09-25",
  "day_pnl": 0.0,
  "halted": false,
- "trades": []
+ "trades": [],
+ "daily": {
+  "B": {
+   "balance": 1000.0,
+   "position": null,
+   "last": "2026-09-24",
+   "trades": []
+  },
+  "C": {
+   "balance": 1000.0,
+   "position": null,
+   "last": "2026-09-24",
+   "trades": []
+  }
+ }
 }

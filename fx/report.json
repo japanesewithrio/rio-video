@@ -1,12 +1,12 @@
 {
- "time_jst": "2026-09-25 11:17",
- "price": 158.456,
- "change_24h": 0.561,
+ "time_jst": "2026-09-25 11:19",
+ "price": 158.455,
+ "change_24h": 0.56,
  "high_24h": 159.036,
  "low_24h": 157.791,
- "week_change": 1.817,
+ "week_change": 1.816,
  "trend": "up",
- "rsi": 45.8,
+ "rsi": 45.7,
  "atr": 0.205,
  "paper": {
   "balance": 1000.0,
@@ -24,5 +24,22 @@
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
- }
+ },
+ "daily_bots": {
+  "B": {
+   "label": "Bot B – နေ့စဉ် Breakout (20)",
+   "balance": 1000.0,
+   "open_position": null,
+   "total_trades": 0,
+   "last_trades": []
+  },
+  "C": {
+   "label": "Bot C – နေ့စဉ် Trend (EMA20/100)",
+   "balance": 1000.0,
+   "open_position": null,
+   "total_trades": 0,
+   "last_trades": []
+  }
+ },
+ "daily_bots_note": "Bot B (daily 20-day breakout, 3xATR stop) and Bot C (daily EMA20/100 trend, 3xATR stop) each start with $1000 fake money, $10 risk/trade, swap counted. Research: profitable on 2010-2019 (train) AND 2020-2026 (unseen test), but only ~3 trades per year and helped by the strong 2021-2024 USD/JPY uptrend."
 }
