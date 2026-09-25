@@ -1,4 +1,6 @@
-in_progress		diag	diag	main	workflow_run	36135790657	11s	2026-09-25T12:35:22Z
+in_progress		diag	diag	main	workflow_run	36136533496	8s	2026-09-25T12:43:00Z
+completed	failure	daily test 5	daily	main	push	36135894938	6m32s	2026-09-25T12:36:26Z
+completed	success	diag	diag	main	workflow_run	36135790657	16s	2026-09-25T12:35:22Z
 completed	success	fx	fx	main	schedule	36134710356	25s	2026-09-25T12:24:08Z
 completed	failure	daily: model fallback chains (gemini-2.5-pro retired), test 4	daily	main	push	36134378644	14m43s	2026-09-25T12:20:37Z
 completed	success	diag workflow: save daily run logs	diag	main	push	36134063855	20s	2026-09-25T12:17:17Z
@@ -6,5 +8,3 @@ completed	failure	daily: restore bundle, daily.py with model discovery (test 3)	
 completed	failure	daily test run 2	daily	main	push	36131165086	41s	2026-09-25T11:45:45Z
 completed	success	fx	fx	main	schedule	36128708279	29s	2026-09-25T11:18:57Z
 completed	success	fx	fx	main	schedule	36123315565	26s	2026-09-25T10:19:04Z
-completed	failure	daily pipeline on GitHub (test run)	daily	main	push	36121462058	5m46s	2026-09-25T09:59:04Z
-completed	success	audio/L05.wav	render	main	push	36119096446	1m23s	2026-09-25T09:33:22Z
