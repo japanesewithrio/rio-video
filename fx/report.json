@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-09-25 10:17",
- "price": 158.64,
- "change_24h": 0.774,
+ "time_jst": "2026-09-25 11:17",
+ "price": 158.456,
+ "change_24h": 0.561,
  "high_24h": 159.036,
  "low_24h": 157.791,
- "week_change": 2.494,
+ "week_change": 1.817,
  "trend": "up",
- "rsi": 53.3,
- "atr": 0.194,
+ "rsi": 45.8,
+ "atr": 0.205,
  "paper": {
   "balance": 1000.0,
   "start": 1000.0,
@@ -18,10 +18,11 @@
   "total_trades": 0,
   "win_rate": null,
   "backtest_30d": {
-   "trades": 33,
-   "pnl": 29.67,
-   "win_rate": 36.4
+   "trades": 29,
+   "pnl": 46.4,
+   "win_rate": 37.9
   },
-  "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30"
+  "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
+  "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
  }
 }
