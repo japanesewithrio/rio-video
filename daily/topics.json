@@ -1,0 +1,73 @@
+{
+ "note": "Topics for the daily Format B video. status todo -> posted. Seeds only; the lesson picks 6 connecting patterns.",
+ "topics": [
+  {
+   "key": "L05",
+   "topic": "〜てる・〜とく",
+   "level": "N5-N4",
+   "status": "posted",
+   "date": "2026-09-25"
+  },
+  {
+   "key": "L06",
+   "topic": "NEW: 〜んだ / 〜の？ (← 〜のです / 〜のですか), 〜し (reasons: 〜し、〜し)",
+   "level": "N4",
+   "status": "posted",
+   "date": "2026-09-26"
+  },
+  {
+   "key": "L07",
+   "topic": "NEW: 〜っけ (← 〜でしたか, checking memory), 〜かも (← 〜かもしれません) / REVIEW: 〜じゃん",
+   "level": "N4",
+   "status": "todo"
+  },
+  {
+   "key": "L08",
+   "topic": "NEW: 〜よう / 〜よっか (← 〜ましょう / 〜ましょうか), 〜たら (if/when) / REVIEW: 〜とく",
+   "level": "N5-N4",
+   "status": "todo"
+  },
+  {
+   "key": "L09",
+   "topic": "NEW: 〜ていい？ (← 〜てもいいですか), 〜ちゃダメ (← 〜てはいけません) / REVIEW: 〜かも",
+   "level": "N4",
+   "status": "todo"
+  },
+  {
+   "key": "L10",
+   "topic": "NEW: 〜みたい (← 〜ようです), 〜っぽい (← 〜のようです / 〜らしい) / REVIEW: 〜って",
+   "level": "N4",
+   "status": "todo"
+  },
+  {
+   "key": "L11",
+   "topic": "NEW: 〜なくていい (← 〜なくてもいいです), 〜ばいいじゃん (← 〜ばいいです) / REVIEW: 〜たら",
+   "level": "N4",
+   "status": "todo"
+  },
+  {
+   "key": "L12",
+   "topic": "NEW: 〜ってこと？ (← 〜ということですか), 〜わけじゃない (← 〜わけではありません) / REVIEW: 〜っけ",
+   "level": "N4-N3",
+   "status": "todo"
+  },
+  {
+   "key": "L13",
+   "topic": "NEW: 〜てみる (try doing), 〜ようかな (← 〜ようと思います) / REVIEW: 〜みたい",
+   "level": "N4",
+   "status": "todo"
+  },
+  {
+   "key": "L14",
+   "topic": "NEW: 〜もん (← 〜ものですから, excuses), 〜ってば (insisting) / REVIEW: 〜ちゃダメ",
+   "level": "N4-N3",
+   "status": "todo"
+  },
+  {
+   "key": "L15",
+   "topic": "NEW: 〜ちゃう (← 〜てしまう), 〜なきゃ (← 〜なければならない) / REVIEW: 〜ってば",
+   "level": "N5-N4",
+   "status": "todo"
+  }
+ ]
+}
