@@ -1,26 +1,19 @@
 {
- "time_jst": "2026-09-28 23:23",
- "price": 157.161,
- "change_24h": -0.271,
+ "time_jst": "2026-09-29 00:22",
+ "price": 157.432,
+ "change_24h": 0.0,
  "high_24h": 157.857,
  "low_24h": 156.498,
- "week_change": -0.298,
+ "week_change": -0.053,
  "trend": "down",
- "rsi": 41.2,
- "atr": 0.272,
+ "rsi": 49.5,
+ "atr": 0.296,
  "paper": {
-  "balance": 1020.04,
+  "balance": 1010.03,
   "start": 1000.0,
-  "day_pnl": 20.04,
+  "day_pnl": 10.03,
   "halted_today": false,
-  "open_position": {
-   "side": "sell",
-   "entry": 156.898,
-   "units": 3892,
-   "stop": 157.301,
-   "tp": 156.091,
-   "ts": "2026-09-28T09:00:00+01:00"
-  },
+  "open_position": null,
   "trades_24h": [
    {
     "side": "sell",
@@ -30,14 +23,23 @@
     "close": "2026-09-28T09:00:00+01:00",
     "pnl": 20.04,
     "why": "target"
+   },
+   {
+    "side": "sell",
+    "entry": 156.898,
+    "exit": 157.302,
+    "open": "2026-09-28T09:00:00+01:00",
+    "close": "2026-09-28T15:00:00+01:00",
+    "pnl": -10.01,
+    "why": "stop"
    }
   ],
-  "total_trades": 1,
-  "win_rate": 100.0,
+  "total_trades": 2,
+  "win_rate": 50.0,
   "backtest_30d": {
-   "trades": 29,
-   "pnl": 76.45,
-   "win_rate": 41.4
+   "trades": 30,
+   "pnl": 66.44,
+   "win_rate": 40.0
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
