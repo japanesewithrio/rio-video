@@ -1,12 +1,12 @@
 {
- "time_jst": "2026-09-29 13:20",
- "price": 157.408,
- "change_24h": -0.353,
- "high_24h": 157.808,
+ "time_jst": "2026-09-29 14:19",
+ "price": 157.451,
+ "change_24h": -0.221,
+ "high_24h": 157.802,
  "low_24h": 156.498,
- "week_change": -0.054,
+ "week_change": -0.005,
  "trend": "down",
- "rsi": 50.0,
+ "rsi": 51.1,
  "atr": 0.212,
  "paper": {
   "balance": 1010.03,
