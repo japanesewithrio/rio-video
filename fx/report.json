@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-09-30 07:19",
- "price": 157.275,
- "change_24h": -0.158,
+ "time_jst": "2026-09-30 08:18",
+ "price": 157.335,
+ "change_24h": -0.027,
  "high_24h": 157.716,
  "low_24h": 156.976,
- "week_change": -0.195,
+ "week_change": -0.126,
  "trend": "down",
- "rsi": 46.4,
- "atr": 0.236,
+ "rsi": 48.7,
+ "atr": 0.222,
  "paper": {
   "balance": 1010.03,
   "start": 1000.0,
@@ -25,9 +25,9 @@
   "total_trades": 2,
   "win_rate": 50.0,
   "backtest_30d": {
-   "trades": 29,
-   "pnl": 74.22,
-   "win_rate": 41.4
+   "trades": 27,
+   "pnl": 94.32,
+   "win_rate": 44.4
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
@@ -42,7 +42,7 @@
   },
   "C": {
    "label": "Bot C – နေ့စဉ် Trend (EMA20/100)",
-   "balance": 999.97,
+   "balance": 999.94,
    "open_position": {
     "side": "sell",
     "entry": 158.81,
