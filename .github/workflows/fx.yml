@@ -3,8 +3,14 @@ on:
   push:
     paths: ["fx/trigger.txt"]
   schedule:
+    # hourly; the first run at/after 20:00 JST (Mon-Fri) also sends the Burmese report
     - cron: "7 * * * *"
   workflow_dispatch:
+    inputs:
+      report:
+        description: "Send the Burmese evening report to Telegram now"
+        type: boolean
+        default: false
 concurrency:
   group: fx
   cancel-in-progress: false
@@ -21,6 +27,8 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FX_REPORT: ${{ inputs.report && '1' || '' }}
         run: gunzip -c fx.py.gz > fx.py && python fx.py
       - name: Commit
         run: |
