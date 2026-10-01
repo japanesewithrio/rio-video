@@ -1,10 +1,10 @@
 {
  "balance": 979.87,
  "position": null,
- "last_ts": "2026-10-01T15:00:00+01:00",
- "day": "2026-10-01",
- "day_pnl": -30.16,
- "halted": true,
+ "last_ts": "2026-10-01T16:00:00+01:00",
+ "day": "2026-10-02",
+ "day_pnl": 0.0,
+ "halted": false,
  "trades": [
   {
    "side": "sell",
