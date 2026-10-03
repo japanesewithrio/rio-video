@@ -1,5 +1,5 @@
 {
- "time_jst": "2026-10-03 09:26",
+ "time_jst": "2026-10-03 10:19",
  "price": 157.83,
  "change_24h": -0.231,
  "high_24h": 158.221,
@@ -54,7 +54,7 @@
   },
   "C": {
    "label": "Bot C – နေ့စဉ် Trend (EMA20/100)",
-   "balance": 999.88,
+   "balance": 999.85,
    "open_position": {
     "side": "sell",
     "entry": 158.81,
