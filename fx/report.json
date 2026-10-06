@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-10-06 20:20",
- "price": 158.128,
+ "time_jst": "2026-10-06 21:25",
+ "price": 158.177,
  "change_24h": -0.083,
  "high_24h": 158.298,
  "low_24h": 157.762,
- "week_change": 0.968,
+ "week_change": 0.837,
  "trend": "up",
- "rsi": 55.0,
- "atr": 0.161,
+ "rsi": 56.0,
+ "atr": 0.179,
  "paper": {
   "balance": 962.23,
   "start": 1000.0,
