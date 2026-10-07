@@ -1,0 +1,27 @@
+name: research3
+on:
+  push:
+    paths: ["fx/research3_trigger.txt"]
+  workflow_dispatch:
+concurrency:
+  group: research3
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  research3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pip install --quiet yfinance pandas numpy
+      - name: Strategy families test (paper research only)
+        run: gunzip -c research2.py.gz > research2.py && gunzip -c research3.py.gz > research3.py && python research3.py
+      - name: Commit
+        run: |
+          git config user.name "rio-bot"
+          git config user.email "rio-bot@users.noreply.github.com"
+          git add fx/research3.json
+          git diff --cached --quiet || git commit -q -m "research3 result"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && exit 0; sleep 5; done
+          echo "push failed"; exit 1
