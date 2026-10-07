@@ -1,0 +1,1074 @@
+{
+ "note": "Frozen Bot B/C rules on many pairs, no re-tuning. R = multiples of the risk per trade. Costs counted, gapped stops filled at the open, one-bar bad ticks (>10% spikes that snap back) removed. Swap/carry NOT counted (it can change a pair's result either way, since these bots hold for months). Drawdown is on closed trades only; open trades can make the real drawdown bigger. USD/JPY 2010-2019 was used to choose the rules, so see without_usdjpy / non_jpy_pairs_only. Paper research only.",
+ "pairs_dropped": {},
+ "bad_ticks_dropped": {
+  "USDJPY": 0,
+  "EURUSD": 1,
+  "GBPUSD": 1,
+  "AUDUSD": 1,
+  "NZDUSD": 3,
+  "USDCAD": 0,
+  "USDCHF": 1,
+  "EURJPY": 0,
+  "GBPJPY": 0,
+  "AUDJPY": 0,
+  "EURGBP": 1
+ },
+ "period_start": "2010-01-01",
+ "split": "2018-01-01",
+ "risk_usd_per_trade": 5.0,
+ "pairs": [
+  "USDJPY",
+  "EURUSD",
+  "GBPUSD",
+  "AUDUSD",
+  "NZDUSD",
+  "USDCAD",
+  "USDCHF",
+  "EURJPY",
+  "GBPJPY",
+  "AUDJPY",
+  "EURGBP"
+ ],
+ "rules": {
+  "C_ema20_100": {
+   "params": {
+    "kind": "ema",
+    "fast": 20,
+    "slow": 100,
+    "stop_atr": 3.0
+   },
+   "per_pair": {
+    "USDJPY": {
+     "all": {
+      "trades": 63,
+      "R": 30.9,
+      "R_per_year": 1.84,
+      "pf": 2.14,
+      "win%": 31.7,
+      "max_dd_R": 10.8,
+      "worst_R": -1.14,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 34,
+      "R": 18.6,
+      "R_per_year": 2.33,
+      "pf": 2.18,
+      "win%": 26.5,
+      "max_dd_R": 6.1,
+      "worst_R": -1.01,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 29,
+      "R": 12.3,
+      "R_per_year": 1.4,
+      "pf": 2.08,
+      "win%": 37.9,
+      "max_dd_R": 4.7,
+      "worst_R": -1.14,
+      "big_losses": 0
+     }
+    },
+    "EURUSD": {
+     "all": {
+      "trades": 67,
+      "R": 1.2,
+      "R_per_year": 0.07,
+      "pf": 1.04,
+      "win%": 26.9,
+      "max_dd_R": 8.5,
+      "worst_R": -1.33,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 30,
+      "R": 0.1,
+      "R_per_year": 0.01,
+      "pf": 1.01,
+      "win%": 26.7,
+      "max_dd_R": 6.8,
+      "worst_R": -1.04,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 37,
+      "R": 1.1,
+      "R_per_year": 0.13,
+      "pf": 1.06,
+      "win%": 27.0,
+      "max_dd_R": 8.5,
+      "worst_R": -1.33,
+      "big_losses": 0
+     }
+    },
+    "GBPUSD": {
+     "all": {
+      "trades": 62,
+      "R": -2.9,
+      "R_per_year": -0.17,
+      "pf": 0.89,
+      "win%": 30.6,
+      "max_dd_R": 7.0,
+      "worst_R": -1.27,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 27,
+      "R": -2.9,
+      "R_per_year": -0.37,
+      "pf": 0.78,
+      "win%": 29.6,
+      "max_dd_R": 7.0,
+      "worst_R": -1.27,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 35,
+      "R": 0.0,
+      "R_per_year": 0.0,
+      "pf": 1.0,
+      "win%": 31.4,
+      "max_dd_R": 4.6,
+      "worst_R": -1.01,
+      "big_losses": 0
+     }
+    },
+    "AUDUSD": {
+     "all": {
+      "trades": 68,
+      "R": -1.6,
+      "R_per_year": -0.1,
+      "pf": 0.94,
+      "win%": 29.4,
+      "max_dd_R": 11.4,
+      "worst_R": -1.1,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 28,
+      "R": 4.8,
+      "R_per_year": 0.6,
+      "pf": 1.47,
+      "win%": 35.7,
+      "max_dd_R": 4.6,
+      "worst_R": -1.01,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 40,
+      "R": -6.4,
+      "R_per_year": -0.73,
+      "pf": 0.66,
+      "win%": 25.0,
+      "max_dd_R": 11.4,
+      "worst_R": -1.1,
+      "big_losses": 0
+     }
+    },
+    "NZDUSD": {
+     "all": {
+      "trades": 85,
+      "R": -27.6,
+      "R_per_year": -1.64,
+      "pf": 0.41,
+      "win%": 14.1,
+      "max_dd_R": 30.3,
+      "worst_R": -1.03,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 30,
+      "R": -3.1,
+      "R_per_year": -0.39,
+      "pf": 0.8,
+      "win%": 20.0,
+      "max_dd_R": 7.5,
+      "worst_R": -1.03,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 55,
+      "R": -24.4,
+      "R_per_year": -2.79,
+      "pf": 0.2,
+      "win%": 10.9,
+      "max_dd_R": 24.7,
+      "worst_R": -1.03,
+      "big_losses": 0
+     }
+    },
+    "USDCAD": {
+     "all": {
+      "trades": 90,
+      "R": -29.1,
+      "R_per_year": -1.74,
+      "pf": 0.42,
+      "win%": 17.8,
+      "max_dd_R": 32.8,
+      "worst_R": -1.02,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 31,
+      "R": 1.5,
+      "R_per_year": 0.19,
+      "pf": 1.11,
+      "win%": 32.3,
+      "max_dd_R": 6.5,
+      "worst_R": -1.02,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 59,
+      "R": -30.7,
+      "R_per_year": -3.5,
+      "pf": 0.14,
+      "win%": 10.2,
+      "max_dd_R": 30.7,
+      "worst_R": -1.01,
+      "big_losses": 0
+     }
+    },
+    "USDCHF": {
+     "all": {
+      "trades": 81,
+      "R": -20.6,
+      "R_per_year": -1.23,
+      "pf": 0.51,
+      "win%": 24.7,
+      "max_dd_R": 26.5,
+      "worst_R": -2.45,
+      "big_losses": 1
+     },
+     "before_2018": {
+      "trades": 43,
+      "R": -14.9,
+      "R_per_year": -1.87,
+      "pf": 0.42,
+      "win%": 18.6,
+      "max_dd_R": 19.9,
+      "worst_R": -2.45,
+      "big_losses": 1
+     },
+     "from_2018": {
+      "trades": 38,
+      "R": -5.7,
+      "R_per_year": -0.65,
+      "pf": 0.65,
+      "win%": 31.6,
+      "max_dd_R": 9.8,
+      "worst_R": -1.04,
+      "big_losses": 0
+     }
+    },
+    "EURJPY": {
+     "all": {
+      "trades": 72,
+      "R": -5.3,
+      "R_per_year": -0.32,
+      "pf": 0.84,
+      "win%": 23.6,
+      "max_dd_R": 10.9,
+      "worst_R": -1.07,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 30,
+      "R": 0.5,
+      "R_per_year": 0.06,
+      "pf": 1.03,
+      "win%": 20.0,
+      "max_dd_R": 6.0,
+      "worst_R": -1.07,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 42,
+      "R": -5.8,
+      "R_per_year": -0.66,
+      "pf": 0.7,
+      "win%": 26.2,
+      "max_dd_R": 10.9,
+      "worst_R": -1.01,
+      "big_losses": 0
+     }
+    },
+    "GBPJPY": {
+     "all": {
+      "trades": 88,
+      "R": -8.5,
+      "R_per_year": -0.51,
+      "pf": 0.81,
+      "win%": 17.0,
+      "max_dd_R": 32.8,
+      "worst_R": -1.26,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 25,
+      "R": 18.2,
+      "R_per_year": 2.28,
+      "pf": 2.8,
+      "win%": 20.0,
+      "max_dd_R": 4.0,
+      "worst_R": -1.26,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 63,
+      "R": -26.7,
+      "R_per_year": -3.05,
+      "pf": 0.25,
+      "win%": 15.9,
+      "max_dd_R": 29.0,
+      "worst_R": -1.17,
+      "big_losses": 0
+     }
+    },
+    "AUDJPY": {
+     "all": {
+      "trades": 79,
+      "R": -10.5,
+      "R_per_year": -0.63,
+      "pf": 0.71,
+      "win%": 26.6,
+      "max_dd_R": 20.8,
+      "worst_R": -1.34,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 41,
+      "R": -11.3,
+      "R_per_year": -1.41,
+      "pf": 0.43,
+      "win%": 26.8,
+      "max_dd_R": 11.3,
+      "worst_R": -1.07,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 38,
+      "R": 0.7,
+      "R_per_year": 0.08,
+      "pf": 1.04,
+      "win%": 26.3,
+      "max_dd_R": 9.5,
+      "worst_R": -1.34,
+      "big_losses": 0
+     }
+    },
+    "EURGBP": {
+     "all": {
+      "trades": 73,
+      "R": -14.3,
+      "R_per_year": -0.85,
+      "pf": 0.6,
+      "win%": 28.8,
+      "max_dd_R": 21.7,
+      "worst_R": -1.02,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 31,
+      "R": 2.1,
+      "R_per_year": 0.26,
+      "pf": 1.13,
+      "win%": 35.5,
+      "max_dd_R": 6.9,
+      "worst_R": -1.02,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 42,
+      "R": -16.3,
+      "R_per_year": -1.86,
+      "pf": 0.19,
+      "win%": 23.8,
+      "max_dd_R": 16.3,
+      "worst_R": -1.02,
+      "big_losses": 0
+     }
+    }
+   },
+   "portfolio": {
+    "trades": 828,
+    "trades_per_year": 49.4,
+    "pnl_usd": -441.7,
+    "pnl_usd_per_year": -26.3,
+    "pf": 0.78,
+    "max_dd_usd": 658.9,
+    "losing_years": 12,
+    "years": 17,
+    "worst_year_usd": -161.0,
+    "by_year_usd": {
+     "2010": -74.3,
+     "2011": -39.3,
+     "2012": -68.6,
+     "2013": 21.2,
+     "2014": 54.7,
+     "2015": 254.5,
+     "2016": 41.5,
+     "2017": -122.0,
+     "2018": -36.9,
+     "2019": -52.2,
+     "2020": -125.5,
+     "2021": -24.1,
+     "2022": 20.4,
+     "2023": -91.3,
+     "2024": -161.0,
+     "2025": -28.7,
+     "2026": -10.1
+    }
+   },
+   "portfolio_before_2018": {
+    "trades": 350,
+    "trades_per_year": 43.8,
+    "pnl_usd": 67.6,
+    "pnl_usd_per_year": 8.5,
+    "pf": 1.08,
+    "max_dd_usd": 235.3,
+    "losing_years": 4,
+    "years": 8,
+    "worst_year_usd": -122.0,
+    "by_year_usd": {
+     "2010": -74.3,
+     "2011": -39.3,
+     "2012": -68.6,
+     "2013": 21.2,
+     "2014": 54.7,
+     "2015": 254.5,
+     "2016": 41.5,
+     "2017": -122.0
+    }
+   },
+   "portfolio_from_2018": {
+    "trades": 478,
+    "trades_per_year": 54.5,
+    "pnl_usd": -509.3,
+    "pnl_usd_per_year": -58.1,
+    "pf": 0.57,
+    "max_dd_usd": 536.9,
+    "losing_years": 8,
+    "years": 9,
+    "worst_year_usd": -161.0,
+    "by_year_usd": {
+     "2018": -36.9,
+     "2019": -52.2,
+     "2020": -125.5,
+     "2021": -24.1,
+     "2022": 20.4,
+     "2023": -91.3,
+     "2024": -161.0,
+     "2025": -28.7,
+     "2026": -10.1
+    }
+   },
+   "verdict": {
+    "pairs_tested": 11,
+    "pairs_profitable": 2,
+    "pairs_profitable_in_both_halves": 2,
+    "pass": false,
+    "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+   },
+   "without_usdjpy": {
+    "portfolio": {
+     "trades": 765,
+     "trades_per_year": 45.6,
+     "pnl_usd": -596.1,
+     "pnl_usd_per_year": -35.6,
+     "pf": 0.69,
+     "max_dd_usd": 699.4,
+     "losing_years": 14,
+     "years": 17,
+     "worst_year_usd": -148.5,
+     "by_year_usd": {
+      "2010": -74.5,
+      "2011": -38.9,
+      "2012": -51.0,
+      "2013": -36.4,
+      "2014": 55.0,
+      "2015": 199.2,
+      "2016": 19.8,
+      "2017": -98.7,
+      "2018": -37.0,
+      "2019": -41.4,
+      "2020": -113.6,
+      "2021": -29.6,
+      "2022": -60.0,
+      "2023": -85.1,
+      "2024": -148.5,
+      "2025": -33.7,
+      "2026": -21.8
+     }
+    },
+    "verdict": {
+     "pairs_tested": 10,
+     "pairs_profitable": 1,
+     "pairs_profitable_in_both_halves": 1,
+     "pass": false,
+     "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+    }
+   },
+   "non_jpy_pairs_only": {
+    "portfolio": {
+     "trades": 526,
+     "trades_per_year": 31.4,
+     "pnl_usd": -474.3,
+     "pnl_usd_per_year": -28.3,
+     "pf": 0.64,
+     "max_dd_usd": 520.8,
+     "losing_years": 13,
+     "years": 17,
+     "worst_year_usd": -114.7,
+     "by_year_usd": {
+      "2010": -58.2,
+      "2011": -5.1,
+      "2012": -28.9,
+      "2013": -55.4,
+      "2014": 33.2,
+      "2015": 123.8,
+      "2016": -9.2,
+      "2017": -62.8,
+      "2018": -8.5,
+      "2019": -48.6,
+      "2020": -62.0,
+      "2021": 9.0,
+      "2022": 0.6,
+      "2023": -103.4,
+      "2024": -114.7,
+      "2025": -12.4,
+      "2026": -71.9
+     }
+    },
+    "verdict": {
+     "pairs_tested": 7,
+     "pairs_profitable": 1,
+     "pairs_profitable_in_both_halves": 1,
+     "pass": false,
+     "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+    }
+   }
+  },
+  "B_breakout20": {
+   "params": {
+    "kind": "breakout",
+    "n": 20,
+    "stop_atr": 3.0
+   },
+   "per_pair": {
+    "USDJPY": {
+     "all": {
+      "trades": 67,
+      "R": 35.4,
+      "R_per_year": 2.11,
+      "pf": 2.13,
+      "win%": 34.3,
+      "max_dd_R": 6.6,
+      "worst_R": -1.1,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 37,
+      "R": 19.4,
+      "R_per_year": 2.43,
+      "pf": 2.05,
+      "win%": 29.7,
+      "max_dd_R": 4.3,
+      "worst_R": -1.01,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 30,
+      "R": 16.0,
+      "R_per_year": 1.82,
+      "pf": 2.25,
+      "win%": 40.0,
+      "max_dd_R": 4.0,
+      "worst_R": -1.1,
+      "big_losses": 0
+     }
+    },
+    "EURUSD": {
+     "all": {
+      "trades": 77,
+      "R": 6.9,
+      "R_per_year": 0.41,
+      "pf": 1.17,
+      "win%": 37.7,
+      "max_dd_R": 11.2,
+      "worst_R": -1.48,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 33,
+      "R": 15.1,
+      "R_per_year": 1.89,
+      "pf": 1.99,
+      "win%": 48.5,
+      "max_dd_R": 4.3,
+      "worst_R": -1.48,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 44,
+      "R": -8.2,
+      "R_per_year": -0.94,
+      "pf": 0.67,
+      "win%": 29.5,
+      "max_dd_R": 11.2,
+      "worst_R": -1.27,
+      "big_losses": 0
+     }
+    },
+    "GBPUSD": {
+     "all": {
+      "trades": 75,
+      "R": 1.6,
+      "R_per_year": 0.1,
+      "pf": 1.05,
+      "win%": 36.0,
+      "max_dd_R": 8.0,
+      "worst_R": -1.1,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 34,
+      "R": -4.5,
+      "R_per_year": -0.56,
+      "pf": 0.75,
+      "win%": 29.4,
+      "max_dd_R": 8.0,
+      "worst_R": -1.04,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 41,
+      "R": 6.1,
+      "R_per_year": 0.7,
+      "pf": 1.4,
+      "win%": 41.5,
+      "max_dd_R": 3.3,
+      "worst_R": -1.1,
+      "big_losses": 0
+     }
+    },
+    "AUDUSD": {
+     "all": {
+      "trades": 81,
+      "R": -12.6,
+      "R_per_year": -0.75,
+      "pf": 0.72,
+      "win%": 27.2,
+      "max_dd_R": 17.8,
+      "worst_R": -1.06,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 35,
+      "R": -1.5,
+      "R_per_year": -0.18,
+      "pf": 0.92,
+      "win%": 31.4,
+      "max_dd_R": 7.7,
+      "worst_R": -1.04,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 46,
+      "R": -11.2,
+      "R_per_year": -1.28,
+      "pf": 0.56,
+      "win%": 23.9,
+      "max_dd_R": 14.0,
+      "worst_R": -1.06,
+      "big_losses": 0
+     }
+    },
+    "NZDUSD": {
+     "all": {
+      "trades": 76,
+      "R": -4.3,
+      "R_per_year": -0.26,
+      "pf": 0.89,
+      "win%": 30.3,
+      "max_dd_R": 9.6,
+      "worst_R": -1.11,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 37,
+      "R": -4.0,
+      "R_per_year": -0.51,
+      "pf": 0.8,
+      "win%": 21.6,
+      "max_dd_R": 9.6,
+      "worst_R": -1.07,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 39,
+      "R": -0.3,
+      "R_per_year": -0.03,
+      "pf": 0.98,
+      "win%": 38.5,
+      "max_dd_R": 6.7,
+      "worst_R": -1.11,
+      "big_losses": 0
+     }
+    },
+    "USDCAD": {
+     "all": {
+      "trades": 76,
+      "R": -6.2,
+      "R_per_year": -0.37,
+      "pf": 0.83,
+      "win%": 32.9,
+      "max_dd_R": 10.9,
+      "worst_R": -1.1,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 36,
+      "R": 0.5,
+      "R_per_year": 0.07,
+      "pf": 1.03,
+      "win%": 36.1,
+      "max_dd_R": 6.0,
+      "worst_R": -1.02,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 40,
+      "R": -6.7,
+      "R_per_year": -0.77,
+      "pf": 0.66,
+      "win%": 30.0,
+      "max_dd_R": 8.8,
+      "worst_R": -1.1,
+      "big_losses": 0
+     }
+    },
+    "USDCHF": {
+     "all": {
+      "trades": 70,
+      "R": -13.7,
+      "R_per_year": -0.82,
+      "pf": 0.64,
+      "win%": 34.3,
+      "max_dd_R": 23.7,
+      "worst_R": -1.89,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 31,
+      "R": -5.6,
+      "R_per_year": -0.7,
+      "pf": 0.71,
+      "win%": 29.0,
+      "max_dd_R": 17.0,
+      "worst_R": -1.89,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 39,
+      "R": -8.1,
+      "R_per_year": -0.93,
+      "pf": 0.58,
+      "win%": 38.5,
+      "max_dd_R": 11.3,
+      "worst_R": -1.03,
+      "big_losses": 0
+     }
+    },
+    "EURJPY": {
+     "all": {
+      "trades": 68,
+      "R": 3.9,
+      "R_per_year": 0.23,
+      "pf": 1.12,
+      "win%": 36.8,
+      "max_dd_R": 10.2,
+      "worst_R": -1.08,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 38,
+      "R": 2.0,
+      "R_per_year": 0.25,
+      "pf": 1.1,
+      "win%": 34.2,
+      "max_dd_R": 10.2,
+      "worst_R": -1.08,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 30,
+      "R": 1.9,
+      "R_per_year": 0.22,
+      "pf": 1.14,
+      "win%": 40.0,
+      "max_dd_R": 5.5,
+      "worst_R": -1.01,
+      "big_losses": 0
+     }
+    },
+    "GBPJPY": {
+     "all": {
+      "trades": 83,
+      "R": -8.3,
+      "R_per_year": -0.5,
+      "pf": 0.82,
+      "win%": 26.5,
+      "max_dd_R": 14.9,
+      "worst_R": -1.09,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 41,
+      "R": 2.9,
+      "R_per_year": 0.36,
+      "pf": 1.13,
+      "win%": 24.4,
+      "max_dd_R": 11.1,
+      "worst_R": -1.09,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 42,
+      "R": -11.2,
+      "R_per_year": -1.28,
+      "pf": 0.53,
+      "win%": 28.6,
+      "max_dd_R": 12.1,
+      "worst_R": -1.01,
+      "big_losses": 0
+     }
+    },
+    "AUDJPY": {
+     "all": {
+      "trades": 79,
+      "R": -5.5,
+      "R_per_year": -0.33,
+      "pf": 0.87,
+      "win%": 36.7,
+      "max_dd_R": 15.0,
+      "worst_R": -2.35,
+      "big_losses": 1
+     },
+     "before_2018": {
+      "trades": 42,
+      "R": -8.3,
+      "R_per_year": -1.04,
+      "pf": 0.62,
+      "win%": 35.7,
+      "max_dd_R": 10.1,
+      "worst_R": -1.01,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 37,
+      "R": 2.8,
+      "R_per_year": 0.32,
+      "pf": 1.15,
+      "win%": 37.8,
+      "max_dd_R": 7.3,
+      "worst_R": -2.35,
+      "big_losses": 1
+     }
+    },
+    "EURGBP": {
+     "all": {
+      "trades": 73,
+      "R": -29.0,
+      "R_per_year": -1.73,
+      "pf": 0.37,
+      "win%": 20.5,
+      "max_dd_R": 30.5,
+      "worst_R": -1.15,
+      "big_losses": 0
+     },
+     "before_2018": {
+      "trades": 36,
+      "R": -10.5,
+      "R_per_year": -1.31,
+      "pf": 0.52,
+      "win%": 22.2,
+      "max_dd_R": 11.9,
+      "worst_R": -1.01,
+      "big_losses": 0
+     },
+     "from_2018": {
+      "trades": 37,
+      "R": -18.6,
+      "R_per_year": -2.12,
+      "pf": 0.23,
+      "win%": 18.9,
+      "max_dd_R": 19.9,
+      "worst_R": -1.15,
+      "big_losses": 0
+     }
+    }
+   },
+   "portfolio": {
+    "trades": 825,
+    "trades_per_year": 49.2,
+    "pnl_usd": -160.0,
+    "pnl_usd_per_year": -9.5,
+    "pf": 0.93,
+    "max_dd_usd": 292.2,
+    "losing_years": 11,
+    "years": 17,
+    "worst_year_usd": -98.7,
+    "by_year_usd": {
+     "2010": -52.6,
+     "2011": -53.3,
+     "2012": 5.4,
+     "2013": 39.5,
+     "2014": -98.7,
+     "2015": 268.6,
+     "2016": 1.0,
+     "2017": -82.4,
+     "2018": -21.9,
+     "2019": -49.0,
+     "2020": 23.8,
+     "2021": -21.5,
+     "2022": 45.2,
+     "2023": -65.8,
+     "2024": -41.5,
+     "2025": -25.5,
+     "2026": -31.4
+    }
+   },
+   "portfolio_before_2018": {
+    "trades": 400,
+    "trades_per_year": 50.0,
+    "pnl_usd": 27.6,
+    "pnl_usd_per_year": 3.4,
+    "pf": 1.03,
+    "max_dd_usd": 171.6,
+    "losing_years": 4,
+    "years": 8,
+    "worst_year_usd": -98.7,
+    "by_year_usd": {
+     "2010": -52.6,
+     "2011": -53.3,
+     "2012": 5.4,
+     "2013": 39.5,
+     "2014": -98.7,
+     "2015": 268.6,
+     "2016": 1.0,
+     "2017": -82.4
+    }
+   },
+   "portfolio_from_2018": {
+    "trades": 425,
+    "trades_per_year": 48.5,
+    "pnl_usd": -187.6,
+    "pnl_usd_per_year": -21.4,
+    "pf": 0.83,
+    "max_dd_usd": 213.4,
+    "losing_years": 7,
+    "years": 9,
+    "worst_year_usd": -65.8,
+    "by_year_usd": {
+     "2018": -21.9,
+     "2019": -49.0,
+     "2020": 23.8,
+     "2021": -21.5,
+     "2022": 45.2,
+     "2023": -65.8,
+     "2024": -41.5,
+     "2025": -25.5,
+     "2026": -31.4
+    }
+   },
+   "verdict": {
+    "pairs_tested": 11,
+    "pairs_profitable": 4,
+    "pairs_profitable_in_both_halves": 2,
+    "pass": false,
+    "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+   },
+   "without_usdjpy": {
+    "portfolio": {
+     "trades": 758,
+     "trades_per_year": 45.2,
+     "pnl_usd": -337.0,
+     "pnl_usd_per_year": -20.1,
+     "pf": 0.83,
+     "max_dd_usd": 373.6,
+     "losing_years": 14,
+     "years": 17,
+     "worst_year_usd": -98.7,
+     "by_year_usd": {
+      "2010": -49.4,
+      "2011": -39.2,
+      "2012": 7.3,
+      "2013": -8.3,
+      "2014": -98.7,
+      "2015": 203.7,
+      "2016": -8.8,
+      "2017": -76.1,
+      "2018": -12.8,
+      "2019": -61.1,
+      "2020": 38.6,
+      "2021": -21.5,
+      "2022": -29.3,
+      "2023": -71.5,
+      "2024": -58.9,
+      "2025": -30.8,
+      "2026": -20.2
+     }
+    },
+    "verdict": {
+     "pairs_tested": 10,
+     "pairs_profitable": 3,
+     "pairs_profitable_in_both_halves": 1,
+     "pass": false,
+     "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+    }
+   },
+   "non_jpy_pairs_only": {
+    "portfolio": {
+     "trades": 528,
+     "trades_per_year": 31.5,
+     "pnl_usd": -287.2,
+     "pnl_usd_per_year": -17.1,
+     "pf": 0.79,
+     "max_dd_usd": 384.0,
+     "losing_years": 12,
+     "years": 17,
+     "worst_year_usd": -90.0,
+     "by_year_usd": {
+      "2010": 12.5,
+      "2011": 4.3,
+      "2012": -11.6,
+      "2013": -43.8,
+      "2014": -45.4,
+      "2015": 180.8,
+      "2016": -89.7,
+      "2017": -59.3,
+      "2018": 14.3,
+      "2019": -74.4,
+      "2020": 31.5,
+      "2021": -11.6,
+      "2022": -4.1,
+      "2023": -36.5,
+      "2024": -90.0,
+      "2025": -10.2,
+      "2026": -53.9
+     }
+    },
+    "verdict": {
+     "pairs_tested": 7,
+     "pairs_profitable": 2,
+     "pairs_profitable_in_both_halves": 0,
+     "pass": false,
+     "rule": "pass = profitable on >=60% of pairs AND portfolio profit factor > 1.2 overall AND portfolio profit factor > 1.0 both before and from 2018"
+    }
+   }
+  }
+ }
+}
