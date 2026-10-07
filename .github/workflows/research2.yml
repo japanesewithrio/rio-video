@@ -1,0 +1,26 @@
+name: research2
+on:
+  push:
+    paths: ["fx/research2_trigger.txt"]
+  workflow_dispatch:
+concurrency:
+  group: fx
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  research2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pip install --quiet yfinance pandas numpy
+      - name: Multi-pair robustness test (paper research only)
+        run: gunzip -c research2.py.gz > research2.py && python research2.py
+      - name: Commit
+        run: |
+          git config user.name "rio-bot"
+          git config user.email "rio-bot@users.noreply.github.com"
+          git add fx/research2.json
+          git diff --cached --quiet || git commit -q -m "research2 result"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
