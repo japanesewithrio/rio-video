@@ -8,7 +8,7 @@
   "tp": 158.875,
   "ts": "2026-10-07T10:00:00+01:00"
  },
- "last_ts": "2026-10-07T10:00:00+01:00",
+ "last_ts": "2026-10-07T11:00:00+01:00",
  "day": "2026-10-07",
  "day_pnl": 19.87,
  "halted": false,
@@ -91,7 +91,17 @@
    "balance": 1000.0,
    "position": null,
    "last": "2026-10-06",
-   "trades": []
+   "trades": [],
+   "since": "2026-10-07",
+   "stats": {
+    "n": 0,
+    "wins": 0,
+    "win_sum": 0.0,
+    "loss_sum": 0.0,
+    "eq": 0.0,
+    "peak": 0.0,
+    "dd": 0.0
+   }
   },
   "C": {
    "balance": 999.79,
@@ -103,8 +113,86 @@
     "date": "2026-09-25"
    },
    "last": "2026-10-06",
-   "trades": []
+   "trades": [],
+   "since": "2026-10-07",
+   "stats": {
+    "n": 0,
+    "wins": 0,
+    "win_sum": 0.0,
+    "loss_sum": 0.0,
+    "eq": 0.0,
+    "peak": 0.0,
+    "dd": 0.0
+   }
   }
  },
- "report_day": "2026-10-06"
+ "report_day": "2026-10-07",
+ "since": "2026-09-28",
+ "stats": {
+  "n": 8,
+  "wins": 2,
+  "win_sum": 39.91,
+  "loss_sum": 57.81,
+  "eq": -17.9,
+  "peak": 20.04,
+  "dd": 57.81
+ },
+ "daily_tries": {
+  "2026-10-07": 1
+ },
+ "daily_errors": [],
+ "daily_as_of": "2026-10-07 20:21",
+ "daily_run": "2026-10-07",
+ "daily_out": {
+  "B": {
+   "label": "Bot B \u2013 \u1014\u1031\u1037\u1005\u1009\u103a Breakout (20)",
+   "balance": 1000.0,
+   "open_position": null,
+   "total_trades": 0,
+   "last_trades": [],
+   "scorecard": {
+    "since": "2026-10-07",
+    "months": 0.0,
+    "trades": 0,
+    "win_rate": null,
+    "profit_factor": null,
+    "max_drawdown": 0.0,
+    "checks": {
+     "months_6": false,
+     "trades_30": false,
+     "pf_1.3": false,
+     "dd_under_100": true
+    },
+    "ready": false
+   }
+  },
+  "C": {
+   "label": "Bot C \u2013 \u1014\u1031\u1037\u1005\u1009\u103a Trend (EMA20/100)",
+   "balance": 999.79,
+   "open_position": {
+    "pair": "USD/JPY",
+    "side": "sell",
+    "entry": 158.81,
+    "stop": 163.303,
+    "since": "2026-09-25"
+   },
+   "total_trades": 0,
+   "last_trades": [],
+   "scorecard": {
+    "since": "2026-10-07",
+    "months": 0.0,
+    "trades": 0,
+    "win_rate": null,
+    "profit_factor": null,
+    "max_drawdown": 0.0,
+    "checks": {
+     "months_6": false,
+     "trades_30": false,
+     "pf_1.3": false,
+     "dd_under_100": true
+    },
+    "ready": false
+   }
+  }
+ }
 }
