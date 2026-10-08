@@ -1,19 +1,26 @@
 {
- "time_jst": "2026-10-09 03:24",
- "price": 157.91,
- "change_24h": -0.044,
+ "time_jst": "2026-10-09 04:21",
+ "price": 157.806,
+ "change_24h": -0.234,
  "high_24h": 158.37,
  "low_24h": 157.504,
- "week_change": -0.211,
+ "week_change": -0.319,
  "trend": "down",
- "rsi": 43.0,
- "atr": 0.187,
+ "rsi": 39.5,
+ "atr": 0.185,
  "paper": {
   "balance": 961.94,
   "start": 1000.0,
   "day_pnl": -10.05,
   "halted_today": false,
-  "open_position": null,
+  "open_position": {
+   "side": "sell",
+   "entry": 157.855,
+   "units": 5562,
+   "stop": 158.138,
+   "tp": 157.287,
+   "ts": "2026-10-08T19:00:00+01:00"
+  },
   "trades_24h": [
    {
     "side": "buy",
