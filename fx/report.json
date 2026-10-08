@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-10-08 23:24",
- "price": 158.127,
- "change_24h": 0.039,
+ "time_jst": "2026-10-09 00:22",
+ "price": 158.287,
+ "change_24h": 0.176,
  "high_24h": 158.304,
  "low_24h": 157.573,
- "week_change": 0.388,
+ "week_change": 0.66,
  "trend": "up",
- "rsi": 48.5,
- "atr": 0.154,
+ "rsi": 56.7,
+ "atr": 0.155,
  "paper": {
   "balance": 971.99,
   "start": 1000.0,
@@ -21,22 +21,12 @@
    "tp": 158.723,
    "ts": "2026-10-08T08:00:00+01:00"
   },
-  "trades_24h": [
-   {
-    "side": "buy",
-    "entry": 158.343,
-    "exit": 158.075,
-    "open": "2026-10-07T10:00:00+01:00",
-    "close": "2026-10-07T15:00:00+01:00",
-    "pnl": -10.11,
-    "why": "stop"
-   }
-  ],
+  "trades_24h": [],
   "total_trades": 9,
   "win_rate": 22.2,
   "scorecard": {
    "since": "2026-09-28",
-   "months": 0.3,
+   "months": 0.4,
    "trades": 9,
    "win_rate": 22.2,
    "profit_factor": 0.59,
