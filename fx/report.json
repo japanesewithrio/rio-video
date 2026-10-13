@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-10-13 16:26",
+ "time_jst": "2026-10-13 17:24",
  "price": 158.178,
- "change_24h": -0.277,
+ "change_24h": -0.266,
  "high_24h": 158.752,
  "low_24h": 158.108,
- "week_change": 0.036,
+ "week_change": 0.071,
  "trend": "up",
- "rsi": 33.9,
- "atr": 0.131,
+ "rsi": 34.8,
+ "atr": 0.138,
  "paper": {
   "balance": 939.78,
   "start": 1000.0,
@@ -45,7 +45,7 @@
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
    "trades": 32,
-   "pnl": -35.41,
+   "pnl": -35.03,
    "win_rate": 28.1
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
