@@ -1,25 +1,25 @@
 {
- "time_jst": "2026-10-15 02:33",
- "price": 158.598,
- "change_24h": 0.241,
+ "time_jst": "2026-10-15 03:38",
+ "price": 158.065,
+ "change_24h": -0.239,
  "high_24h": 158.95,
- "low_24h": 158.106,
- "week_change": 0.567,
+ "low_24h": 158.048,
+ "week_change": 0.119,
  "trend": "up",
- "rsi": 54.1,
- "atr": 0.179,
+ "rsi": 37.5,
+ "atr": 0.208,
  "paper": {
-  "balance": 919.72,
+  "balance": 909.61,
   "start": 1000.0,
-  "day_pnl": 0.0,
+  "day_pnl": -10.11,
   "halted_today": false,
   "open_position": {
    "side": "buy",
-   "entry": 158.834,
-   "units": 6751,
-   "stop": 158.598,
-   "tp": 159.304,
-   "ts": "2026-10-14T13:00:00+01:00"
+   "entry": 158.559,
+   "units": 5896,
+   "stop": 158.29,
+   "tp": 159.096,
+   "ts": "2026-10-14T18:00:00+01:00"
   },
   "trades_24h": [
    {
@@ -30,17 +30,26 @@
     "close": "2026-10-14T13:00:00+01:00",
     "pnl": -10.01,
     "why": "stop"
+   },
+   {
+    "side": "buy",
+    "entry": 158.834,
+    "exit": 158.597,
+    "open": "2026-10-14T13:00:00+01:00",
+    "close": "2026-10-14T18:00:00+01:00",
+    "pnl": -10.11,
+    "why": "stop"
    }
   ],
-  "total_trades": 15,
-  "win_rate": 13.3,
+  "total_trades": 16,
+  "win_rate": 12.5,
   "scorecard": {
    "since": "2026-09-28",
    "months": 0.6,
-   "trades": 15,
-   "win_rate": 13.3,
-   "profit_factor": 0.33,
-   "max_drawdown": 100.32,
+   "trades": 16,
+   "win_rate": 12.5,
+   "profit_factor": 0.31,
+   "max_drawdown": 110.43,
    "checks": {
     "months_6": false,
     "trades_30": false,
@@ -51,9 +60,9 @@
   },
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
-   "trades": 31,
-   "pnl": -85.76,
-   "win_rate": 22.6
+   "trades": 32,
+   "pnl": -95.84,
+   "win_rate": 21.9
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
