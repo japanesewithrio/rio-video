@@ -1,10 +1,10 @@
-in_progress		diag	diag	main	workflow_run	38715498156	9s	2026-10-15T09:47:10Z
-completed	success	daily	daily	main	schedule	38714379173	9m4s	2026-10-15T09:38:04Z
-completed	success	fx	fx	main	schedule	38713866202	30s	2026-10-15T09:33:54Z
-completed	success	fx	fx	main	schedule	38706669211	25s	2026-10-15T08:34:45Z
-completed	success	fx	fx	main	schedule	38700436069	27s	2026-10-15T07:41:20Z
-completed	success	fx	fx	main	schedule	38693644687	25s	2026-10-15T06:38:42Z
-completed	success	fx	fx	main	schedule	38687166278	24s	2026-10-15T05:30:41Z
-completed	success	fx	fx	main	schedule	38681843247	25s	2026-10-15T04:30:42Z
-completed	success	fx	fx	main	schedule	38676659995	26s	2026-10-15T03:30:55Z
-completed	success	fx	fx	main	schedule	38671410265	24s	2026-10-15T02:31:07Z
+in_progress		diag	diag	main	workflow_run	38882210244	7s	2026-10-16T09:41:44Z
+completed	failure	daily	daily	main	schedule	38881573291	5m35s	2026-10-16T09:36:07Z
+completed	success	fx	fx	main	schedule	38881158307	26s	2026-10-16T09:32:30Z
+completed	success	fx	fx	main	schedule	38874488771	25s	2026-10-16T08:33:30Z
+completed	success	fx	fx	main	schedule	38868493956	24s	2026-10-16T07:38:25Z
+completed	success	fx	fx	main	schedule	38862267170	24s	2026-10-16T06:37:29Z
+completed	success	fx	fx	main	schedule	38856165550	26s	2026-10-16T05:30:48Z
+completed	success	fx	fx	main	schedule	38851020055	28s	2026-10-16T04:30:58Z
+completed	success	fx	fx	main	schedule	38845900521	26s	2026-10-16T03:30:56Z
+completed	success	fx	fx	main	schedule	38840830032	24s	2026-10-16T02:31:02Z
