@@ -1,46 +1,39 @@
 {
- "time_jst": "2026-10-17 01:31",
- "price": 158.181,
- "change_24h": 0.052,
- "high_24h": 158.248,
+ "time_jst": "2026-10-17 02:29",
+ "price": 158.168,
+ "change_24h": 0.067,
+ "high_24h": 158.34,
  "low_24h": 157.687,
- "week_change": -0.162,
+ "week_change": -0.135,
  "trend": "down",
- "rsi": 57.4,
- "atr": 0.197,
+ "rsi": 56.1,
+ "atr": 0.205,
  "paper": {
-  "balance": 889.5,
+  "balance": 879.5,
   "start": 1000.0,
-  "day_pnl": 0.0,
+  "day_pnl": -10.0,
   "halted_today": false,
-  "open_position": {
-   "side": "sell",
-   "entry": 157.974,
-   "units": 4416,
-   "stop": 158.331,
-   "tp": 157.258,
-   "ts": "2026-10-15T21:00:00+01:00"
-  },
+  "open_position": null,
   "trades_24h": [
    {
     "side": "sell",
-    "entry": 157.868,
-    "exit": 158.227,
-    "open": "2026-10-15T08:00:00+01:00",
-    "close": "2026-10-15T17:00:00+01:00",
-    "pnl": -10.03,
+    "entry": 157.974,
+    "exit": 158.332,
+    "open": "2026-10-15T21:00:00+01:00",
+    "close": "2026-10-16T17:00:00+01:00",
+    "pnl": -10.0,
     "why": "stop"
    }
   ],
-  "total_trades": 18,
-  "win_rate": 11.1,
+  "total_trades": 19,
+  "win_rate": 10.5,
   "scorecard": {
    "since": "2026-09-28",
    "months": 0.6,
-   "trades": 18,
-   "win_rate": 11.1,
-   "profit_factor": 0.27,
-   "max_drawdown": 130.54,
+   "trades": 19,
+   "win_rate": 10.5,
+   "profit_factor": 0.25,
+   "max_drawdown": 140.54,
    "checks": {
     "months_6": false,
     "trades_30": false,
@@ -51,9 +44,9 @@
   },
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
-   "trades": 33,
-   "pnl": -105.48,
-   "win_rate": 21.2
+   "trades": 34,
+   "pnl": -115.86,
+   "win_rate": 20.6
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
