@@ -192,14 +192,24 @@ def outro_frame(t, prog):
 
 
 # ---------------------------------------------------------------- build
+def bounds(wav, turns):
+    """Line boundaries [0, b1, ..., T]. Uses {wav}.bounds.json (exact, written by story.py) when present."""
+    bf = wav[:-4] + ".bounds.json"
+    if os.path.exists(bf):
+        b = json.load(open(bf))
+        if len(b) == len(turns) + 1:
+            return b, b[-1]
+        print("bounds file has wrong length", len(b), len(turns) + 1)
+    pts, T = R.split_points(wav, turns)
+    return [0.0] + pts + [T], T
+
+
 def render(story_path, wav, tail_wav, out_path):
     s = json.load(open(story_path, encoding="utf-8"))
     tmp = tempfile.mkdtemp()
     mt, tt = main_turns(s), tail_turns(s)
-    mb, mT = R.split_points(wav, mt)
-    mb = [0.0] + mb + [mT]
-    tb, tT = R.split_points(tail_wav, tt)
-    tb = [0.0] + tb + [tT]
+    mb, mT = bounds(wav, mt)
+    tb, tT = bounds(tail_wav, tt)
     pats = s["patterns"]
     # yellow highlight of the patterns inside the story cards
     hl = [p["p"].lstrip("〜～") for p in pats]

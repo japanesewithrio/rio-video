@@ -1,7 +1,7 @@
 """Learn with Rio - "Story Cards" video (format C), runs on GitHub Actions.
 Gemini writes a short funny Rio & Yui story (JSON) -> review -> validate -> TTS (story + expressions)
 -> timestamps -> render -> commit -> post. DRY=1 sends the result to the owner's Telegram DM only."""
-import datetime as dt, json, os, random, re, subprocess, sys
+import base64, datetime as dt, json, os, random, re, subprocess, sys, time, wave
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -206,16 +206,87 @@ def make_story(theme, avoid):
     return best
 
 
-P_STORY = ("TTS the following short everyday story as a real, unscripted-sounding conversation between two close Japanese friends around 20. "
+P_STORY = ("TTS the following lines from a short everyday story, a real conversation between two close Japanese friends around 20. "
            "Rio: a young man, relaxed and cool. Yui: a young woman, bright and friendly. "
-           "Speak exactly like real young people casually chatting: natural, low-key everyday tone, normal natural speed. "
-           "Do NOT act and do NOT exaggerate emotions; surprise or annoyance stays small and natural, like real life. "
-           "Not like voice actors, anime or an announcer. Leave a short clear pause between turns. "
-           "The first line is Rio speaking to the viewer; the last three lines are Rio and Yui talking to the viewer.\n")
+           "Speak naturally like real young people chatting, but a little slower than normal and very clear, so Japanese learners can "
+           "follow every word. Do NOT act and do NOT exaggerate emotions; keep it low-key and natural. Not like voice actors, anime or an announcer. "
+           "Leave a clear pause of about one second between turns.\n")
+P_ONE = ("Say the following in Japanese like a real young person around 20 talking casually to friends watching a video: relaxed, natural, "
+         "a little slower than normal and very clear for Japanese learners. Do not act, not like an announcer. "
+         "Leave a clear pause of about one second between sentences.\n")
 P_EXPR = ("TTS the following short lines by two close Japanese friends around 20 years old. Rio: a young man, relaxed. Yui: a young woman, "
-          "bright and friendly. Rio first invites the viewer to check today's expressions, then they say each casual expression one by one "
-          "with the natural intonation it has in real conversation. Relaxed and natural, not acted, not like a teacher. "
-          "Normal natural speed, a clear pause between lines.\n")
+          "bright and friendly. Rio first invites the viewer to check today's patterns, then they say each pattern one by one, relaxed and "
+          "natural, a little slower than normal and very clear, not like a teacher. Leave a clear pause of about one second between lines.\n")
+MAX_RATE = 7.2  # kana per second of speech; faster audio is slowed down a little (never below 0.85x)
+
+
+def tts_lines(prompt_multi, prompt_one, turns, path):
+    """One TTS request for a small group of lines. Single-speaker groups use that speaker's own voice."""
+    voices = {c["speaker"]: c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"]
+              for c in D.VOICES["multiSpeakerVoiceConfig"]["speakerVoiceConfigs"]}
+    who = {t["who"] for t in turns}
+    if len(who) == 1:
+        text = prompt_one + "\n".join(t["jp"] for t in turns)
+        cfg = {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voices[who.pop()]}}}
+    else:
+        text = prompt_multi + "\n".join("%s: %s" % (t["who"], t["jp"]) for t in turns)
+        cfg = D.VOICES
+    chain = [m for m in D.TTS_CHAIN if len(who) <= 1 or "3.8" not in m] or D.TTS_CHAIN
+    r = D.gemini(chain, {"contents": [{"parts": [{"text": text}]}],
+                         "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": cfg}})
+    part = [p for p in r["candidates"][0]["content"]["parts"] if "inlineData" in p][0]["inlineData"]
+    pcm = base64.b64decode(part["data"])
+    rate = int((re.search(r"rate=(\d+)", part.get("mimeType", "")) or [0, 24000])[1])
+    raw = path + ".raw.wav"
+    with wave.open(raw, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes(pcm)
+    # speech speed check: kana per second of real speech (silences excluded)
+    T = RS.R.duration(raw)
+    sil = sum(e - a for a, e in RS.R.silences(raw))
+    kana = sum(len(re.sub(r"[^\u3040-\u30ff\u4e00-\u9fff]", "", t.get("kana") or t["jp"])) for t in turns)
+    speed = kana / max(T - sil, 0.5)
+    tempo = max(0.85, min(1.0, MAX_RATE / speed)) if speed > 0 else 1.0
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-ar", "24000", "-ac", "1",
+                    "-af", "atempo=%.3f" % tempo, path], check=True)
+    D.log("tts group", os.path.basename(path), len(turns), "lines", round(T, 1), "s", "speed %.1f" % speed, "tempo %.2f" % tempo)
+    time.sleep(7)  # free tier: ~10 TTS requests per minute
+
+
+def build_audio(groups, prompt_multi, prompt_one, out_wav, gap=0.35):
+    """TTS every group separately, split each group into lines, then join -> out_wav + exact line bounds."""
+    import numpy as np
+    pieces, bounds, t0 = [], [0.0], 0.0
+    sr = 24000
+    for gi, turns in enumerate(groups):
+        gw = out_wav[:-4] + "_g%02d.wav" % gi
+        tts_lines(prompt_multi, prompt_one, turns, gw)
+        if len(turns) > 1:
+            pts, T = RS.R.split_points(gw, turns)
+        else:
+            pts, T = [], RS.R.duration(gw)
+        x = RS.R.pcm(gw, sr)
+        x = np.concatenate([x, np.zeros(int(sr * gap), np.float32)])
+        pieces.append(x)
+        for p in pts:
+            bounds.append(t0 + p)
+        t0 += len(x) / sr
+        bounds.append(t0)
+    y = (np.clip(np.concatenate(pieces), -1, 1) * 32767).astype(np.int16)
+    with wave.open(out_wav, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr); w.writeframes(y.tobytes())
+    json.dump(bounds, open(out_wav[:-4] + ".bounds.json", "w"))
+    return bounds
+
+
+def audio_groups(s):
+    """main.wav groups: hook, one group per scene, closing + outro."""
+    mt = RS.main_turns(s)
+    groups = [[mt[0]]]
+    for si in range(len(s["scenes"])):
+        groups.append([t for t in mt if t["type"] == "chat" and t["scene"] == si])
+    groups.append([t for t in mt if t["type"] in ("closing", "outro")])
+    assert sum(len(g) for g in groups) == len(mt)
+    return groups
 
 
 def transcript(s):
@@ -263,11 +334,9 @@ def main():
     work = os.path.join(ROOT, "work", "story")
     os.makedirs(work, exist_ok=True)
     main_wav, tail_wav = os.path.join(work, "main.wav"), os.path.join(work, "tail.wav")
-    ms_, ts_ = RS.main_script(s), RS.tail_script(s)
-    D.tts(P_STORY + "\n".join(ms_), main_wav)
-    D.tts(P_EXPR + "\n".join(ts_), tail_wav)
-    D.timestamps(main_wav, ms_, os.path.join(work, "main.times.json"))
-    D.timestamps(tail_wav, ts_, os.path.join(work, "tail.times.json"))
+    build_audio(audio_groups(s), P_STORY, P_ONE, main_wav)
+    tt = RS.tail_turns(s)
+    build_audio([tt[:4], tt[4:]], P_EXPR, P_ONE, tail_wav)
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     vid = os.path.join("videos", key + ".mp4")
     secs = RS.render(jpath, main_wav, tail_wav, os.path.join(ROOT, vid))
