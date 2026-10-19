@@ -1,6 +1,6 @@
 models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
-using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'] {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Enceladus'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Leda'}}}]}}
-key ST2610191842 theme trying to wake up early to study
+using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'] {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}}
+key ST2610191911 theme a convenience store late-night snack plan
 gemini gemini-3.1-pro-preview 429 {
   "error": {
     "code": 429,
@@ -19,11 +19,7 @@ gemini gemini-3.8-flash 503 {
   }
 }
 
-gemini gemini-3.8-flash ConnectionError
-attempt 0 fix 0 errors []
-tts /home/runner/work/rio-video/rio-video/work/story/main.wav 71.8 s
-tts /home/runner/work/rio-video/rio-video/work/story/tail.wav 14.4 s
-gemini gemini-3.6-flash 503 {
+gemini gemini-3.8-flash 503 {
   "error": {
     "code": 503,
     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
@@ -31,7 +27,11 @@ gemini gemini-3.6-flash 503 {
   }
 }
 
-timestamps ok
+gemini gemini-3.8-flash 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-3.8-flash
 gemini gemini-3.6-flash 503 {
   "error": {
     "code": 503,
@@ -57,23 +57,76 @@ gemini gemini-3.6-flash 503 {
 }
 
 gemini: giving up on gemini-3.6-flash
-timestamps ok
-error: cannot pull with rebase: You have unstaged changes.
-error: Please commit or stash them.
-error: cannot pull with rebase: You have unstaged changes.
-error: Please commit or stash them.
-error: cannot pull with rebase: You have unstaged changes.
-error: Please commit or stash them.
-error: cannot pull with rebase: You have unstaged changes.
-error: Please commit or stash them.
-rendered story /home/runner/work/rio-video/rio-video/videos/ST2610191842.mp4 30 segments 118.9 s
-FAILED RuntimeError git push failed
+gemini gemini-3.5-flash 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-3.5-flash
+gemini gemini-2.5-flash 404 {
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs
+gemini: giving up on gemini-2.5-flash
+review failed gemini failed: gemini-2.5-flash 404 {
+  "error": {
+    "code": 404,
+    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs
+attempt 0 fix 0 errors []
+gemini gemini-3.1-flash-tts-preview 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-3.1-flash-tts-preview
+gemini gemini-3.8-flash-tts 400 {
+  "error": {
+    "code": 400,
+    "message": "Multi-speaker generation requests must specify speech_metadata.speaker for each text part in the contents.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+gemini: giving up on gemini-3.8-flash-tts
+tts /home/runner/work/rio-video/rio-video/work/story/main.wav 46.0 s
+gemini gemini-3.8-flash-tts 400 {
+  "error": {
+    "code": 400,
+    "message": "Multi-speaker generation requests must specify speech_metadata.speaker for each text part in the contents.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+gemini: giving up on gemini-3.8-flash-tts
+tts /home/runner/work/rio-video/rio-video/work/story/tail.wav 16.3 s
+gemini gemini-3.6-flash 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-3.6-flash
+gemini gemini-flash-latest 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-flash-latest
+timestamps failed ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] gemini failed: gemini-flash-latest 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+timestamps failed ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] gemini failed: gemini-flash-latest 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+timestamps failed ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] gemini failed: gemini-flash-latest 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+timestamps failed ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] gemini failed: gemini-flash-latest 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+rendered story /home/runner/work/rio-video/rio-video/videos/ST2610191911.mp4 42 segments 119.0 s
+telegram sendVideo ok
 telegram sendMessage ok
-Traceback (most recent call last):
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 288, in <module>
-    main()
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 253, in main
-    D.push("story %s" % key, ["text", "videos", "story/state.json"])
-  File "/home/runner/work/rio-video/rio-video/daily/daily.py", line 275, in push
-    raise RuntimeError("git push failed")
-RuntimeError: git push failed
+telegram sendMessage ok
+✅ Story video TEST ST2610191911
+深夜のコンビニ夜食作戦の話 (118s)
+TikTok: - / YouTube: -
