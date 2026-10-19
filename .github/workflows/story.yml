@@ -34,12 +34,13 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
           if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q '^DRY' story/trigger.txt; then export DRY=1; fi
-          python story/story.py 2>&1 | tee story/last_log.txt
+          python story/story.py 2>&1 | tee "$RUNNER_TEMP/story_log.txt"
           exit ${PIPESTATUS[0]}
       - name: Save log
         if: always()
         run: |
           git config user.name rio-bot
           git config user.email rio-bot@users.noreply.github.com
+          cp "$RUNNER_TEMP/story_log.txt" story/last_log.txt || true
           git add story/last_log.txt
           git diff --cached --quiet || (git commit -qm "story log" && for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done)
