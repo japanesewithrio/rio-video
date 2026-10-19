@@ -231,20 +231,29 @@ def tts_lines(prompt_multi, prompt_one, turns, path):
     else:
         text = prompt_multi + "\n".join("%s: %s" % (t["who"], t["jp"]) for t in turns)
         cfg = D.VOICES
-    chain = [m for m in D.TTS_CHAIN if len(who) <= 1 or "3.8" not in m] or D.TTS_CHAIN
-    r = D.gemini(chain, {"contents": [{"parts": [{"text": text}]}],
-                         "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": cfg}})
-    part = [p for p in r["candidates"][0]["content"]["parts"] if "inlineData" in p][0]["inlineData"]
-    pcm = base64.b64decode(part["data"])
-    rate = int((re.search(r"rate=(\d+)", part.get("mimeType", "")) or [0, 24000])[1])
+    # gemini-3.8-flash-tts reads the English instructions aloud / rejects multi-speaker requests: never use it here
+    chain = [m for m in D.TTS_CHAIN if "3.8" not in m] or D.TTS_CHAIN
     raw = path + ".raw.wav"
-    with wave.open(raw, "wb") as w:
-        w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes(pcm)
-    # speech speed check: kana per second of real speech (silences excluded)
-    T = RS.R.duration(raw)
-    sil = sum(e - a for a, e in RS.R.silences(raw))
     kana = sum(len(re.sub(r"[^\u3040-\u30ff\u4e00-\u9fff]", "", t.get("kana") or t["jp"])) for t in turns)
-    speed = kana / max(T - sil, 0.5)
+    for m in chain:
+        r = D.gemini([m] + [x for x in chain if x != m], {"contents": [{"parts": [{"text": text}]}],
+                                                         "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": cfg}})
+        part = [p for p in r["candidates"][0]["content"]["parts"] if "inlineData" in p][0]["inlineData"]
+        pcm = base64.b64decode(part["data"])
+        rate = int((re.search(r"rate=(\d+)", part.get("mimeType", "")) or [0, 24000])[1])
+        with wave.open(raw, "wb") as w:
+            w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes(pcm)
+        # speech speed check: kana per second of real speech (silences excluded)
+        T = RS.R.duration(raw)
+        sil = sum(e - a for a, e in RS.R.silences(raw))
+        speed = kana / max(T - sil, 0.5)
+        if 3.0 <= speed <= 16:
+            break
+        D.log("tts group", os.path.basename(path), "looks wrong (speed %.1f, %.1f s), trying another model" % (speed, T))
+        D.DEAD.add(m)
+        time.sleep(7)
+    else:
+        raise RuntimeError("TTS produced wrong audio for %s" % os.path.basename(path))
     tempo = max(0.85, min(1.0, MAX_RATE / speed)) if speed > 0 else 1.0
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-ar", "24000", "-ac", "1",
                     "-af", "atempo=%.3f" % tempo, path], check=True)
