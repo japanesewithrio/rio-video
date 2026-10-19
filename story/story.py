@@ -184,17 +184,16 @@ def make_story(theme, avoid):
     return best
 
 
-P_STORY = ("TTS the following short funny story acted out by two close Japanese friends around 20 years old. "
-           "Rio: a young man with a smooth, cool and confident voice who gets flustered and annoyed in a funny way. "
-           "Yui: a young woman with a bright, cute and youthful voice, cheerful, a bit airheaded and teasing. "
-           "Act it like a real conversation between friends, with real emotions (surprise, annoyance, embarrassment, laughing), "
-           "natural rhythm and intonation, normal natural speed of real young native speakers, not like voice actors reading a script "
-           "and not like an announcer. Leave a short clear pause between turns, and a slightly longer pause when the scene changes. "
-           "The first line is Rio speaking to the viewer to introduce the story; the last three lines are Rio and Yui talking to the viewer.\n")
-P_EXPR = ("TTS the following short lines by two close Japanese friends around 20 years old. Rio: a young man with a smooth, cool and "
-          "confident voice. Yui: a young woman with a bright, cute and youthful voice. Rio first invites the viewer to check today's "
-          "expressions, then they say each casual expression one by one, lively and friendly like friends, with the natural intonation "
-          "the expression has in real conversation, not like a teacher. Normal natural speed, a clear pause between lines.\n")
+P_STORY = ("TTS the following short everyday story as a real, unscripted-sounding conversation between two close Japanese friends around 20. "
+           "Rio: a young man, relaxed and cool. Yui: a young woman, bright and friendly. "
+           "Speak exactly like real young people casually chatting: natural, low-key everyday tone, normal natural speed. "
+           "Do NOT act and do NOT exaggerate emotions; surprise or annoyance stays small and natural, like real life. "
+           "Not like voice actors, anime or an announcer. Leave a short clear pause between turns. "
+           "The first line is Rio speaking to the viewer; the last three lines are Rio and Yui talking to the viewer.\n")
+P_EXPR = ("TTS the following short lines by two close Japanese friends around 20 years old. Rio: a young man, relaxed. Yui: a young woman, "
+          "bright and friendly. Rio first invites the viewer to check today's expressions, then they say each casual expression one by one "
+          "with the natural intonation it has in real conversation. Relaxed and natural, not acted, not like a teacher. "
+          "Normal natural speed, a clear pause between lines.\n")
 
 
 def transcript(s):
@@ -221,7 +220,12 @@ def main():
         D.TEXT_CHAIN = [m for m in D.TEXT_CHAIN if m in ms] or [D.pick(ms, "none", r"^gemini-[\d.]+-(pro|flash)")]
         D.FAST_CHAIN = [m for m in D.FAST_CHAIN if m in ms] or [D.pick(ms, "none", r"^gemini-[\d.]+-flash")]
         D.TTS_CHAIN = [m for m in D.TTS_CHAIN if m in ms] or [D.pick(ms, "none", r"tts", avoid=())]
-    D.log("using", D.TEXT_CHAIN, D.FAST_CHAIN, D.TTS_CHAIN)
+    vf = os.path.join(HERE, "voices.json")
+    if os.path.exists(vf):
+        vv = json.load(open(vf))
+        for c in D.VOICES["multiSpeakerVoiceConfig"]["speakerVoiceConfigs"]:
+            c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] = vv.get(c["speaker"], c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"])
+    D.log("using", D.TEXT_CHAIN, D.FAST_CHAIN, D.TTS_CHAIN, D.VOICES)
     st = json.load(open(STATE, encoding="utf-8")) if os.path.exists(STATE) else {"done": []}
     now = dt.datetime.now(D.JST)
     key = ("ST" if DRY else "S") + now.strftime("%y%m%d%H%M")
