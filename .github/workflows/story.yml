@@ -1,0 +1,45 @@
+name: story
+on:
+  push:
+    paths: ["story/trigger.txt"]
+  workflow_dispatch:
+concurrency:
+  group: story
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  story:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null
+          pip install --quiet pillow requests numpy
+          gunzip -kf render.py.gz
+      - name: Fonts
+        run: |
+          G=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl
+          mkdir -p fonts
+          curl -fsSL -o fonts/MPLUSRounded1c-Bold.ttf   "$G/mplusrounded1c/MPLUSRounded1c-Bold.ttf"
+          curl -fsSL -o fonts/MPLUSRounded1c-Medium.ttf "$G/mplusrounded1c/MPLUSRounded1c-Medium.ttf"
+          curl -fsSL -o fonts/NotoSansMyanmar.ttf       "$G/notosansmyanmar/NotoSansMyanmar%5Bwdth%2Cwght%5D.ttf"
+      - name: Make the story video
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT: ${{ secrets.TG_CHAT }}
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q '^DRY' story/trigger.txt; then export DRY=1; fi
+          python story/story.py 2>&1 | tee story/last_log.txt
+          exit ${PIPESTATUS[0]}
+      - name: Save log
+        if: always()
+        run: |
+          git config user.name rio-bot
+          git config user.email rio-bot@users.noreply.github.com
+          git add story/last_log.txt
+          git diff --cached --quiet || (git commit -qm "story log" && for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done)
