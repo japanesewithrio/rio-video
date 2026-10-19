@@ -34,6 +34,7 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
           if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q '^DRY' story/trigger.txt; then export DRY=1; fi
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q 'INPUT' story/trigger.txt; then export STORY_INPUT=story/input.json; fi
           python story/story.py 2>&1 | tee "$RUNNER_TEMP/story_log.txt"
           exit ${PIPESTATUS[0]}
       - name: Save log

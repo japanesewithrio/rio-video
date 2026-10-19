@@ -327,7 +327,13 @@ def main():
     key = ("ST" if DRY else "S") + now.strftime("%y%m%d%H%M")
     theme = random.choice(THEMES)
     D.log("key", key, "theme", theme)
-    s = tidy(make_story(theme, [d["title"] for d in st["done"]]))
+    inp = os.environ.get("STORY_INPUT", "")
+    if inp and os.path.exists(os.path.join(ROOT, inp)):
+        s = json.load(open(os.path.join(ROOT, inp), encoding="utf-8"))
+        D.log("using prepared story", inp, "errors", validate(s))
+        s = tidy(s)
+    else:
+        s = tidy(make_story(theme, [d["title"] for d in st["done"]]))
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     jpath = os.path.join(ROOT, "text", key + ".json")
     json.dump(s, open(jpath, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
