@@ -28,7 +28,7 @@ THEMES = [
 ]
 
 GEN = """You write scripts for "Learn with Rio ♡", a channel that teaches REAL casual spoken Japanese to Burmese (Myanmar) people living in Japan.
-Format "Story Cards": one short, FUNNY everyday story between two close friends, told in 6 scenes like a mini comic, then the useful real expressions from the story are explained.
+Format "Story Cards": one short, FUNNY everyday story between two close friends, told in 6 scenes like a mini comic. Inside the story, the friends naturally CHAIN together casual conversation-connecting patterns; after the story the patterns and the chain are explained, so learners learn to connect patterns when they speak instead of memorising them one by one.
 Characters: Rio (Japanese young man, 20, cool and confident but easily flustered, often the victim of the joke) and Yui (Japanese young woman, 20, bright, cheerful, a bit airheaded and teasing). They talk in natural casual Japanese like real young people in Tokyo.
 
 Today's story idea (use it freely as inspiration, change details to make it funnier): @@THEME@@
@@ -42,17 +42,21 @@ Story rules:
 - Never write 笑, w, emojis, the 〜 symbol, stage directions or narration inside lines; laughter is written as あはは.
 - hook: one line by Rio spoken TO THE VIEWER that teases the story, e.g. 友達に傘を貸したら、大変なことになった話！
 - closing: one line by Rio TO THE VIEWER after the story, a funny lesson from the story, e.g. みんなも、借りたものはすぐ返そうね！
-- expressions: exactly 8 useful casual expressions that literally appear inside story lines (copy the exact characters as they appear, 2 to 9 characters, no 〜 symbol), in story order, all different. Choose expressions a learner can reuse in daily life (not names, not single words like 傘).
+- patterns: exactly 6 CONVERSATION-CONNECTING casual patterns used in the story, chosen from this pool (or similar): ってば, ってこと？, っていうか, じゃなくて, って感じ, じゃん, ばいいじゃん, たら？, わけない, でしょ？, っけ？, ちゃう/ちゃった, なきゃ, とく, っぽい, のに, って（quoting）, とか言って, かも, んだけど, し（reasons）, よね. Never use weak items like とか, なんだ, てる. Each pattern: p = the pattern exactly as its characters literally appear inside the story line (no 〜 symbol, 2 to 6 characters), mm = short Burmese gloss written as 「…」, use = when it is used (Burmese, max 45 characters), line = the number of the story line where it appears (counting all story lines from 1, NOT counting hook and closing). List them in story order, all different, and no pattern used more than 3 times in the story.
+- chain: 6 or 7 story line numbers, in increasing order, that show the patterns flowing from one to the next (question → denial → clarification → feeling → advice …). Every chain line contains at least one of the patterns. Make at least 5 of them consecutive or nearly consecutive lines, so the chain sounds like one natural flow.
+- tip: one short Burmese sentence (max 80 characters) telling learners to say this chain as one flow, so the patterns come out naturally when they speak.
 - Every kana field is the full reading in hiragana (katakana words may stay katakana); it must match the Japanese exactly.
 - Burmese must be natural, short, spoken-style, correctly spelled Unicode Burmese, never with double quotes. For each expression: mm = short Burmese meaning, use = when you use it (max 45 characters, Burmese, may quote the pattern like じゃん = 「…ပဲလေ」).
 - title: Japanese story title in the style 友達に傘を貸した日の話 (max 16 characters); title_mm its Burmese.
-- caption: Burmese, max 180 characters, 1-2 emojis, teasing the story and saying 8 real expressions are inside.
+- caption: Burmese, max 180 characters, 1-2 emojis, teasing the story and naming the patterns chained today.
 
 Output ONLY JSON with exactly this structure:
 {"title": "", "title_kana": "", "title_mm": "",
  "hook": {"jp": "", "kana": "", "mm": ""},
  "scenes": [{"head": "", "head_kana": "", "head_mm": "", "lines": [{"who": "Rio or Yui", "jp": "", "kana": "", "mm": ""}]}],
- "expressions": [{"jp": "", "kana": "", "mm": "", "use": ""}],
+ "patterns": [{"p": "", "mm": "", "use": "", "line": 1}],
+ "chain": [1, 2, 3, 4, 5, 6],
+ "tip": "",
  "closing": {"jp": "", "kana": "", "mm": ""},
  "caption": ""}"""
 
@@ -62,7 +66,7 @@ REV = """You are a strict editor, a native speaker of both Japanese and Burmese 
 3. No 笑, w, emojis, 〜 symbol or stage directions in Japanese lines.
 4. Every kana reading matches its Japanese exactly.
 5. All Burmese is correct, natural, spoken-style Unicode Burmese with no double quotes, and matches the Japanese meaning.
-6. expressions: exactly 8, each one literally appears (exact characters) inside a story line, all different, useful for daily life.
+6. patterns: exactly 6 conversation-connecting casual patterns, each p literally appears (exact characters) inside story line number `line` (story lines counted from 1, hook and closing not counted), all different, no pattern used more than 3 times. chain: 6 or 7 increasing story line numbers, each containing a pattern, flowing naturally.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
@@ -81,7 +85,7 @@ def ask_json(prompt):
 def validate(s):
     err = []
     try:
-        for k in ("title", "title_mm", "hook", "scenes", "expressions", "closing", "caption"):
+        for k in ("title", "title_mm", "hook", "scenes", "patterns", "chain", "closing", "caption"):
             if not s.get(k):
                 err.append("field %s is missing or empty" % k)
         if err:
@@ -113,21 +117,38 @@ def validate(s):
                 err.append("kana must be the full kana reading (no kanji) of: %s" % jp)
             if not MYA.search(l.get("mm", "")):
                 err.append("Burmese translation missing for: %s" % jp)
-        ex = s["expressions"]
-        if len(ex) != 8:
-            err.append("there must be exactly 8 expressions, there are %d" % len(ex))
+        pats = s.get("patterns") or []
+        if not 5 <= len(pats) <= 6:
+            err.append("there must be exactly 6 patterns, there are %d" % len(pats))
         story = [l.get("jp", "") for l in lines]
         seen = set()
-        for e in ex:
-            j = e.get("jp", "").strip("〜～")
-            e["jp"] = j
-            if not j or not any(j in t for t in story):
-                err.append("expression %s does not literally appear in any story line; copy the exact characters from a line" % j)
+        for p in pats:
+            j = str(p.get("p", "")).strip().lstrip("〜～")
+            p["p"] = j
+            if j in ("とか", "なんだ", "てる"):
+                err.append("pattern %s is too weak, use a conversation-connecting pattern" % j)
+            n = int(p.get("line") or 0)
+            if not (1 <= n <= len(story) and j and j in story[n - 1]):
+                hit = [i + 1 for i, t in enumerate(story) if j and j in t]
+                if hit:
+                    p["line"] = hit[0]  # wrong number but the pattern is in the story: fix it ourselves
+                else:
+                    err.append("pattern %s does not literally appear in any story line" % j)
             if j in seen:
-                err.append("expression %s is repeated" % j)
+                err.append("pattern %s is repeated" % j)
             seen.add(j)
-            if not MYA.search(e.get("mm", "")) or not MYA.search(e.get("use", "")):
-                err.append("expression %s needs Burmese mm and use" % j)
+            if not MYA.search(p.get("mm", "")) or not MYA.search(p.get("use", "")):
+                err.append("pattern %s needs Burmese mm and use" % j)
+        ch = [int(x) for x in s.get("chain") or []]
+        s["chain"] = ch
+        if not 5 <= len(ch) <= 7 or ch != sorted(set(ch)) or not all(1 <= n <= len(story) for n in ch):
+            err.append("chain must be 6 or 7 increasing story line numbers between 1 and %d" % len(story))
+        else:
+            for n in ch:
+                if not any(p["p"] and p["p"] in story[n - 1] for p in pats):
+                    err.append("chain line %d (%s) contains none of the patterns" % (n, story[n - 1]))
+        if not MYA.search(s.get("tip", "")):
+            err.append("tip must be written in Burmese")
         if not MYA.search(s["caption"]):
             err.append("caption must be written in Burmese")
     except Exception as e:  # malformed structure
@@ -140,7 +161,7 @@ def tidy(s):
     def fix(o):
         if isinstance(o, dict):
             for k, v in o.items():
-                if k in ("mm", "use", "head_mm", "title_mm", "caption") and isinstance(v, str):
+                if k in ("mm", "use", "head_mm", "title_mm", "caption", "tip") and isinstance(v, str):
                     o[k] = v.replace("！", "!").replace("？", "?").replace("‘", "「").replace("’", "」")
                 else:
                     fix(v)
@@ -172,14 +193,15 @@ def make_story(theme, avoid):
                 s = ask_json(REV.replace("@@ERRORS@@", extra).replace("@@JSON@@", json.dumps(s, ensure_ascii=False)))
             except Exception as e:
                 D.log("fix failed", e)
-    hard = [e for e in best_err if not e.startswith(("line too long", "expression"))]
+    hard = [e for e in best_err if not e.startswith(("line too long", "pattern", "chain line", "tip"))]
     if hard:
         raise RuntimeError("story failed validation: %s" % best_err)
-    # drop expressions that are not in the story rather than failing
+    # keep only patterns / chain lines that really are in the story rather than failing
     story = [l["jp"] for x in best["scenes"] for l in x["lines"]]
-    best["expressions"] = [e for e in best["expressions"] if any(e["jp"] in t for t in story)][:8]
-    if len(best["expressions"]) % 2:
-        best["expressions"] = best["expressions"][:-1]
+    best["patterns"] = [p for p in best["patterns"] if p["p"] and p["p"] in story[p["line"] - 1]][:6]
+    best["chain"] = [n for n in best["chain"] if any(p["p"] in story[n - 1] for p in best["patterns"])]
+    if len(best["patterns"]) < 4 or len(best["chain"]) < 4:
+        raise RuntimeError("story failed validation: %s" % best_err)
     D.WARN.extend(best_err)
     return best
 
@@ -206,10 +228,13 @@ def transcript(s):
                 out.append("   " + l["kana"])
             out.append("   🇲🇲 " + l["mm"])
         out.append("")
-    out.append("💡 今日のリアル表現")
-    for k, e in enumerate(s["expressions"]):
-        out.append("%d. %s（%s）— %s" % (k + 1, e["jp"], e.get("kana", ""), e["mm"]))
-        out.append("   → " + e["use"])
+    out.append("🔗 今日のパターン")
+    for k, p in enumerate(s["patterns"]):
+        out.append("%d. 〜%s %s — %s" % (k + 1, p["p"], p["mm"], p["use"]))
+    ls = RS.story_lines(s)
+    out += ["", "🗣 つなげて言ってみよう"]
+    out.append("\n↓\n".join(ls[n - 1]["jp"] for n in s["chain"]))
+    out += ["", "💡 " + s.get("tip", "")]
     out += ["", "#ဂျပန်စာ #日本語 #LearnWithRio #RioAndYui"]
     return "\n".join(out)[:4000]
 
