@@ -107,7 +107,7 @@ def validate(s):
                 err.append("who must be Rio or Yui: %s" % jp)
             if EMOJI.search(jp) or "笑" in jp or "〜" in jp:
                 err.append("no emoji, 笑 or 〜 inside: %s" % jp)
-            if len(jp) > 32:
+            if len(jp) > 28:
                 err.append("line too long (max 26 characters): %s" % jp)
             if KANJI.search(jp) and (not l.get("kana") or KANJI.search(l.get("kana", ""))):
                 err.append("kana must be the full kana reading (no kanji) of: %s" % jp)
@@ -133,6 +133,22 @@ def validate(s):
     except Exception as e:  # malformed structure
         err.append("JSON structure is wrong: %s" % e)
     return err
+
+
+def tidy(s):
+    """Burmese text uses ASCII ! and ? (full-width marks look odd next to Burmese script)."""
+    def fix(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k in ("mm", "use", "head_mm", "title_mm", "caption") and isinstance(v, str):
+                    o[k] = v.replace("！", "!").replace("？", "?").replace("‘", "「").replace("’", "」")
+                else:
+                    fix(v)
+        elif isinstance(o, list):
+            for v in o:
+                fix(v)
+    fix(s)
+    return s
 
 
 def make_story(theme, avoid):
@@ -211,7 +227,7 @@ def main():
     key = ("ST" if DRY else "S") + now.strftime("%y%m%d%H%M")
     theme = random.choice(THEMES)
     D.log("key", key, "theme", theme)
-    s = make_story(theme, [d["title"] for d in st["done"]])
+    s = tidy(make_story(theme, [d["title"] for d in st["done"]]))
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     jpath = os.path.join(ROOT, "text", key + ".json")
     json.dump(s, open(jpath, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
