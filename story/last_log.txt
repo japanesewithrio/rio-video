@@ -1,52 +1,25 @@
 models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
 using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'] {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}}
-key ST2610191939 theme a first date plan that goes wrong
+key ST2610201641 theme a cooking disaster at home
 using prepared story story/input.json errors []
+tts group main_g00.wav 1 lines 5.4 s speed 6.4 tempo 1.00
+tts group main_g01.wav 3 lines 9.4 s speed 6.5 tempo 1.00
+tts group main_g02.wav 3 lines 10.6 s speed 5.2 tempo 1.00
+tts group main_g03.wav 3 lines 9.7 s speed 6.4 tempo 1.00
+tts group main_g04.wav 3 lines 9.4 s speed 5.9 tempo 1.00
 gemini gemini-3.1-flash-tts-preview 429 {
   "error": {
     "code": 429,
     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-gemini: giving up on gemini-3.1-flash-tts-preview
-tts group main_g00.wav 1 lines 22.0 s speed 1.4 tempo 1.00
-tts group main_g01.wav 3 lines 7.1 s speed 8.8 tempo 0.85
-tts group main_g02.wav 3 lines 8.5 s speed 6.2 tempo 1.00
-tts group main_g03.wav 3 lines 8.1 s speed 7.5 tempo 0.95
-tts group main_g04.wav 3 lines 7.1 s speed 7.4 tempo 0.98
-gemini gemini-2.5-flash-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-tts group main_g05.wav 3 lines 5.9 s speed 7.3 tempo 0.98
-tts group main_g06.wav 3 lines 6.8 s speed 8.0 tempo 0.90
-tts group main_g07.wav 3 lines 7.5 s speed 8.0 tempo 0.90
-gemini gemini-2.5-flash-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-gemini: giving up on gemini-2.5-flash-preview-tts
-gemini gemini-2.5-pro-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-gemini: giving up on gemini-2.5-pro-preview-tts
-FAILED RuntimeError gemini failed: gemini-2.5-pro-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+tts group main_g05.wav 3 lines 8.2 s speed 7.8 tempo 0.92
+tts group main_g06.wav 3 lines 7.4 s speed 6.5 tempo 1.00
+tts group main_g07.wav 3 lines 12.3 s speed 6.5 tempo 1.00
+tts group tail_g00.wav 4 lines 10.0 s speed 6.4 tempo 1.00
+tts group tail_g01.wav 5 lines 12.2 s speed 7.2 tempo 1.00
+rendered story /home/runner/work/rio-video/rio-video/videos/ST2610201641.mp4 42 segments 178.0 s
+telegram sendVideo ok
 telegram sendMessage ok
-Traceback (most recent call last):
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 388, in <module>
-    main()
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 345, in main
-    build_audio([tt[:4], tt[4:]], P_EXPR, P_ONE, tail_wav)
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 262, in build_audio
-    tts_lines(prompt_multi, prompt_one, turns, gw)
-  File "/home/runner/work/rio-video/rio-video/story/story.py", line 235, in tts_lines
-    r = D.gemini(chain, {"contents": [{"parts": [{"text": text}]}],
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/rio-video/rio-video/daily/daily.py", line 88, in gemini
-    raise RuntimeError("gemini failed: " + LAST_ERR[0])
-RuntimeError: gemini failed: gemini-2.5-pro-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+telegram sendMessage ok
+✅ Story video TEST ST2610201641
+一日で終わったダイエットの話 (178s)
+TikTok: - / YouTube: -
