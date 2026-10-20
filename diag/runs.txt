@@ -1,10 +1,10 @@
-in_progress		diag	diag	main	workflow_run	39237515957	10s	2026-10-19T10:26:49Z
-completed	success	story workflow: keep log outside the repo during the run	story	main	push	39235561756	6m58s	2026-10-19T10:10:44Z
-completed	cancelled	Story Cards: funny story + pattern chain explanation, voices Achird/L…	story	main	push	39234266285	10m33s	2026-10-19T10:00:20Z
-completed	failure	story DRY test (calmer voices)	story	main	push	39232028964	22m20s	2026-10-19T09:42:04Z
-completed	cancelled	daily	daily	main	schedule	39231945483	45m23s	2026-10-19T09:41:24Z
-completed	success	fx	fx	main	schedule	39231377499	26s	2026-10-19T09:36:48Z
-completed	success	Story: calmer natural TTS, voice config, voice sample sender	voices	main	push	39231149699	3m36s	2026-10-19T09:35:00Z
-completed	success	Story Cards format: story generator, renderer, workflow (DRY test)	story	main	push	39229908661	5m43s	2026-10-19T09:25:10Z
-completed	success	fx	fx	main	schedule	39224375643	29s	2026-10-19T08:39:55Z
-completed	success	fx	fx	main	schedule	39218397137	28s	2026-10-19T07:48:41Z
+in_progress		diag	diag	main	workflow_run	39403544267	10s	2026-10-20T09:49:56Z
+completed	success	daily	daily	main	schedule	39401983764	12m52s	2026-10-20T09:37:02Z
+completed	success	fx	fx	main	schedule	39401504874	30s	2026-10-20T09:33:10Z
+completed	success	story DRY test (funnier prompt, chain section)	story	main	push	39396741372	12m23s	2026-10-20T08:54:03Z
+completed	success	fx	fx	main	schedule	39394422541	34s	2026-10-20T08:34:50Z
+completed	success	story DRY test (prepared diet story, grouped TTS)	story	main	push	39388136490	3m39s	2026-10-20T07:41:06Z
+completed	success	fx	fx	main	schedule	39388117227	29s	2026-10-20T07:40:56Z
+completed	success	fx	fx	main	schedule	39381498352	26s	2026-10-20T06:37:51Z
+completed	success	fx	fx	main	schedule	39375419898	24s	2026-10-20T05:32:14Z
+completed	success	fx	fx	main	schedule	39370014596	24s	2026-10-20T04:31:20Z
