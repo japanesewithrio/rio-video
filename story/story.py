@@ -17,14 +17,14 @@ KANJI = re.compile("[一-鿿々]")
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿]")
 
 THEMES = [
-    "lending something to a friend who never gives it back", "a part-time job (baito) mistake", "a cooking disaster at home",
-    "oversleeping on an important day", "a misunderstanding in a LINE message", "a first date plan that goes wrong",
-    "a diet that lasts one day", "getting lost in a huge train station", "a surprise birthday plan that almost gets found out",
-    "buying something online that looks different in real life", "a haircut that went wrong", "a pet that does something funny",
-    "losing a phone and finding it in a strange place", "a bet between friends", "a convenience store late-night snack plan",
-    "a karaoke night", "trying to wake up early to study", "a roommate eating the other's pudding", "a typhoon day at home",
-    "a gym membership nobody uses", "pretending to understand a difficult word", "a gift that the other person already has",
-    "forgetting a friend's name", "a summer festival (natsu matsuri) plan", "a part-time job interview", "a delivery that arrives at the worst time",
+    "practising a love confession on a friend", "a friend jealously asking about the other's 'date' tomorrow",
+    "reading too much into a Valentine chocolate", "a LINE message to a crush sent to the wrong person",
+    "a first date that goes wrong", "pretending not to care about a crush", "asking a crush out with a terrible excuse",
+    "being jealous of someone who talks to your crush", "a fake boyfriend/girlfriend plan", "waiting for a reply on LINE for hours",
+    "trying to look cool in front of a crush and failing", "a friend noticing you like someone before you do",
+    "planning a perfect Christmas date", "matching items by accident and everyone thinks you are dating",
+    "a love letter found at the wrong desk", "an umbrella shared in the rain", "a friend helping you prepare for a date",
+    "getting caught looking at your crush's Instagram", "forgetting an anniversary", "a white day gift problem",
 ]
 
 GEN = """You write scripts for "Learn with Rio ♡", a channel that teaches REAL casual spoken Japanese to Burmese (Myanmar) people living in Japan.
@@ -48,7 +48,7 @@ Story rules:
 - Never write 笑, w, emojis, the 〜 symbol, stage directions or narration inside lines; laughter is written as あはは.
 - hook: one line by Rio spoken TO THE VIEWER that teases the story, e.g. 友達に傘を貸したら、大変なことになった話！
 - closing: one line by Rio TO THE VIEWER after the story, a funny lesson from the story, e.g. みんなも、借りたものはすぐ返そうね！
-- patterns: exactly 6 CONVERSATION-CONNECTING casual patterns used in the story, chosen from this pool (or similar): ってば, ってこと？, っていうか, じゃなくて, って感じ, じゃん, ばいいじゃん, たら？, わけない, でしょ？, っけ？, ちゃう/ちゃった, なきゃ, とく, っぽい, のに, って（quoting）, とか言って, かも, んだけど, し（reasons）, よね. Never use weak items like とか, なんだ, てる. Each pattern: p = the pattern exactly as its characters literally appear inside the story line (no 〜 symbol, 2 to 6 characters), mm = short Burmese gloss written as 「…」, use = when it is used (Burmese, max 45 characters), line = the number of the story line where it appears (counting all story lines from 1, NOT counting hook and closing). List them in story order, all different, and no pattern used more than 3 times in the story.
+- patterns: exactly 6 casual grammar patterns used in the story, chosen ONLY from today's list (use 6 different ones; you may conjugate them naturally, e.g. ちゃった, てほしい): @@POOL@@. They must connect the conversation naturally. Never use weak items like とか, なんだ, てる. Each pattern: p = the pattern exactly as its characters literally appear inside the story line (no 〜 symbol, 2 to 6 characters), mm = short Burmese gloss written as 「…」, use = when it is used (Burmese, max 45 characters), line = the number of the story line where it appears (counting all story lines from 1, NOT counting hook and closing). List them in story order, all different, and no pattern used more than 3 times in the story.
 - The 6 patterns are the CHAIN of the video: put them on 6 lines that follow each other in the conversation (at least 4 of them consecutive lines), so that saying those lines in a row shows how the patterns connect (question → denial → clarification → excuse → tsukkomi …).
 - tip: one short Burmese sentence (max 80 characters) telling learners to say this chain as one flow, so the patterns come out naturally when they speak.
 - Every kana field is the full reading in hiragana (katakana words may stay katakana); it must match the Japanese exactly.
@@ -174,8 +174,31 @@ def tidy(s):
     return s
 
 
+POOL = []
+
+
+def pick_pool(st, n=9):
+    """Grammar rotation: today's candidates come only from patterns not used yet; reset when the list runs out."""
+    allp = json.load(open(os.path.join(HERE, "patterns.json"), encoding="utf-8"))
+    used = set(st.get("used", []))
+    fresh = [p for p in allp if p not in used]
+    if len(fresh) < n:
+        st["used"], fresh = [], list(allp)
+    random.shuffle(fresh)
+    return fresh[:n]
+
+
+def mark_used(st, s):
+    allp = json.load(open(os.path.join(HERE, "patterns.json"), encoding="utf-8"))
+    got = [p["p"] for p in s["patterns"]]
+    for a in allp:
+        core = a.replace("？", "").replace("（理由）", "")
+        if any(core[:3] in g or g in core for g in got) and a not in st.setdefault("used", []):
+            st["used"].append(a)
+
+
 def make_story(theme, avoid):
-    prompt = GEN.replace("@@THEME@@", theme).replace("@@AVOID@@", "、".join(avoid[-40:]) or "(none)")
+    prompt = GEN.replace("@@THEME@@", theme).replace("@@AVOID@@", "、".join(avoid[-40:]) or "(none)").replace("@@POOL@@", "、".join(POOL))
     best, best_err = None, None
     for attempt in range(2):
         s = ask_json(prompt)
@@ -337,6 +360,8 @@ def main():
     now = dt.datetime.now(D.JST)
     key = ("ST" if DRY else "S") + now.strftime("%y%m%d%H%M")
     theme = random.choice(THEMES)
+    POOL[:] = pick_pool(st)
+    D.log("grammar pool", POOL)
     D.log("key", key, "theme", theme)
     inp = os.environ.get("STORY_INPUT", "")
     if inp and os.path.exists(os.path.join(ROOT, inp)):
@@ -359,6 +384,7 @@ def main():
     secs = RS.render(jpath, main_wav, tail_wav, os.path.join(ROOT, vid))
     if not DRY:
         st["done"].append({"key": key, "title": s["title"], "date": now.strftime("%Y-%m-%d")})
+        mark_used(st, s)
         json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     os.chdir(ROOT)
     D.push("story %s" % key, ["text", "videos", "story/state.json"])
