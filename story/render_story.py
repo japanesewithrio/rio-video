@@ -36,19 +36,10 @@ def main_turns(s):
     return t + outro_turns()
 
 
-STEP = ["まず", "次は", "それから", "あと", "そして", "最後に"]
-
-
 def tail_turns(s):
-    """Spoken order of tail.wav: intro, one line per pattern, chain call, tip."""
-    pats = s["patterns"]
-    steps = STEP[:len(pats) - 1] + ["最後に"]
-    t = [{"who": "Rio", "jp": "今日のパターン、チェックしよう！", "kana": "", "type": "tail"}]
-    for k, p in enumerate(pats):
-        t.append({"who": "Rio" if k % 2 == 0 else "Yui", "jp": "%s、%s！" % (steps[k], p["p"].rstrip("！!")), "kana": "", "type": "tail"})
-    t.append({"who": "Rio", "jp": "じゃあ、つなげて言ってみよう！", "kana": "", "type": "tail"})
-    t.append({"who": "Yui", "jp": "一個ずつじゃなくて、つなげて覚えるのがコツだよ！", "kana": "", "type": "tail"})
-    return t
+    """Spoken order of tail.wav: chain intro + tip."""
+    return [{"who": "Rio", "jp": "今日のパターンのつながり、チェックしよう！", "kana": "", "type": "tail"},
+            {"who": "Yui", "jp": "一個ずつじゃなくて、つなげて覚えるのがコツだよ！", "kana": "", "type": "tail"}]
 
 
 def tail_script(s):
@@ -121,40 +112,60 @@ def chain_intro(s, prog):
     return img.convert("RGB")
 
 
-def pattern_frame(s, k, prog):
-    """Pattern k: big pattern card + the story line where it was used (highlighted)."""
-    p = s["patterns"][k]
-    img = R.light_base()
-    d = ImageDraw.Draw(img)
-    y = head(d, "今日のパターン " + CIRCLED[k], "きょうのパターン", "ဒီနေ့ ချိတ်ဆက်သုံးတဲ့ pattern")
-    R.HIGHLIGHTS[:] = []
-    c = R.box_card([("jp_huge", "〜" + p["p"].lstrip("〜～")), ("mm", p.get("mm", "")),
-                    ("mm", "→ " + p["use"] if p.get("use") else "")])
-    y = R.paste_card(img, c, y)
-    y = R.lblock(d, 80, y + 6, "ဇာတ်လမ်းထဲမှာ ဒီလိုသုံးခဲ့တယ် ↓", R.font(R.MM, 36, 600), R.GREY, 900) + 4
+def step_card(p, l, cur):
+    """One chain step: pattern chip + meaning, then the story line with the pattern highlighted."""
+    width, pad = 980, 40
+    layer = Image.new("RGBA", (width, 900), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    pat = "〜" + p["p"].lstrip("〜～")
+    f = R.font(R.JP_BOLD, 40 if cur else 34)
+    tw = d.textlength(pat, font=f)
+    d.rounded_rectangle([pad - 6, pad - 6, pad + tw + 22, pad + f.size + 14], 18, fill=(237, 231, 255))
+    d.text((pad + 8, pad), pat, font=f, fill=PURPLE)
+    R.lblock(d, pad + tw + 40, pad - 2, p.get("mm", ""), R.font(R.MM, 38 if cur else 32, 600), PURPLE, width - tw - 2 * pad - 40)
+    y = pad + f.size + 34
     R.HIGHLIGHTS[:] = [p["p"].lstrip("〜～")]
-    l = story_lines(s)[p["line"] - 1]
-    R.paste_card(img, line_card(l), y)
+    y = R.lblock_hl(d, pad, y, l["who"] + "： " + l["jp"], R.font(R.JP_BOLD, 50 if cur else 40), R.INK, width - 2 * pad)
+    if cur and kana_of(l):
+        y = R.lblock_hl(d, pad, y + 2, kana_of(l), R.font(R.JP_MED, 30), R.GREY, width - 2 * pad, hl=False)
+    y = R.lblock_hl(d, pad, y + 10, l.get("mm", ""), R.font(R.MM, 40 if cur else 34, 500), R.SUBINK, width - 2 * pad, hl=False)
+    if cur and p.get("use"):
+        y = R.lblock_hl(d, pad, y + 6, "→ " + p["use"], R.font(R.MM, 36, 500), R.GREY, width - 2 * pad, hl=False)
     R.HIGHLIGHTS[:] = []
-    R.light_progress(d, prog)
-    return img.convert("RGB")
+    h = y + pad - 14
+    c = Image.new("RGBA", (width + 24, h + 24), (0, 0, 0, 0))
+    ImageDraw.Draw(c).rounded_rectangle([12, 8, width + 12, h + 8], 30, fill=(255, 255, 255, 255),
+                                        outline=PURPLE if cur else R.LINE, width=4 if cur else 3)
+    c.alpha_composite(layer.crop((0, 0, width, h)), (12, 8))
+    return c
 
 
 def chain_frame(s, upto, prog):
-    R.HIGHLIGHTS[:] = [p["p"].lstrip("〜～") for p in s["patterns"]]
+    """Steps 0..upto of the chain; the newest is big, earlier ones small and faded, connected by arrows."""
+    img = R.light_base()
+    d = ImageDraw.Draw(img)
+    y = head(d, "パターンをつなげて話そう！", "", "ဇာတ်လမ်းထဲမှာ pattern တွေ ဒီလို ဆက်သွားတယ်", y=240)
     ls = story_lines(s)
-    lines = [(ls[n - 1]["jp"], ls[n - 1].get("mm", "")) for n in s["chain"]]
-    img = R.chain_frame(lines, upto, prog) if upto >= 0 else None
-    if img is None:
-        im = R.light_base()
-        d = ImageDraw.Draw(im)
-        y = R.light_header(d, "つなげて言ってみよう", y=260)
-        R.block(d, y + 120, "ဇာတ်လမ်းထဲက pattern တွေ တစ်ခုနဲ့တစ်ခု ဘယ်လို ဆက်သွားလဲ ကြည့်ရအောင် ↓",
-                R.font(R.MM, 46, 600), R.SUBINK, maxw=900, gap=26)
-        R.light_progress(d, prog)
-        img = im.convert("RGB")
-    R.HIGHLIGHTS[:] = []
-    return img
+    pats = s["patterns"]
+    if upto < 0:
+        chain = "  →  ".join("〜" + p["p"].lstrip("〜～") for p in pats)
+        R.block(d, y + 200, chain, R.font(R.JP_BOLD, 54), R.INK, maxw=920, gap=26)
+    else:
+        cards = [step_card(pats[k], ls[pats[k]["line"] - 1], k == upto) for k in range(upto + 1)]
+        cut = False
+        while len(cards) > 1 and y + 46 + sum(c.height + 60 for c in cards) > H - 110:
+            cards.pop(0)
+            cut = True
+        if cut:
+            d.text((W / 2, y - 6), "⋮", font=R.font(R.JP_BOLD, 44), fill=R.GREY, anchor="mt")
+            y += 46
+        for j, c in enumerate(cards):
+            if j:
+                d.text((W / 2, y - 2), "↓", font=R.font(R.JP_BOLD, 46), fill=PURPLE, anchor="mt")
+                y += 56
+            y = R.paste_card(img, c, y, 1.0 if j == len(cards) - 1 else 0.6) - 4
+    R.light_progress(d, prog)
+    return img.convert("RGB")
 
 
 def tip_frame(s, prog):
@@ -223,7 +234,7 @@ def render(story_path, wav, tail_wav, out_path):
 
     segs = []
     n_story = sum(len(sc["lines"]) for sc in s["scenes"])
-    total_units = n_story + 2 + len(pats) + len(s["chain"]) + 4
+    total_units = n_story + len(pats) + 5
 
     def prog(u):
         return min(1.0, u / total_units)
@@ -241,22 +252,13 @@ def render(story_path, wav, tail_wav, out_path):
         segs.append((scene_frame(sc, t["idx"], prog(u)), clip(wav, mb[i], mb[i + 1], f"m{i}", 0.8 if last_in_scene else 0.35)))
     R.HIGHLIGHTS[:] = []
     u += 1
-    segs.append((chain_intro(s, prog(u)), clip(tail_wav, tb[0], tb[1], "t0", 0.4)))
+    segs.append((chain_frame(s, -1, prog(u)), clip(tail_wav, tb[0], tb[1], "t0", 0.6)))
     for k, p in enumerate(pats):
         u += 1
-        fr = pattern_frame(s, k, prog(u))
         i = story_idx[p["line"] - 1]
-        segs.append((fr, clip(tail_wav, tb[k + 1], tb[k + 2], f"t{k + 1}", 0.5)))
-        segs.append((fr, clip(wav, mb[i], mb[i + 1], f"pe{k}", 2.2)))
-    nt = len(pats) + 1
+        segs.append((chain_frame(s, k, prog(u)), clip(wav, mb[i], mb[i + 1], f"ch{k}", 2.4)))
     u += 1
-    segs.append((chain_frame(s, -1, prog(u)), clip(tail_wav, tb[nt], tb[nt + 1], "tc", 0.3)))
-    for k, n in enumerate(s["chain"]):
-        u += 1
-        i = story_idx[n - 1]
-        segs.append((chain_frame(s, k, prog(u)), clip(wav, mb[i], mb[i + 1], f"ch{k}", 1.0)))
-    u += 1
-    segs.append((tip_frame(s, prog(u)), clip(tail_wav, tb[nt + 1], tT, "tip", 3.0)))
+    segs.append((tip_frame(s, prog(u)), clip(tail_wav, tb[1], tT, "tip", 2.5)))
     ci = [i for i, t in enumerate(mt) if t["type"] == "closing"][0]
     u += 1
     segs.append((closing_frame(mt[ci], prog(u)), clip(wav, mb[ci], mb[ci + 1], "close", 0.4)))

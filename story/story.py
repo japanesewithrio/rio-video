@@ -37,13 +37,19 @@ Do NOT reuse any of these past story titles or their plots: @@AVOID@@
 Story rules:
 - 6 scenes (5 to 7 allowed). Each scene has a short Japanese heading like a comic panel title (ある日 / 次の日 / そして、一週間後 / Rio、固まる / Yui、思い出す / 最後のオチ ...), max 12 characters, plus its hiragana reading and a short Burmese translation.
 - Every scene has 2 or 3 lines; 15 to 18 lines in total. Inside a scene Rio and Yui alternate (never the same speaker twice in a row).
-- A clear setup, a build-up with a twist, and a really funny punchline in the last scene (the punchline must make a Burmese viewer laugh).
+- COMEDY IS THE MOST IMPORTANT THING. A Burmese viewer around 20 must actually laugh. Before writing, think of 3 different premises with their punchlines and keep only the funniest (put it in "idea"). Use these techniques:
+  * boke and tsukkomi: one of them says absurd things with total confidence, the other answers with a short, sharp tsukkomi (は？ / いや、なんでだよ！ / それ、〜じゃん！).
+  * rule of three: the excuses or mistakes escalate three times, each one sillier than the last.
+  * the punchline is an unexpected reversal or a callback to something said at the beginning, NOT a moral and NOT a polite ending. The very last line is short (max 15 characters): a sharp tsukkomi or an absurd deadpan line.
+  * relatable everyday situations of young people in Japan (baito, konbini, train, LINE, roommate, money, love, laziness, food); small realistic details make it funnier.
+  * never explain the joke, never end with both laughing happily.
+  Example of the level wanted: Rio starts a diet, eats ramen as a "reward" on day one, calls potato salad with mayonnaise "vegetables", promises "明日から本気出す", Yui: それ、昨日も言ってたじゃん！ Rio (deadpan): …じゃあ、あさってから。
 - Each line is short and natural (max 26 Japanese characters), the way young Japanese really speak: contractions, ちゃう, じゃん, って, でしょ, マジ, やばい, 〜の？, etc. Never textbook style.
 - Never write 笑, w, emojis, the 〜 symbol, stage directions or narration inside lines; laughter is written as あはは.
 - hook: one line by Rio spoken TO THE VIEWER that teases the story, e.g. 友達に傘を貸したら、大変なことになった話！
 - closing: one line by Rio TO THE VIEWER after the story, a funny lesson from the story, e.g. みんなも、借りたものはすぐ返そうね！
 - patterns: exactly 6 CONVERSATION-CONNECTING casual patterns used in the story, chosen from this pool (or similar): ってば, ってこと？, っていうか, じゃなくて, って感じ, じゃん, ばいいじゃん, たら？, わけない, でしょ？, っけ？, ちゃう/ちゃった, なきゃ, とく, っぽい, のに, って（quoting）, とか言って, かも, んだけど, し（reasons）, よね. Never use weak items like とか, なんだ, てる. Each pattern: p = the pattern exactly as its characters literally appear inside the story line (no 〜 symbol, 2 to 6 characters), mm = short Burmese gloss written as 「…」, use = when it is used (Burmese, max 45 characters), line = the number of the story line where it appears (counting all story lines from 1, NOT counting hook and closing). List them in story order, all different, and no pattern used more than 3 times in the story.
-- chain: 6 or 7 story line numbers, in increasing order, that show the patterns flowing from one to the next (question → denial → clarification → feeling → advice …). Every chain line contains at least one of the patterns. Make at least 5 of them consecutive or nearly consecutive lines, so the chain sounds like one natural flow.
+- The 6 patterns are the CHAIN of the video: put them on 6 lines that follow each other in the conversation (at least 4 of them consecutive lines), so that saying those lines in a row shows how the patterns connect (question → denial → clarification → excuse → tsukkomi …).
 - tip: one short Burmese sentence (max 80 characters) telling learners to say this chain as one flow, so the patterns come out naturally when they speak.
 - Every kana field is the full reading in hiragana (katakana words may stay katakana); it must match the Japanese exactly.
 - Burmese must be natural, short, spoken-style, correctly spelled Unicode Burmese, never with double quotes. For each expression: mm = short Burmese meaning, use = when you use it (max 45 characters, Burmese, may quote the pattern like じゃん = 「…ပဲလေ」).
@@ -51,22 +57,22 @@ Story rules:
 - caption: Burmese, max 180 characters, 1-2 emojis, teasing the story and naming the patterns chained today.
 
 Output ONLY JSON with exactly this structure:
-{"title": "", "title_kana": "", "title_mm": "",
+{"idea": "the chosen premise and why it is funny (English, 1-2 sentences)", "title": "", "title_kana": "", "title_mm": "",
  "hook": {"jp": "", "kana": "", "mm": ""},
  "scenes": [{"head": "", "head_kana": "", "head_mm": "", "lines": [{"who": "Rio or Yui", "jp": "", "kana": "", "mm": ""}]}],
  "patterns": [{"p": "", "mm": "", "use": "", "line": 1}],
- "chain": [1, 2, 3, 4, 5, 6],
  "tip": "",
  "closing": {"jp": "", "kana": "", "mm": ""},
  "caption": ""}"""
 
 REV = """You are a strict editor, a native speaker of both Japanese and Burmese (Myanmar). Below is a "Story Cards" script (JSON) for a channel teaching real casual spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem:
-1. Every Japanese line is 100% natural casual Japanese that young Japanese people really say; the story is logical from start to end and the last scene is really funny.
+1. Every Japanese line is 100% natural casual Japanese that young Japanese people really say; the story is logical from start to end.
+1b. HUMOR: honestly rate how funny the story is for a Burmese viewer around 20 (1-10). If it is below 9, rewrite the build-up and the last scene to be much funnier: escalate in three steps, use sharp tsukkomi, end with a short unexpected reversal or callback (max 15 characters), never a moral or a polite ending. Keep the patterns working.
 2. Inside each scene Rio and Yui alternate. 15 to 18 lines in total, 2 or 3 per scene, each line max 26 characters.
 3. No 笑, w, emojis, 〜 symbol or stage directions in Japanese lines.
 4. Every kana reading matches its Japanese exactly.
 5. All Burmese is correct, natural, spoken-style Unicode Burmese with no double quotes, and matches the Japanese meaning.
-6. patterns: exactly 6 conversation-connecting casual patterns, each p literally appears (exact characters) inside story line number `line` (story lines counted from 1, hook and closing not counted), all different, no pattern used more than 3 times. chain: 6 or 7 increasing story line numbers, each containing a pattern, flowing naturally.
+6. patterns: exactly 6 conversation-connecting casual patterns, each p literally appears (exact characters) inside story line number `line` (story lines counted from 1, hook and closing not counted), all different, no pattern used more than 3 times, in increasing line order, and at least 4 of the 6 pattern lines are consecutive story lines so they form a natural chain.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
@@ -85,7 +91,7 @@ def ask_json(prompt):
 def validate(s):
     err = []
     try:
-        for k in ("title", "title_mm", "hook", "scenes", "patterns", "chain", "closing", "caption"):
+        for k in ("title", "title_mm", "hook", "scenes", "patterns", "closing", "caption"):
             if not s.get(k):
                 err.append("field %s is missing or empty" % k)
         if err:
@@ -139,14 +145,10 @@ def validate(s):
             seen.add(j)
             if not MYA.search(p.get("mm", "")) or not MYA.search(p.get("use", "")):
                 err.append("pattern %s needs Burmese mm and use" % j)
-        ch = [int(x) for x in s.get("chain") or []]
-        s["chain"] = ch
-        if not 5 <= len(ch) <= 7 or ch != sorted(set(ch)) or not all(1 <= n <= len(story) for n in ch):
-            err.append("chain must be 6 or 7 increasing story line numbers between 1 and %d" % len(story))
-        else:
-            for n in ch:
-                if not any(p["p"] and p["p"] in story[n - 1] for p in pats):
-                    err.append("chain line %d (%s) contains none of the patterns" % (n, story[n - 1]))
+        ln = [int(p.get("line") or 0) for p in pats]
+        if ln != sorted(ln) or len(set(ln)) != len(ln):
+            err.append("pattern lines must be different and in increasing story order: %s" % ln)
+        s["chain"] = ln
         if not MYA.search(s.get("tip", "")):
             err.append("tip must be written in Burmese")
         if not MYA.search(s["caption"]):
@@ -193,14 +195,14 @@ def make_story(theme, avoid):
                 s = ask_json(REV.replace("@@ERRORS@@", extra).replace("@@JSON@@", json.dumps(s, ensure_ascii=False)))
             except Exception as e:
                 D.log("fix failed", e)
-    hard = [e for e in best_err if not e.startswith(("line too long", "pattern", "chain line", "tip"))]
+    hard = [e for e in best_err if not e.startswith(("line too long", "pattern", "tip"))]
     if hard:
         raise RuntimeError("story failed validation: %s" % best_err)
     # keep only patterns / chain lines that really are in the story rather than failing
     story = [l["jp"] for x in best["scenes"] for l in x["lines"]]
     best["patterns"] = [p for p in best["patterns"] if p["p"] and p["p"] in story[p["line"] - 1]][:6]
-    best["chain"] = [n for n in best["chain"] if any(p["p"] in story[n - 1] for p in best["patterns"])]
-    if len(best["patterns"]) < 4 or len(best["chain"]) < 4:
+    best["chain"] = [p["line"] for p in best["patterns"]]
+    if len(best["patterns"]) < 4:
         raise RuntimeError("story failed validation: %s" % best_err)
     D.WARN.extend(best_err)
     return best
@@ -215,7 +217,7 @@ P_ONE = ("Say the following in Japanese like a real young person around 20 talki
          "a little slower than normal and very clear for Japanese learners. Do not act, not like an announcer. "
          "Leave a clear pause of about one second between sentences.\n")
 P_EXPR = ("TTS the following short lines by two close Japanese friends around 20 years old. Rio: a young man, relaxed. Yui: a young woman, "
-          "bright and friendly. Rio first invites the viewer to check today's patterns, then they say each pattern one by one, relaxed and "
+          "bright and friendly. Rio invites the viewer to check today's chain of patterns, Yui gives a short tip, relaxed and "
           "natural, a little slower than normal and very clear, not like a teacher. Leave a clear pause of about one second between lines.\n")
 MAX_RATE = 7.2  # kana per second of speech; faster audio is slowed down a little (never below 0.85x)
 
@@ -313,7 +315,7 @@ def transcript(s):
         out.append("%d. 〜%s %s — %s" % (k + 1, p["p"], p["mm"], p["use"]))
     ls = RS.story_lines(s)
     out += ["", "🗣 つなげて言ってみよう"]
-    out.append("\n↓\n".join(ls[n - 1]["jp"] for n in s["chain"]))
+    out.append("\n↓\n".join(ls[p["line"] - 1]["jp"] for p in s["patterns"]))
     out += ["", "💡 " + s.get("tip", "")]
     out += ["", "#ဂျပန်စာ #日本語 #LearnWithRio #RioAndYui"]
     return "\n".join(out)[:4000]
@@ -351,7 +353,7 @@ def main():
     main_wav, tail_wav = os.path.join(work, "main.wav"), os.path.join(work, "tail.wav")
     build_audio(audio_groups(s), P_STORY, P_ONE, main_wav)
     tt = RS.tail_turns(s)
-    build_audio([tt[:4], tt[4:]], P_EXPR, P_ONE, tail_wav)
+    build_audio([tt], P_EXPR, P_ONE, tail_wav)
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     vid = os.path.join("videos", key + ".mp4")
     secs = RS.render(jpath, main_wav, tail_wav, os.path.join(ROOT, vid))
