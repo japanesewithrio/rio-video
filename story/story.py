@@ -115,7 +115,7 @@ def validate(s):
             jp = l.get("jp", "")
             if l in lines and l.get("who") not in ("Rio", "Yui"):
                 err.append("who must be Rio or Yui: %s" % jp)
-            if EMOJI.search(jp) or "笑" in jp or "〜" in jp:
+            if EMOJI.search(jp) or re.search(r"笑(?![いうえわっ])|[（(]笑", jp) or "〜" in jp:
                 err.append("no emoji, 笑 or 〜 inside: %s" % jp)
             if len(jp) > 28:
                 err.append("line too long (max 26 characters): %s" % jp)
@@ -193,7 +193,7 @@ def mark_used(st, s):
     got = [p["p"] for p in s["patterns"]]
     for a in allp:
         core = a.replace("？", "").replace("（理由）", "")
-        if any(core[:3] in g or g in core for g in got) and a not in st.setdefault("used", []):
+        if len(core) >= 2 and any(core in g or (len(g) >= 2 and g in core) for g in got) and a not in st.setdefault("used", []):
             st["used"].append(a)
 
 
