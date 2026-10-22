@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-10-22 08:29",
- "price": 158.137,
- "change_24h": -0.145,
+ "time_jst": "2026-10-22 09:41",
+ "price": 158.192,
+ "change_24h": -0.158,
  "high_24h": 158.392,
  "low_24h": 157.832,
- "week_change": -0.197,
+ "week_change": 0.214,
  "trend": "down",
- "rsi": 49.6,
- "atr": 0.137,
+ "rsi": 53.0,
+ "atr": 0.138,
  "paper": {
   "balance": 859.42,
   "start": 1000.0,
@@ -73,7 +73,7 @@
   },
   "C": {
    "label": "Bot C – နေ့စဉ် Trend (EMA20/100)",
-   "balance": 999.49,
+   "balance": 999.46,
    "open_position": {
     "pair": "USD/JPY",
     "side": "sell",
@@ -100,7 +100,7 @@
    }
   }
  },
- "daily_bots_updated_jst": "2026-10-21 09:40",
+ "daily_bots_updated_jst": "2026-10-22 09:41",
  "daily_bots_note": "Bot B (daily 20-day breakout, 3xATR stop) and Bot C (daily EMA20/100 trend, 3xATR stop) each start with $1000 fake money, $10 risk/trade, swap counted. Research: profitable on 2010-2019 (train) AND 2020-2026 (unseen test), but only ~3 trades per year and helped by the strong 2021-2024 USD/JPY uptrend. fx/research2.json tested the same rules on 11 pairs since 2010: they lost on 9 of 11 (profit factor 0.78), so Bot C's USD/JPY edge is probably luck; Bot C+ (11 pairs) was turned off.",
  "real_money_checklist": "ALL of: >=6 months of paper trading, >=30 closed trades, profit factor > 1.3, max drawdown < $100 (10%, measured on closed trades; open trades can add more). Even then: tiny size only. Not financial advice."
 }
