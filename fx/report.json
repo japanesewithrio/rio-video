@@ -1,13 +1,13 @@
 {
- "time_jst": "2026-10-23 08:30",
- "price": 156.605,
- "change_24h": -1.539,
+ "time_jst": "2026-10-23 09:42",
+ "price": 156.188,
+ "change_24h": -1.976,
  "high_24h": 158.254,
- "low_24h": 156.514,
- "week_change": -1.494,
+ "low_24h": 156.072,
+ "week_change": -1.946,
  "trend": "down",
- "rsi": 28.1,
- "atr": 0.234,
+ "rsi": 21.4,
+ "atr": 0.262,
  "paper": {
   "balance": 879.42,
   "start": 1000.0,
@@ -51,9 +51,9 @@
   },
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
-   "trades": 31,
-   "pnl": -120.95,
-   "win_rate": 19.4
+   "trades": 32,
+   "pnl": -100.88,
+   "win_rate": 21.9
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
@@ -83,7 +83,7 @@
   },
   "C": {
    "label": "Bot C – နေ့စဉ် Trend (EMA20/100)",
-   "balance": 999.46,
+   "balance": 999.43,
    "open_position": {
     "pair": "USD/JPY",
     "side": "sell",
@@ -110,7 +110,7 @@
    }
   }
  },
- "daily_bots_updated_jst": "2026-10-22 09:41",
+ "daily_bots_updated_jst": "2026-10-23 09:42",
  "daily_bots_note": "Bot B (daily 20-day breakout, 3xATR stop) and Bot C (daily EMA20/100 trend, 3xATR stop) each start with $1000 fake money, $10 risk/trade, swap counted. Research: profitable on 2010-2019 (train) AND 2020-2026 (unseen test), but only ~3 trades per year and helped by the strong 2021-2024 USD/JPY uptrend. fx/research2.json tested the same rules on 11 pairs since 2010: they lost on 9 of 11 (profit factor 0.78), so Bot C's USD/JPY edge is probably luck; Bot C+ (11 pairs) was turned off.",
  "real_money_checklist": "ALL of: >=6 months of paper trading, >=30 closed trades, profit factor > 1.3, max drawdown < $100 (10%, measured on closed trades; open trades can add more). Even then: tiny size only. Not financial advice."
 }
