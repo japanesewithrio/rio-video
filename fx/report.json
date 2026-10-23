@@ -1,26 +1,19 @@
 {
- "time_jst": "2026-10-23 09:42",
- "price": 156.188,
- "change_24h": -1.976,
- "high_24h": 158.254,
+ "time_jst": "2026-10-23 10:39",
+ "price": 156.598,
+ "change_24h": -1.49,
+ "high_24h": 158.178,
  "low_24h": 156.072,
- "week_change": -1.946,
+ "week_change": -1.501,
  "trend": "down",
- "rsi": 21.4,
- "atr": 0.262,
+ "rsi": 31.2,
+ "atr": 0.287,
  "paper": {
-  "balance": 879.42,
+  "balance": 899.49,
   "start": 1000.0,
-  "day_pnl": 0.0,
+  "day_pnl": 20.07,
   "halted_today": false,
-  "open_position": {
-   "side": "sell",
-   "entry": 157.006,
-   "units": 3820,
-   "stop": 157.417,
-   "tp": 156.184,
-   "ts": "2026-10-22T12:00:00+01:00"
-  },
+  "open_position": null,
   "trades_24h": [
    {
     "side": "sell",
@@ -30,16 +23,25 @@
     "close": "2026-10-22T04:00:00+01:00",
     "pnl": 20.0,
     "why": "target"
+   },
+   {
+    "side": "sell",
+    "entry": 157.006,
+    "exit": 156.185,
+    "open": "2026-10-22T12:00:00+01:00",
+    "close": "2026-10-23T01:00:00+01:00",
+    "pnl": 20.07,
+    "why": "target"
    }
   ],
-  "total_trades": 22,
-  "win_rate": 13.6,
+  "total_trades": 23,
+  "win_rate": 17.4,
   "scorecard": {
    "since": "2026-09-28",
    "months": 0.8,
-   "trades": 22,
-   "win_rate": 13.6,
-   "profit_factor": 0.33,
+   "trades": 23,
+   "win_rate": 17.4,
+   "profit_factor": 0.44,
    "max_drawdown": 160.62,
    "checks": {
     "months_6": false,
@@ -52,7 +54,7 @@
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
    "trades": 32,
-   "pnl": -100.88,
+   "pnl": -101.26,
    "win_rate": 21.9
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
