@@ -1,229 +1,294 @@
-daily	Set up job	﻿2026-10-25T13:40:50.7613149Z Current runner version: '2.338.0'
-daily	Set up job	2026-10-25T13:40:50.7644016Z ##[group]Runner Image Provisioner
-daily	Set up job	2026-10-25T13:40:50.7644933Z Hosted Compute Agent
-daily	Set up job	2026-10-25T13:40:50.7645703Z Version: 20261021.618
-daily	Set up job	2026-10-25T13:40:50.7646354Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
-daily	Set up job	2026-10-25T13:40:50.7647141Z Build Date: 2026-10-21T00:45:21Z
-daily	Set up job	2026-10-25T13:40:50.7647914Z Worker ID: {99c19d90-63ba-4cf1-b180-80e6429434d3}
-daily	Set up job	2026-10-25T13:40:50.7648882Z Region: eastus
-daily	Set up job	2026-10-25T13:40:50.7649610Z Cloud: Azure
-daily	Set up job	2026-10-25T13:40:50.7650171Z ##[endgroup]
-daily	Set up job	2026-10-25T13:40:50.7651783Z ##[group]Operating System
-daily	Set up job	2026-10-25T13:40:50.7652459Z Ubuntu
-daily	Set up job	2026-10-25T13:40:50.7653065Z 24.04.5
-daily	Set up job	2026-10-25T13:40:50.7653729Z LTS
-daily	Set up job	2026-10-25T13:40:50.7654248Z ##[endgroup]
-daily	Set up job	2026-10-25T13:40:50.7654907Z ##[group]Runner Image
-daily	Set up job	2026-10-25T13:40:50.7655575Z Image: ubuntu-24.04
-daily	Set up job	2026-10-25T13:40:50.7656245Z Version: 20261012.334.1
-daily	Set up job	2026-10-25T13:40:50.7657345Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
-daily	Set up job	2026-10-25T13:40:50.7659427Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
-daily	Set up job	2026-10-25T13:40:50.7660414Z ##[endgroup]
-daily	Set up job	2026-10-25T13:40:50.7661721Z ##[group]GITHUB_TOKEN Permissions
-daily	Set up job	2026-10-25T13:40:50.7664397Z Contents: write
-daily	Set up job	2026-10-25T13:40:50.7665050Z Metadata: read
-daily	Set up job	2026-10-25T13:40:50.7665695Z ##[endgroup]
-daily	Set up job	2026-10-25T13:40:50.7668021Z Secret source: Actions
-daily	Set up job	2026-10-25T13:40:50.7669634Z Cache mode: write
-daily	Set up job	2026-10-25T13:40:50.7670697Z Prepare workflow directory
-daily	Set up job	2026-10-25T13:40:50.8020835Z Prepare all required actions
-daily	Set up job	2026-10-25T13:40:50.8071640Z Getting action download info
-daily	Set up job	2026-10-25T13:40:51.0244346Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
-daily	Set up job	2026-10-25T13:40:51.2436586Z Complete job name: daily
-daily	Run actions/checkout@v4	﻿2026-10-25T13:40:51.3473100Z ##[group]Run actions/checkout@v4
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3474055Z with:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3474557Z   repository: japanesewithrio/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3478386Z   token: ***
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3479057Z   ssh-strict: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3479530Z   ssh-user: git
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3480000Z   persist-credentials: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3480508Z   clean: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3480972Z   sparse-checkout-cone-mode: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3481510Z   fetch-depth: 1
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3481954Z   fetch-tags: false
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3482412Z   show-progress: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3482879Z   lfs: false
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3483303Z   submodules: false
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3483769Z   set-safe-directory: true
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3484327Z   allow-unsafe-pr-checkout: false
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.3485152Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4582984Z Syncing repository: japanesewithrio/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4585852Z ##[group]Getting Git version info
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4587105Z Working directory is '/home/runner/work/rio-video/rio-video'
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4589341Z [command]/usr/bin/git version
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4705326Z git version 2.55.0
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4730702Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4746416Z Temporarily overriding HOME='/home/runner/work/_temp/35525d6f-e000-4024-bf78-ffb0f8d44ad9' before making global git config changes
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4749016Z Adding repository directory to the temporary git global config as a safe directory
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4752208Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rio-video/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4809676Z Deleting the contents of '/home/runner/work/rio-video/rio-video'
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4815112Z ##[group]Initializing the repository
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4820514Z [command]/usr/bin/git init /home/runner/work/rio-video/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4951809Z hint: Using 'master' as the name for the initial branch. This default branch name
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4956103Z hint: will change to "main" in Git 3.0. To configure the initial branch name
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4958008Z hint: to use in all of your new repositories, which will suppress this warning,
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4960188Z hint: call:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4960934Z hint:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4961913Z hint: 	git config --global init.defaultBranch <name>
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4963002Z hint:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4964000Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4965599Z hint: 'development'. The just-created branch can be renamed via this command:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4966995Z hint:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4967834Z hint: 	git branch -m <name>
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4969097Z hint:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4970309Z hint: Disable this message with "git config set advice.defaultBranchName false"
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4972440Z Initialized empty Git repository in /home/runner/work/rio-video/rio-video/.git/
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.4975799Z [command]/usr/bin/git remote add origin https://github.com/japanesewithrio/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5038446Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5040592Z ##[group]Disabling automatic garbage collection
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5042433Z [command]/usr/bin/git config --local gc.auto 0
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5084236Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5085490Z ##[group]Setting up auth
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5093126Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5138440Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5574120Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5614601Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5856397Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.5899324Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.6150710Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.6202402Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.6203399Z ##[group]Fetching the repository
-daily	Run actions/checkout@v4	2026-10-25T13:40:51.6213326Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f426ea175439721fea9622e85f27f02fdc9903d5:refs/remotes/origin/main
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4056798Z From https://github.com/japanesewithrio/rio-video
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4059634Z  * [new ref]         f426ea175439721fea9622e85f27f02fdc9903d5 -> origin/main
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4064765Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4067100Z ##[group]Determining the checkout info
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4071426Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4075156Z [command]/usr/bin/git sparse-checkout disable
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4139696Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4184698Z ##[group]Checking out the ref
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.4189095Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.6771304Z Switched to a new branch 'main'
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.6791736Z branch 'main' set up to track 'origin/main'.
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.6805315Z ##[endgroup]
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.6850004Z [command]/usr/bin/git log -1 --format=%H
-daily	Run actions/checkout@v4	2026-10-25T13:40:53.6880799Z f426ea175439721fea9622e85f27f02fdc9903d5
-daily	Install	﻿2026-10-25T13:40:53.7261460Z ##[group]Run sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null
-daily	Install	2026-10-25T13:40:53.7264477Z ^[[36;1msudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null^[[0m
-daily	Install	2026-10-25T13:40:53.7266628Z ^[[36;1mpip install --quiet pillow requests^[[0m
-daily	Install	2026-10-25T13:40:53.7268091Z ^[[36;1mgunzip -kf render.py.gz^[[0m
-daily	Install	2026-10-25T13:40:53.7269902Z ^[[36;1mtar -xzf daily/bundle.tar.gz --skip-old-files^[[0m
-daily	Install	2026-10-25T13:40:53.8166933Z shell: /usr/bin/bash -e {0}
-daily	Install	2026-10-25T13:40:53.8169497Z ##[endgroup]
-daily	Install	2026-10-25T13:41:10.8855817Z 
-daily	Install	2026-10-25T13:41:10.8856809Z Running kernel seems to be up-to-date.
-daily	Install	2026-10-25T13:41:10.8857275Z 
-daily	Install	2026-10-25T13:41:10.8857477Z No services need to be restarted.
-daily	Install	2026-10-25T13:41:10.8857793Z 
-daily	Install	2026-10-25T13:41:10.8857979Z No containers need to be restarted.
-daily	Install	2026-10-25T13:41:10.8858285Z 
-daily	Install	2026-10-25T13:41:10.8858857Z No user sessions are running outdated binaries.
-daily	Install	2026-10-25T13:41:10.8859468Z 
-daily	Install	2026-10-25T13:41:10.8859915Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
-daily	Fonts and background	﻿2026-10-25T13:41:14.0996166Z ##[group]Run G=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl
-daily	Fonts and background	2026-10-25T13:41:14.0997198Z ^[[36;1mG=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl^[[0m
-daily	Fonts and background	2026-10-25T13:41:14.0997809Z ^[[36;1mmkdir -p fonts^[[0m
-daily	Fonts and background	2026-10-25T13:41:14.0998378Z ^[[36;1mcurl -fsSL -o fonts/MPLUSRounded1c-Bold.ttf   "$G/mplusrounded1c/MPLUSRounded1c-Bold.ttf"^[[0m
-daily	Fonts and background	2026-10-25T13:41:14.0999705Z ^[[36;1mcurl -fsSL -o fonts/MPLUSRounded1c-Medium.ttf "$G/mplusrounded1c/MPLUSRounded1c-Medium.ttf"^[[0m
-daily	Fonts and background	2026-10-25T13:41:14.1000627Z ^[[36;1mcurl -fsSL -o fonts/NotoSansMyanmar.ttf       "$G/notosansmyanmar/NotoSansMyanmar%5Bwdth%2Cwght%5D.ttf"^[[0m
-daily	Fonts and background	2026-10-25T13:41:14.1069738Z shell: /usr/bin/bash -e {0}
-daily	Fonts and background	2026-10-25T13:41:14.1070129Z ##[endgroup]
-daily	Make and post today's video	﻿2026-10-25T13:41:14.6926864Z ##[group]Run if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' daily/trigger.txt; then export DRY=1; fi
-daily	Make and post today's video	2026-10-25T13:41:14.6927640Z ^[[36;1mif [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' daily/trigger.txt; then export DRY=1; fi^[[0m
-daily	Make and post today's video	2026-10-25T13:41:14.6928119Z ^[[36;1mpython daily/daily.py^[[0m
-daily	Make and post today's video	2026-10-25T13:41:14.6993500Z shell: /usr/bin/bash -e {0}
-daily	Make and post today's video	2026-10-25T13:41:14.6993832Z env:
-daily	Make and post today's video	2026-10-25T13:41:14.6994761Z   GEMINI_API_KEY: ***
-daily	Make and post today's video	2026-10-25T13:41:14.6995113Z   TG_TOKEN: ***
-daily	Make and post today's video	2026-10-25T13:41:14.6995360Z   TG_CHAT: ***
-daily	Make and post today's video	2026-10-25T13:41:14.6995588Z   ZERNIO_API_KEY: 
-daily	Make and post today's video	2026-10-25T13:41:14.6995828Z ##[endgroup]
-daily	Make and post today's video	2026-10-25T13:41:14.9627631Z models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
-daily	Make and post today's video	2026-10-25T13:41:14.9636110Z using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts']
-daily	Make and post today's video	2026-10-25T13:41:14.9637541Z key D261025 topic free choice: pick 6 useful patterns
-daily	Make and post today's video	2026-10-25T13:41:15.1147443Z gemini gemini-3.1-pro-preview 429 {
-daily	Make and post today's video	2026-10-25T13:41:15.1147990Z   "error": {
-daily	Make and post today's video	2026-10-25T13:41:15.1148303Z     "code": 429,
-daily	Make and post today's video	2026-10-25T13:41:15.1150211Z     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-daily	Make and post today's video	2026-10-25T13:41:15.1152381Z gemini: giving up on gemini-3.1-pro-preview
-daily	Make and post today's video	2026-10-25T13:41:15.2746253Z gemini gemini-pro-latest 429 {
-daily	Make and post today's video	2026-10-25T13:41:15.2746922Z   "error": {
-daily	Make and post today's video	2026-10-25T13:41:15.2747383Z     "code": 429,
-daily	Make and post today's video	2026-10-25T13:41:15.2749249Z     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-daily	Make and post today's video	2026-10-25T13:41:15.2750980Z gemini: giving up on gemini-pro-latest
-daily	Make and post today's video	2026-10-25T13:41:19.1184329Z gemini gemini-3.8-flash 503 {
-daily	Make and post today's video	2026-10-25T13:41:19.1185030Z   "error": {
-daily	Make and post today's video	2026-10-25T13:41:19.1185430Z     "code": 503,
-daily	Make and post today's video	2026-10-25T13:41:19.1186751Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-daily	Make and post today's video	2026-10-25T13:41:19.1188115Z     "status": "UNAVAILABLE"
-daily	Make and post today's video	2026-10-25T13:41:19.1189000Z   }
-daily	Make and post today's video	2026-10-25T13:41:19.1189409Z }
-daily	Make and post today's video	2026-10-25T13:41:19.1189679Z 
-daily	Make and post today's video	2026-10-25T13:46:31.8535719Z gemini gemini-3.8-flash ConnectionError
-daily	Make and post today's video	2026-10-25T13:47:02.4697690Z gemini gemini-3.8-flash 503 {
-daily	Make and post today's video	2026-10-25T13:47:02.4698255Z   "error": {
-daily	Make and post today's video	2026-10-25T13:47:02.4699022Z     "code": 503,
-daily	Make and post today's video	2026-10-25T13:47:02.4700194Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-daily	Make and post today's video	2026-10-25T13:47:02.4701728Z     "status": "UNAVAILABLE"
-daily	Make and post today's video	2026-10-25T13:47:02.4702059Z   }
-daily	Make and post today's video	2026-10-25T13:47:02.4702274Z }
-daily	Make and post today's video	2026-10-25T13:47:02.4702630Z 
-daily	Make and post today's video	2026-10-25T13:47:47.4699626Z gemini: giving up on gemini-3.8-flash
-daily	Make and post today's video	2026-10-25T13:58:59.4435093Z gemini gemini-3.8-flash ReadTimeout
-daily	Make and post today's video	2026-10-25T13:59:14.9519780Z gemini gemini-3.8-flash 503 {
-daily	Make and post today's video	2026-10-25T13:59:14.9520408Z   "error": {
-daily	Make and post today's video	2026-10-25T13:59:14.9520725Z     "code": 503,
-daily	Make and post today's video	2026-10-25T13:59:14.9521439Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-daily	Make and post today's video	2026-10-25T13:59:14.9522272Z     "status": "UNAVAILABLE"
-daily	Make and post today's video	2026-10-25T13:59:14.9522571Z   }
-daily	Make and post today's video	2026-10-25T13:59:14.9522809Z }
-daily	Make and post today's video	2026-10-25T13:59:14.9522941Z 
-daily	Make and post today's video	2026-10-25T13:59:45.7574151Z gemini gemini-3.8-flash 503 {
-daily	Make and post today's video	2026-10-25T13:59:45.7574667Z   "error": {
-daily	Make and post today's video	2026-10-25T13:59:45.7574968Z     "code": 503,
-daily	Make and post today's video	2026-10-25T13:59:45.7575512Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-daily	Make and post today's video	2026-10-25T13:59:45.7576171Z     "status": "UNAVAILABLE"
-daily	Make and post today's video	2026-10-25T13:59:45.7576403Z   }
-daily	Make and post today's video	2026-10-25T13:59:45.7576579Z }
-daily	Make and post today's video	2026-10-25T13:59:45.7576680Z 
-daily	Make and post today's video	2026-10-25T14:00:30.7576226Z gemini: giving up on gemini-3.8-flash
-daily	Make and post today's video	2026-10-25T14:00:40.9258007Z gemini gemini-3.6-flash 503 {
-daily	Make and post today's video	2026-10-25T14:00:40.9258792Z   "error": {
-daily	Make and post today's video	2026-10-25T14:00:40.9259159Z     "code": 503,
-daily	Make and post today's video	2026-10-25T14:00:40.9260126Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-daily	Make and post today's video	2026-10-25T14:00:40.9261254Z     "status": "UNAVAILABLE"
-daily	Make and post today's video	2026-10-25T14:00:40.9261668Z   }
-daily	Make and post today's video	2026-10-25T14:00:40.9261974Z }
-daily	Make and post today's video	2026-10-25T14:00:40.9262151Z 
-daily	Make and post today's video	2026-10-25T14:02:19.8596247Z attempt 0 fix 0 errors []
-daily	Make and post today's video	2026-10-25T14:02:36.0023798Z tts work/audio/D261025.wav 47.6 s
-daily	Make and post today's video	2026-10-25T14:02:46.2998810Z tts work/tail/D261025.wav 24.9 s
-daily	Make and post today's video	2026-10-25T14:02:56.0081310Z timestamps ok
-daily	Make and post today's video	2026-10-25T14:03:29.4607523Z rendered chain videos/D261025.mp4 34 segments
-daily	Make and post today's video	2026-10-25T14:03:37.6486870Z quote card videos/D261025_quote.jpg
-daily	Make and post today's video	2026-10-25T14:03:37.6487459Z telegram sendVideo ok
-daily	Make and post today's video	2026-10-25T14:03:39.3793160Z telegram sendAudio ok
-daily	Make and post today's video	2026-10-25T14:03:40.3750158Z telegram sendMessage ok
-daily	Make and post today's video	2026-10-25T14:03:41.4065882Z telegram sendPhoto ok
-daily	Make and post today's video	2026-10-25T14:04:01.4081229Z zernio: no ZERNIO_API_KEY secret
-daily	Make and post today's video	2026-10-25T14:04:01.4081903Z zernio: no ZERNIO_API_KEY secret
-daily	Make and post today's video	2026-10-25T14:04:01.9223012Z telegram sendMessage ok
-daily	Make and post today's video	2026-10-25T14:04:01.9233521Z ✅ Learn with Rio posted D261025
-daily	Make and post today's video	2026-10-25T14:04:01.9234127Z 〜じゃん・〜ってば
-daily	Make and post today's video	2026-10-25T14:04:01.9234477Z TikTok: False / YouTube: False
-daily	Post Run actions/checkout@v4	﻿2026-10-25T14:04:01.9530509Z Post job cleanup.
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0416608Z [command]/usr/bin/git version
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0463217Z git version 2.55.0
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0506093Z Temporarily overriding HOME='/home/runner/work/_temp/7c06eccf-3cb6-4d08-979c-b2600c28fd4f' before making global git config changes
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0508166Z Adding repository directory to the temporary git global config as a safe directory
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0512900Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rio-video/rio-video
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0567555Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0603388Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0866129Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0913160Z http.https://github.com/.extraheader
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0945587Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.0973616Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.1263240Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-daily	Post Run actions/checkout@v4	2026-10-25T14:04:02.1307205Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-daily	Complete job	﻿2026-10-25T14:04:02.1755169Z Cleaning up orphan processes
-daily	Complete job	2026-10-25T14:04:02.2232182Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+daily	Set up job	﻿2026-10-26T16:04:34.9362744Z Current runner version: '2.338.0'
+daily	Set up job	2026-10-26T16:04:34.9391076Z ##[group]Runner Image Provisioner
+daily	Set up job	2026-10-26T16:04:34.9392192Z Hosted Compute Agent
+daily	Set up job	2026-10-26T16:04:34.9392994Z Version: 20261021.618
+daily	Set up job	2026-10-26T16:04:34.9393695Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+daily	Set up job	2026-10-26T16:04:34.9394534Z Build Date: 2026-10-21T00:45:21Z
+daily	Set up job	2026-10-26T16:04:34.9395387Z Worker ID: {a6be50a5-44e3-46e1-9d27-9cd8431635f4}
+daily	Set up job	2026-10-26T16:04:34.9396181Z Region: westcentralus
+daily	Set up job	2026-10-26T16:04:34.9396958Z Cloud: Azure
+daily	Set up job	2026-10-26T16:04:34.9397702Z ##[endgroup]
+daily	Set up job	2026-10-26T16:04:34.9399228Z ##[group]Operating System
+daily	Set up job	2026-10-26T16:04:34.9399940Z Ubuntu
+daily	Set up job	2026-10-26T16:04:34.9401189Z 24.04.5
+daily	Set up job	2026-10-26T16:04:34.9402070Z LTS
+daily	Set up job	2026-10-26T16:04:34.9402982Z ##[endgroup]
+daily	Set up job	2026-10-26T16:04:34.9404021Z ##[group]Runner Image
+daily	Set up job	2026-10-26T16:04:34.9405134Z Image: ubuntu-24.04
+daily	Set up job	2026-10-26T16:04:34.9406200Z Version: 20261012.334.1
+daily	Set up job	2026-10-26T16:04:34.9408048Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+daily	Set up job	2026-10-26T16:04:34.9411298Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+daily	Set up job	2026-10-26T16:04:34.9412921Z ##[endgroup]
+daily	Set up job	2026-10-26T16:04:34.9414554Z ##[group]GITHUB_TOKEN Permissions
+daily	Set up job	2026-10-26T16:04:34.9417356Z Contents: write
+daily	Set up job	2026-10-26T16:04:34.9418477Z Metadata: read
+daily	Set up job	2026-10-26T16:04:34.9419577Z ##[endgroup]
+daily	Set up job	2026-10-26T16:04:34.9422332Z Secret source: Actions
+daily	Set up job	2026-10-26T16:04:34.9423616Z Cache mode: write
+daily	Set up job	2026-10-26T16:04:34.9424415Z Prepare workflow directory
+daily	Set up job	2026-10-26T16:04:34.9769047Z Prepare all required actions
+daily	Set up job	2026-10-26T16:04:34.9819000Z Getting action download info
+daily	Set up job	2026-10-26T16:04:35.3072320Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+daily	Set up job	2026-10-26T16:04:35.5129183Z Complete job name: daily
+daily	Run actions/checkout@v4	﻿2026-10-26T16:04:35.6091255Z ##[group]Run actions/checkout@v4
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6092239Z with:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6092745Z   repository: japanesewithrio/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6097026Z   token: ***
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6097510Z   ssh-strict: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6097990Z   ssh-user: git
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6098471Z   persist-credentials: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6098999Z   clean: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6099482Z   sparse-checkout-cone-mode: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6100039Z   fetch-depth: 1
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6100794Z   fetch-tags: false
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6101285Z   show-progress: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6101767Z   lfs: false
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6102218Z   submodules: false
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6102704Z   set-safe-directory: true
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6103248Z   allow-unsafe-pr-checkout: false
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.6104043Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7180018Z Syncing repository: japanesewithrio/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7183070Z ##[group]Getting Git version info
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7184218Z Working directory is '/home/runner/work/rio-video/rio-video'
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7185966Z [command]/usr/bin/git version
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7241781Z git version 2.55.0
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7255259Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7270281Z Temporarily overriding HOME='/home/runner/work/_temp/dfc7571b-f863-43b4-b062-c566b4caacda' before making global git config changes
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7273055Z Adding repository directory to the temporary git global config as a safe directory
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7276271Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rio-video/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7335810Z Deleting the contents of '/home/runner/work/rio-video/rio-video'
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7340478Z ##[group]Initializing the repository
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7345627Z [command]/usr/bin/git init /home/runner/work/rio-video/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7452276Z hint: Using 'master' as the name for the initial branch. This default branch name
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7454528Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7456332Z hint: to use in all of your new repositories, which will suppress this warning,
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7458633Z hint: call:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7459759Z hint:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7461285Z hint: 	git config --global init.defaultBranch <name>
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7462341Z hint:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7463220Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7464227Z hint: 'development'. The just-created branch can be renamed via this command:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7465011Z hint:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7465479Z hint: 	git branch -m <name>
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7466047Z hint:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7466706Z hint: Disable this message with "git config set advice.defaultBranchName false"
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7467781Z Initialized empty Git repository in /home/runner/work/rio-video/rio-video/.git/
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7472180Z [command]/usr/bin/git remote add origin https://github.com/japanesewithrio/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7525679Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7526600Z ##[group]Disabling automatic garbage collection
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7532455Z [command]/usr/bin/git config --local gc.auto 0
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7571018Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7571861Z ##[group]Setting up auth
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7579866Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7618648Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.7975423Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8021061Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8272013Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8313616Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8565858Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8612482Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8613452Z ##[group]Fetching the repository
+daily	Run actions/checkout@v4	2026-10-26T16:04:35.8622807Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cd4efc3eb7a3be68bfbab7e6df28c5b275a3334d:refs/remotes/origin/main
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6161941Z From https://github.com/japanesewithrio/rio-video
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6163374Z  * [new ref]         cd4efc3eb7a3be68bfbab7e6df28c5b275a3334d -> origin/main
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6213343Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6214761Z ##[group]Determining the checkout info
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6216230Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6217124Z [command]/usr/bin/git sparse-checkout disable
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6239833Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6280100Z ##[group]Checking out the ref
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.6287986Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.8621653Z Switched to a new branch 'main'
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.8624563Z branch 'main' set up to track 'origin/main'.
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.8639640Z ##[endgroup]
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.8688999Z [command]/usr/bin/git log -1 --format=%H
+daily	Run actions/checkout@v4	2026-10-26T16:04:38.8718118Z cd4efc3eb7a3be68bfbab7e6df28c5b275a3334d
+daily	Install	﻿2026-10-26T16:04:38.8989719Z ##[group]Run sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null
+daily	Install	2026-10-26T16:04:38.8992787Z ^[[36;1msudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 > /dev/null^[[0m
+daily	Install	2026-10-26T16:04:38.8994888Z ^[[36;1mpip install --quiet pillow requests^[[0m
+daily	Install	2026-10-26T16:04:38.8996315Z ^[[36;1mgunzip -kf render.py.gz^[[0m
+daily	Install	2026-10-26T16:04:38.8997774Z ^[[36;1mtar -xzf daily/bundle.tar.gz --skip-old-files^[[0m
+daily	Install	2026-10-26T16:04:38.9228119Z shell: /usr/bin/bash -e {0}
+daily	Install	2026-10-26T16:04:38.9229663Z ##[endgroup]
+daily	Install	2026-10-26T16:04:57.7385772Z 
+daily	Install	2026-10-26T16:04:57.7387291Z Running kernel seems to be up-to-date.
+daily	Install	2026-10-26T16:04:57.7387648Z 
+daily	Install	2026-10-26T16:04:57.7387818Z No services need to be restarted.
+daily	Install	2026-10-26T16:04:57.7388042Z 
+daily	Install	2026-10-26T16:04:57.7388207Z No containers need to be restarted.
+daily	Install	2026-10-26T16:04:57.7388447Z 
+daily	Install	2026-10-26T16:04:57.7388618Z No user sessions are running outdated binaries.
+daily	Install	2026-10-26T16:04:57.7388899Z 
+daily	Install	2026-10-26T16:04:57.7389154Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+daily	Fonts and background	﻿2026-10-26T16:05:02.2333460Z ##[group]Run G=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl
+daily	Fonts and background	2026-10-26T16:05:02.2334375Z ^[[36;1mG=https://raw.githubusercontent.com/google/fonts/b5efa9c32e8f9b63005f5cdb1ad5527a77d2cd04/ofl^[[0m
+daily	Fonts and background	2026-10-26T16:05:02.2334940Z ^[[36;1mmkdir -p fonts^[[0m
+daily	Fonts and background	2026-10-26T16:05:02.2335425Z ^[[36;1mcurl -fsSL -o fonts/MPLUSRounded1c-Bold.ttf   "$G/mplusrounded1c/MPLUSRounded1c-Bold.ttf"^[[0m
+daily	Fonts and background	2026-10-26T16:05:02.2336172Z ^[[36;1mcurl -fsSL -o fonts/MPLUSRounded1c-Medium.ttf "$G/mplusrounded1c/MPLUSRounded1c-Medium.ttf"^[[0m
+daily	Fonts and background	2026-10-26T16:05:02.2336912Z ^[[36;1mcurl -fsSL -o fonts/NotoSansMyanmar.ttf       "$G/notosansmyanmar/NotoSansMyanmar%5Bwdth%2Cwght%5D.ttf"^[[0m
+daily	Fonts and background	2026-10-26T16:05:02.2408715Z shell: /usr/bin/bash -e {0}
+daily	Fonts and background	2026-10-26T16:05:02.2409016Z ##[endgroup]
+daily	Make and post today's video	﻿2026-10-26T16:05:03.7219299Z ##[group]Run if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' daily/trigger.txt; then export DRY=1; fi
+daily	Make and post today's video	2026-10-26T16:05:03.7220054Z ^[[36;1mif [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' daily/trigger.txt; then export DRY=1; fi^[[0m
+daily	Make and post today's video	2026-10-26T16:05:03.7220830Z ^[[36;1mpython daily/daily.py^[[0m
+daily	Make and post today's video	2026-10-26T16:05:03.7287434Z shell: /usr/bin/bash -e {0}
+daily	Make and post today's video	2026-10-26T16:05:03.7287716Z env:
+daily	Make and post today's video	2026-10-26T16:05:03.7288326Z   GEMINI_API_KEY: ***
+daily	Make and post today's video	2026-10-26T16:05:03.7288662Z   TG_TOKEN: ***
+daily	Make and post today's video	2026-10-26T16:05:03.7288898Z   TG_CHAT: ***
+daily	Make and post today's video	2026-10-26T16:05:03.7289113Z   ZERNIO_API_KEY: 
+daily	Make and post today's video	2026-10-26T16:05:03.7289340Z ##[endgroup]
+daily	Make and post today's video	2026-10-26T16:05:04.0096635Z models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
+daily	Make and post today's video	2026-10-26T16:05:04.0104141Z using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.6-flash', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts']
+daily	Make and post today's video	2026-10-26T16:05:04.0106265Z key D261027 topic free choice: pick 6 useful patterns
+daily	Make and post today's video	2026-10-26T16:05:04.1810223Z gemini gemini-3.1-pro-preview 429 {
+daily	Make and post today's video	2026-10-26T16:05:04.1812588Z   "error": {
+daily	Make and post today's video	2026-10-26T16:05:04.1812915Z     "code": 429,
+daily	Make and post today's video	2026-10-26T16:05:04.1814515Z     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+daily	Make and post today's video	2026-10-26T16:05:04.1817234Z gemini: giving up on gemini-3.1-pro-preview
+daily	Make and post today's video	2026-10-26T16:05:04.3473469Z gemini gemini-pro-latest 429 {
+daily	Make and post today's video	2026-10-26T16:05:04.3474011Z   "error": {
+daily	Make and post today's video	2026-10-26T16:05:04.3474250Z     "code": 429,
+daily	Make and post today's video	2026-10-26T16:05:04.3475276Z     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+daily	Make and post today's video	2026-10-26T16:05:04.3476395Z gemini: giving up on gemini-pro-latest
+daily	Make and post today's video	2026-10-26T16:05:04.8308979Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:05:04.8309525Z   "error": {
+daily	Make and post today's video	2026-10-26T16:05:04.8309839Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:05:04.8310853Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:05:04.8311779Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:05:04.8312175Z   }
+daily	Make and post today's video	2026-10-26T16:05:04.8312455Z }
+daily	Make and post today's video	2026-10-26T16:05:04.8312614Z 
+daily	Make and post today's video	2026-10-26T16:05:21.5888454Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:05:21.5888975Z   "error": {
+daily	Make and post today's video	2026-10-26T16:05:21.5889273Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:05:21.5890003Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:05:21.5891633Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:05:21.5891955Z   }
+daily	Make and post today's video	2026-10-26T16:05:21.5892207Z }
+daily	Make and post today's video	2026-10-26T16:05:21.5892348Z 
+daily	Make and post today's video	2026-10-26T16:05:52.0968210Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:05:52.0968715Z   "error": {
+daily	Make and post today's video	2026-10-26T16:05:52.0968949Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:05:52.0969508Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:05:52.0970101Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:05:52.0970567Z   }
+daily	Make and post today's video	2026-10-26T16:05:52.0970805Z }
+daily	Make and post today's video	2026-10-26T16:05:52.0970921Z 
+daily	Make and post today's video	2026-10-26T16:06:37.0969755Z gemini: giving up on gemini-3.8-flash
+daily	Make and post today's video	2026-10-26T16:07:14.5884039Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:07:14.5884606Z   "error": {
+daily	Make and post today's video	2026-10-26T16:07:14.5884871Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:07:14.5885422Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:07:14.5886041Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:07:14.5886321Z   }
+daily	Make and post today's video	2026-10-26T16:07:14.5886513Z }
+daily	Make and post today's video	2026-10-26T16:07:14.5886618Z 
+daily	Make and post today's video	2026-10-26T16:07:44.6024716Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:07:44.6025185Z   "error": {
+daily	Make and post today's video	2026-10-26T16:07:44.6025406Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:07:44.6025951Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:07:44.6026557Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:07:44.6026797Z   }
+daily	Make and post today's video	2026-10-26T16:07:44.6026983Z }
+daily	Make and post today's video	2026-10-26T16:07:44.6027091Z 
+daily	Make and post today's video	2026-10-26T16:08:14.9639813Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:08:14.9640232Z   "error": {
+daily	Make and post today's video	2026-10-26T16:08:14.9640675Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:08:14.9641214Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:08:14.9641792Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:08:14.9642038Z   }
+daily	Make and post today's video	2026-10-26T16:08:14.9642228Z }
+daily	Make and post today's video	2026-10-26T16:08:14.9642424Z 
+daily	Make and post today's video	2026-10-26T16:08:59.9641317Z gemini: giving up on gemini-3.8-flash
+daily	Make and post today's video	2026-10-26T16:10:11.0603916Z gemini gemini-3.6-flash 503 {
+daily	Make and post today's video	2026-10-26T16:10:11.0604293Z   "error": {
+daily	Make and post today's video	2026-10-26T16:10:11.0604510Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:10:11.0605049Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:10:11.0605661Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:10:11.0605898Z   }
+daily	Make and post today's video	2026-10-26T16:10:11.0606082Z }
+daily	Make and post today's video	2026-10-26T16:10:11.0606189Z 
+daily	Make and post today's video	2026-10-26T16:11:27.9103728Z gemini gemini-3.6-flash 503 {
+daily	Make and post today's video	2026-10-26T16:11:27.9104302Z   "error": {
+daily	Make and post today's video	2026-10-26T16:11:27.9105077Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:11:27.9105875Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:11:27.9106761Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:11:27.9107120Z   }
+daily	Make and post today's video	2026-10-26T16:11:27.9107381Z }
+daily	Make and post today's video	2026-10-26T16:11:27.9107536Z 
+daily	Make and post today's video	2026-10-26T16:13:41.2985573Z gemini gemini-3.6-flash 503 {
+daily	Make and post today's video	2026-10-26T16:13:41.2987055Z   "error": {
+daily	Make and post today's video	2026-10-26T16:13:41.2987401Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:13:41.2988187Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:13:41.2989093Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:13:41.2989386Z   }
+daily	Make and post today's video	2026-10-26T16:13:41.2989575Z }
+daily	Make and post today's video	2026-10-26T16:13:41.2989679Z 
+daily	Make and post today's video	2026-10-26T16:14:26.2987347Z gemini: giving up on gemini-3.6-flash
+daily	Make and post today's video	2026-10-26T16:15:20.9299234Z gemini gemini-3.5-flash 503 {
+daily	Make and post today's video	2026-10-26T16:15:20.9299642Z   "error": {
+daily	Make and post today's video	2026-10-26T16:15:20.9299864Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:15:20.9300728Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:15:20.9301340Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:15:20.9301578Z   }
+daily	Make and post today's video	2026-10-26T16:15:20.9301765Z }
+daily	Make and post today's video	2026-10-26T16:15:20.9301874Z 
+daily	Make and post today's video	2026-10-26T16:16:39.1085210Z attempt 0 fix 0 errors ['the last two SCRIPT lines must be the fixed outro']
+daily	Make and post today's video	2026-10-26T16:16:39.7289619Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:16:39.7290001Z   "error": {
+daily	Make and post today's video	2026-10-26T16:16:39.7290226Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:16:39.7291040Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:16:39.7291618Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:16:39.7291858Z   }
+daily	Make and post today's video	2026-10-26T16:16:39.7292040Z }
+daily	Make and post today's video	2026-10-26T16:16:39.7292145Z 
+daily	Make and post today's video	2026-10-26T16:16:55.2951138Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:16:55.2951626Z   "error": {
+daily	Make and post today's video	2026-10-26T16:16:55.2951927Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:16:55.2952617Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:16:55.2953538Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:16:55.2953882Z   }
+daily	Make and post today's video	2026-10-26T16:16:55.2954119Z }
+daily	Make and post today's video	2026-10-26T16:16:55.2954231Z 
+daily	Make and post today's video	2026-10-26T16:17:25.7829796Z gemini gemini-3.8-flash 503 {
+daily	Make and post today's video	2026-10-26T16:17:25.7830295Z   "error": {
+daily	Make and post today's video	2026-10-26T16:17:25.7830821Z     "code": 503,
+daily	Make and post today's video	2026-10-26T16:17:25.7831596Z     "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+daily	Make and post today's video	2026-10-26T16:17:25.7832419Z     "status": "UNAVAILABLE"
+daily	Make and post today's video	2026-10-26T16:17:25.7832756Z   }
+daily	Make and post today's video	2026-10-26T16:17:25.7833007Z }
+daily	Make and post today's video	2026-10-26T16:17:25.7833150Z 
+daily	Make and post today's video	2026-10-26T16:18:10.7829798Z gemini: giving up on gemini-3.8-flash
+daily	Make and post today's video	2026-10-26T16:19:30.8390788Z attempt 0 fix 1 errors []
+daily	Make and post today's video	2026-10-26T16:19:51.4266854Z tts work/audio/D261027.wav 62.3 s
+daily	Make and post today's video	2026-10-26T16:19:59.8610515Z tts work/tail/D261027.wav 22.3 s
+daily	Make and post today's video	2026-10-26T16:20:13.2137384Z timestamps ok
+daily	Make and post today's video	2026-10-26T16:20:49.6965919Z rendered chain videos/D261027.mp4 34 segments
+daily	Make and post today's video	2026-10-26T16:20:49.6966539Z quote card videos/D261027_quote.jpg
+daily	Make and post today's video	2026-10-26T16:21:03.8270856Z telegram sendVideo ok
+daily	Make and post today's video	2026-10-26T16:21:05.8205766Z telegram sendAudio ok
+daily	Make and post today's video	2026-10-26T16:21:06.8792553Z telegram sendMessage ok
+daily	Make and post today's video	2026-10-26T16:21:08.1425680Z telegram sendPhoto ok
+daily	Make and post today's video	2026-10-26T16:21:28.1440153Z zernio: no ZERNIO_API_KEY secret
+daily	Make and post today's video	2026-10-26T16:21:28.1440958Z zernio: no ZERNIO_API_KEY secret
+daily	Make and post today's video	2026-10-26T16:21:28.7329935Z telegram sendMessage ok
+daily	Make and post today's video	2026-10-26T16:21:28.7339940Z ✅ Learn with Rio posted D261027
+daily	Make and post today's video	2026-10-26T16:21:28.7340715Z 〜じゃん・〜ってば
+daily	Make and post today's video	2026-10-26T16:21:28.7341055Z TikTok: False / YouTube: False
+daily	Post Run actions/checkout@v4	﻿2026-10-26T16:21:28.7609794Z Post job cleanup.
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8500602Z [command]/usr/bin/git version
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8545573Z git version 2.55.0
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8584494Z Temporarily overriding HOME='/home/runner/work/_temp/a16048c5-ea12-40d6-9475-e6a58bef3ea8' before making global git config changes
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8586244Z Adding repository directory to the temporary git global config as a safe directory
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8590999Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/rio-video/rio-video
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8632885Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8671446Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8939982Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8972785Z http.https://github.com/.extraheader
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.8985055Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.9023234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.9303167Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+daily	Post Run actions/checkout@v4	2026-10-26T16:21:28.9346512Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+daily	Complete job	﻿2026-10-26T16:21:28.9737980Z Cleaning up orphan processes
+daily	Complete job	2026-10-26T16:21:29.0136960Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
