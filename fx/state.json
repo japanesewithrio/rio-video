@@ -1,9 +1,9 @@
 {
  "balance": 902.63,
  "position": null,
- "last_ts": "2026-10-23T21:00:00+01:00",
- "day": "2026-10-24",
- "day_pnl": 3.14,
+ "last_ts": "2026-10-26T04:00:00+00:00",
+ "day": "2026-10-26",
+ "day_pnl": 0.0,
  "halted": false,
  "trades": [
   {
