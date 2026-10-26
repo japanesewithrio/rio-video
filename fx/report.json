@@ -1,39 +1,20 @@
 {
- "time_jst": "2026-10-26 06:39",
- "price": 156.814,
- "change_24h": 0.053,
- "high_24h": 157.16,
- "low_24h": 156.072,
- "week_change": -1.177,
+ "time_jst": "2026-10-26 09:07",
+ "price": 156.971,
+ "change_24h": 0.0,
+ "high_24h": 157.004,
+ "low_24h": 156.78,
+ "week_change": -1.016,
  "trend": "down",
- "rsi": 47.3,
- "atr": 0.239,
+ "rsi": 52.2,
+ "atr": 0.241,
  "paper": {
   "balance": 902.63,
   "start": 1000.0,
   "day_pnl": 3.14,
   "halted_today": false,
   "open_position": null,
-  "trades_24h": [
-   {
-    "side": "sell",
-    "entry": 157.006,
-    "exit": 156.185,
-    "open": "2026-10-22T12:00:00+01:00",
-    "close": "2026-10-23T01:00:00+01:00",
-    "pnl": 20.07,
-    "why": "target"
-   },
-   {
-    "side": "sell",
-    "entry": 156.959,
-    "exit": 156.835,
-    "open": "2026-10-23T08:00:00+01:00",
-    "close": "2026-10-23T20:00:00+01:00",
-    "pnl": 3.14,
-    "why": "weekend"
-   }
-  ],
+  "trades_24h": [],
   "total_trades": 24,
   "win_rate": 20.8,
   "scorecard": {
@@ -53,9 +34,9 @@
   },
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
-   "trades": 33,
-   "pnl": -97.74,
-   "win_rate": 24.2
+   "trades": 32,
+   "pnl": -88.08,
+   "win_rate": 25.0
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
@@ -112,7 +93,7 @@
    }
   }
  },
- "daily_bots_updated_jst": "2026-10-25 10:01",
+ "daily_bots_updated_jst": "2026-10-26 09:07",
  "daily_bots_note": "Bot B (daily 20-day breakout, 3xATR stop) and Bot C (daily EMA20/100 trend, 3xATR stop) each start with $1000 fake money, $10 risk/trade, swap counted. Research: profitable on 2010-2019 (train) AND 2020-2026 (unseen test), but only ~3 trades per year and helped by the strong 2021-2024 USD/JPY uptrend. fx/research2.json tested the same rules on 11 pairs since 2010: they lost on 9 of 11 (profit factor 0.78), so Bot C's USD/JPY edge is probably luck; Bot C+ (11 pairs) was turned off.",
  "real_money_checklist": "ALL of: >=6 months of paper trading, >=30 closed trades, profit factor > 1.3, max drawdown < $100 (10%, measured on closed trades; open trades can add more). Even then: tiny size only. Not financial advice."
 }
