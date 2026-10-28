@@ -1,25 +1,25 @@
 {
- "time_jst": "2026-10-29 00:55",
- "price": 158.238,
- "change_24h": 0.38,
- "high_24h": 158.248,
+ "time_jst": "2026-10-29 05:57",
+ "price": 157.815,
+ "change_24h": -0.121,
+ "high_24h": 158.347,
  "low_24h": 157.649,
- "week_change": 0.23,
+ "week_change": -0.468,
  "trend": "up",
- "rsi": 67.5,
- "atr": 0.143,
+ "rsi": 44.9,
+ "atr": 0.182,
  "paper": {
-  "balance": 922.48,
+  "balance": 912.42,
   "start": 1000.0,
-  "day_pnl": 19.85,
+  "day_pnl": -10.06,
   "halted_today": false,
   "open_position": {
    "side": "buy",
-   "entry": 158.097,
-   "units": 6950,
-   "stop": 157.87,
-   "tp": 158.552,
-   "ts": "2026-10-28T13:00:00+00:00"
+   "entry": 158.054,
+   "units": 6209,
+   "stop": 157.799,
+   "tp": 158.563,
+   "ts": "2026-10-28T18:00:00+00:00"
   },
   "trades_24h": [
    {
@@ -30,16 +30,25 @@
     "close": "2026-10-28T13:00:00+00:00",
     "pnl": 19.85,
     "why": "target"
+   },
+   {
+    "side": "buy",
+    "entry": 158.097,
+    "exit": 157.869,
+    "open": "2026-10-28T13:00:00+00:00",
+    "close": "2026-10-28T18:00:00+00:00",
+    "pnl": -10.06,
+    "why": "stop"
    }
   ],
-  "total_trades": 25,
-  "win_rate": 24.0,
+  "total_trades": 26,
+  "win_rate": 23.1,
   "scorecard": {
    "since": "2026-09-28",
    "months": 1.0,
-   "trades": 25,
-   "win_rate": 24.0,
-   "profit_factor": 0.57,
+   "trades": 26,
+   "win_rate": 23.1,
+   "profit_factor": 0.54,
    "max_drawdown": 160.62,
    "checks": {
     "months_6": false,
@@ -51,9 +60,9 @@
   },
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
-   "trades": 30,
-   "pnl": -67.64,
-   "win_rate": 26.7
+   "trades": 32,
+   "pnl": -88.17,
+   "win_rate": 25.0
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
   "backtest_2y": "about break-even over ~2.7 years (profit factor ~1.0, max drawdown ~$330-530): no proven edge"
