@@ -8,7 +8,7 @@
   "tp": 158.404,
   "ts": "2026-10-29T08:00:00+00:00"
  },
- "last_ts": "2026-10-29T19:00:00+00:00",
+ "last_ts": "2026-10-29T20:00:00+00:00",
  "day": "2026-10-30",
  "day_pnl": 0.0,
  "halted": false,
@@ -261,7 +261,7 @@
   "B": {
    "balance": 1000.0,
    "position": null,
-   "last": "2026-10-28",
+   "last": "2026-10-29",
    "trades": [],
    "since": "2026-10-07",
    "stats": {
@@ -275,7 +275,7 @@
    }
   },
   "C": {
-   "balance": 999.31,
+   "balance": 999.28,
    "position": {
     "s": -1,
     "e": 158.80950463867188,
@@ -283,7 +283,7 @@
     "stop": 163.30328886195593,
     "date": "2026-09-25"
    },
-   "last": "2026-10-28",
+   "last": "2026-10-29",
    "trades": [],
    "since": "2026-10-07",
    "stats": {
@@ -309,11 +309,11 @@
   "dd": 160.62
  },
  "daily_tries": {
-  "2026-10-29": 1
+  "2026-10-30": 1
  },
  "daily_errors": [],
- "daily_as_of": "2026-10-29 09:47",
- "daily_run": "2026-10-29",
+ "daily_as_of": "2026-10-30 09:48",
+ "daily_run": "2026-10-30",
  "daily_out": {
   "B": {
    "label": "Bot B \u2013 \u1014\u1031\u1037\u1005\u1009\u103a Breakout (20)",
@@ -323,7 +323,7 @@
    "last_trades": [],
    "scorecard": {
     "since": "2026-10-07",
-    "months": 0.7,
+    "months": 0.8,
     "trades": 0,
     "win_rate": null,
     "profit_factor": null,
@@ -339,7 +339,7 @@
   },
   "C": {
    "label": "Bot C \u2013 \u1014\u1031\u1037\u1005\u1009\u103a Trend (EMA20/100)",
-   "balance": 999.31,
+   "balance": 999.28,
    "open_position": {
     "pair": "USD/JPY",
     "side": "sell",
@@ -351,7 +351,7 @@
    "last_trades": [],
    "scorecard": {
     "since": "2026-10-07",
-    "months": 0.7,
+    "months": 0.8,
     "trades": 0,
     "win_rate": null,
     "profit_factor": null,
