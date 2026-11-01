@@ -30,7 +30,7 @@ TAIL = [("Yui", "青いところを自分の話に変えて、言ってみて！
         ("Rio", "リアルな日本語を話したいなら、Rioをフォローしてね！", "リアルなにほんごをはなしたいなら、Rioをフォローしてね！",
          "တကယ်သုံးတဲ့ ဂျပန်စကား ပြောချင်ရင် Rio ကို Follow လုပ်ထားနော်!"),
         ("Yui", "バイバーイ！", "", "Bye bye!")]
-FINAL_PRACTICE = 4.0  # silent seconds per line on the "your turn" card
+FINAL_PRACTICE = 2.6  # silent seconds per line on the "your turn" card
 _AV = {}
 
 # ---------------------------------------------------------------- text helpers
@@ -403,7 +403,7 @@ def intro_frame(s, k, prog):
     y = pattern_box(sc.layer("pop", 0.08), y, st["pattern"], col) + 26
     y = mm_block(ldraw(sc.layer("fade", 0.3)), y, st.get("pattern_mm", ""), 40, SUB, weight=500) + 40
     y = avatar_layers(sc, y, st["main"]["who"], delay=0.35) + 50
-    y = sentence_layers(sc, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, False, 62, 0.35) + 34
+    y = sentence_layers(sc, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, True, 62, 0.35) + 34
     mm_block(ldraw(sc.layer("in", 0.5)), y, st["main"].get("mm", ""), 46, INK, weight=600)
     sc.sfx += [(0.0, "ding"), (0.08, "pop"), (0.35, "whoosh")]
     return sc
@@ -570,23 +570,22 @@ def timeline(s, mb):
     tl = []
     # hook: title card, then overview rows appear one by one
     a, b = mb[0], mb[1]
-    tl.append((lambda p: title_frame(s, p), (a, b, 0.5)))
+    tl.append((lambda p: title_frame(s, p), (a, b, 0.3)))
     for k in range(4):
-        tl.append((lambda p, k=k: overview_frame(s, k, p), ("silence", 1.1 if k < 3 else 1.8)))
+        tl.append((lambda p, k=k: overview_frame(s, k, p), ("silence", 0.8 if k < 3 else 1.3)))
     for k in range(4):
         i = idx[("main", k, None)]
-        tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.7)))
-        tl.append((lambda p, k=k: highlight_frame(s, k, p), (mb[i], mb[i + 1], 0.9)))
+        tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.6)))
         for j in range(2):
             e = idx[("ex", k, j)]
-            tl.append((lambda p, k=k, j=j: example_frame(s, k, j, p), (mb[e], mb[e + 1], 0.8 if j == 0 else 1.0)))
-    tl.append((lambda p: chain_frame(s, None, p), ("silence", 1.0)))
+            tl.append((lambda p, k=k, j=j: example_frame(s, k, j, p), (mb[e], mb[e + 1], 0.45 if j == 0 else 0.7)))
+    tl.append((lambda p: chain_frame(s, None, p), ("silence", 0.8)))
     for k in range(4):
         i = idx[("main", k, None)]
-        tl.append((lambda p, k=k: chain_frame(s, k, p), (mb[i], mb[i + 1], 0.6)))
+        tl.append((lambda p, k=k: chain_frame(s, k, p), (mb[i], mb[i + 1], 0.35)))
     tail_i = [i for i, t in enumerate(mt) if t["type"] == "tail"]
     y0 = tail_i[0]
-    tl.append((lambda p: final_frame(s, None, p), (mb[y0], mb[y0 + 1], 0.6)))
+    tl.append((lambda p: final_frame(s, None, p), (mb[y0], mb[y0 + 1], 0.4)))
     for k in range(4):
         tl.append((lambda p, k=k: final_frame(s, k, p), ("silence", FINAL_PRACTICE)))
     r0 = tail_i[1]

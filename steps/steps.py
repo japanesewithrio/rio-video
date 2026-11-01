@@ -53,10 +53,13 @@ Rules:
 - Sentences are short and natural (max 32 Japanese characters without brackets), casual spoken style young people really use, never textbook.
 - The 4 main sentences make one coherent little story; example 1's 4 sentences make one coherent mini story about ex_tags[0];
   example 2's 4 sentences make one about ex_tags[1]. ex_tags are short Japanese topic words (2-4 characters, e.g. 料理, 漢字, バイト).
-- Use vocabulary around JLPT N4-N3, useful for daily life in Japan.
+- EASY WORDS ONLY: everyone must understand at once, even beginners. Use only very common everyday words a JLPT N5-N4 learner knows
+  (好き, 苦手, 毎日, 友達, 作る, 話す, 起きる, 楽しい, できる ...). Never use difficult, formal or written words such as 日課, 克服, 習慣, 継続,
+  実践, 達成, 徐々に, and avoid rare kanji. Keep sentences SHORT (about 18 characters, max 28). The same for hook and title.
 - kana = the full reading, hiragana for kanji, katakana words stay katakana (バイト, スマホ), WITHOUT brackets, matching the Japanese exactly.
   Put a space only between phrases (bunsetsu), never before particles: まえは、ひとまえで はなすのが にがてだった。 (NOT まえ は、 ひと まえ で).
-- mm = natural, short, spoken-style Burmese (correct Unicode, no double quotes) meaning of the sentence. Rio says main and ex[1] (a young man),
+- mm = natural, short, spoken-style Burmese (correct Unicode, no double quotes) meaning of the sentence, in simple everyday words
+  (no literary or bookish Burmese). Rio says main and ex[1] (a young man),
   Yui says ex[0] (a young woman): if a pronoun or polite ending is needed, use ကျွန်တော် for Rio and ကျွန်မ for Yui.
 - pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို သိပ်မတော်ခဲ့ဘူး.
 - hook = one line by Rio TO THE VIEWER (max 26 characters) inviting them to tell their own story with today's 4 patterns, with kana and mm.
@@ -79,6 +82,8 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
 4. Every kana is the exact full reading (hiragana for kanji, katakana words stay katakana, spaces only between phrases, no brackets, no kanji).
 4b. Sentence-final particles (よ, ね ...) are outside the brackets; brackets are ASCII [ ].
 5. All Burmese is correct, natural, spoken-style Unicode Burmese without double quotes, and matches the Japanese.
+5b. EASY WORDS: replace every word that is harder than JLPT N4 or formal/written (e.g. 日課, 克服, 習慣, 継続, 達成) with an easy everyday word
+   a beginner knows, in hook, title and all sentences; make Burmese simple spoken words too. Keep each sentence short (about 20 characters).
 6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. hook max 26 characters, title max 16, ex_tags 2-4 characters.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.

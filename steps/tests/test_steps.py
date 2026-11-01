@@ -93,7 +93,7 @@ check("no brackets in spoken text", all("[" not in t["jp"] for t in mt))
 # timeline: every audio slice in order and inside the wav
 b = [i * 2.0 for i in range(len(mt) + 1)]
 tl = RS.timeline(f, b)
-check("timeline length", len(tl) == 1 + 4 + 4 * 4 + 1 + 4 + 1 + 4 + 1)
+check("timeline length", len(tl) == 1 + 4 + 4 * 3 + 1 + 4 + 1 + 4 + 1)
 for fn, spec in tl:
     if spec[0] != "silence":
         check("slice ok %s" % (spec,), 0 <= spec[0] < spec[1] <= b[-1])
