@@ -341,6 +341,9 @@ def main():
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     jpath = os.path.join(ROOT, "text", key + ".json")
     json.dump(s, open(jpath, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    # small text file in the old ===SECTION=== layout: the Make scenario "Rio ④" reads it to post to Facebook / TikTok / YouTube
+    with open(os.path.join(ROOT, "text", key + ".txt"), "w", encoding="utf-8") as f:
+        f.write("===TITLE===\n%s\n===CAPTION===\n%s\n===END===\n" % (s["title"], s["caption"].strip()))
     work = os.path.join(ROOT, "work", "steps")
     os.makedirs(work, exist_ok=True)
     main_wav = os.path.join(work, "main.wav")
