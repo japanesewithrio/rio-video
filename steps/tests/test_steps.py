@@ -142,5 +142,17 @@ for n in range(3000):
             except Exception as ex:
                 check("accepted lesson failed to render %r" % ex, False)
 print("fuzz accepted", ok, "of 3000")
+# long silence inside a TTS group gets squeezed
+import wave as _w
+import numpy as _np
+_sr = 24000
+_sp = 0.3 * _np.sin(2 * _np.pi * 200 * _np.arange(_sr) / _sr)
+_x = _np.concatenate([_sp, _np.zeros(_sr * 25), _sp, _np.zeros(int(_sr * 0.5)), _sp])
+_f = "/tmp/_sq_test.wav"
+with _w.open(_f, "wb") as w:
+    w.setnchannels(1); w.setsampwidth(2); w.setframerate(_sr); w.writeframes((_x * 32767).astype(_np.int16).tobytes())
+P.squeeze_silence(_f)
+with _w.open(_f) as w:
+    check("silence squeezed", abs(w.getnframes() / _sr - 4.1) < 0.2)
 print("FAILS", fails)
 sys.exit(1 if fails else 0)

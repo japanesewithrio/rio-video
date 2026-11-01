@@ -234,6 +234,50 @@ def make_lesson(arc, theme, avoid):
     return best
 
 
+def squeeze_silence(path, keep=0.6, longest=0.9, thr=0.012):
+    """Gemini TTS sometimes leaves a very long silence inside a group (seen: 25 s). Shorten any pause over `longest` s to `keep` s."""
+    import wave
+    import numpy as np
+    with wave.open(path, "rb") as w:
+        sr, n = w.getframerate(), w.getnframes()
+        x = np.frombuffer(w.readframes(n), np.int16).astype(np.float32) / 32768
+    hop = int(sr * 0.02)
+    m = len(x) // hop
+    if m < 3:
+        return 0.0
+    loud = np.abs(x[:m * hop]).reshape(m, hop).max(1) > thr
+    out, i, cut = [], 0, 0.0
+    while i < m:
+        j = i
+        while j < m and loud[j] == loud[i]:
+            j += 1
+        seg = x[i * hop:j * hop]
+        if not loud[i] and (j - i) * hop / sr > longest and i > 0 and j < m:
+            k = int(keep * sr / 2)
+            out += [seg[:k], seg[-k:]]
+            cut += len(seg) / sr - keep
+        else:
+            out.append(seg)
+        i = j
+    out.append(x[m * hop:])
+    if cut > 0:
+        y = (np.clip(np.concatenate(out), -1, 1) * 32767).astype(np.int16)
+        with wave.open(path, "wb") as w:
+            w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr); w.writeframes(y.tobytes())
+        D.log("squeezed %.1f s of silence out of %s" % (cut, os.path.basename(path)))
+    return cut
+
+
+_tts_lines = S.tts_lines
+
+
+def tts_lines_squeezed(prompt_multi, prompt_one, turns, path):
+    _tts_lines(prompt_multi, prompt_one, turns, path)
+    squeeze_silence(path)
+
+
+S.tts_lines = tts_lines_squeezed
+
 P_MULTI = ("TTS the following lines by two close Japanese friends around 20 years old. Rio: a young man, relaxed and friendly, telling "
            "a short story about himself. Yui: a young woman, bright and friendly, saying her own example sentence. "
            "Speak naturally like real young people, normal natural speed, very clear. Do NOT act and do NOT exaggerate; not like an "
