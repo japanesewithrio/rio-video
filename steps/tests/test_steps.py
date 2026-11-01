@@ -137,7 +137,8 @@ for n in range(3000):
                 xx = P.finish(x)
                 tl = RS.timeline(xx, b)
                 for fn, spec in tl[:12]:
-                    fn(0.5)
+                    sc = fn(0.5)
+                    sc.flat(); sc.at(0.2)
             except Exception as ex:
                 check("accepted lesson failed to render %r" % ex, False)
 print("fuzz accepted", ok, "of 3000")

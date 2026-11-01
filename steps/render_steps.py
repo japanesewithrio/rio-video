@@ -8,12 +8,13 @@ usage: python steps/render_steps.py lesson.json main.wav out.mp4
   main.wav    : hook, then per step [main (Rio), example 1 (Yui), example 2 (Rio)], then tail (Yui, Rio, Yui)
   optional main.bounds.json next to the wav (exact line bounds, written by steps.py)
 """
-import json, os, re, subprocess, sys, tempfile
+import json, math, os, re, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 import render as R  # noqa: E402  (render.py in the repo root, gunzipped by the workflow)
 from PIL import Image, ImageDraw, ImageFilter  # noqa: E402
+import numpy as np  # noqa: E402
 
 W, H = R.W, R.H
 INK = (40, 44, 58)
@@ -80,7 +81,7 @@ def rich_lines(d, segs, fnt, maxw):
     return lines
 
 
-def rich_block(d, cx, y, segs, fnt, maxw, pcol, ncol=INK, hl=True, center=True, x0=None):
+def rich_block(d, cx, y, segs, fnt, maxw, pcol, ncol=INK, hl=True, center=True, x0=None, ul="both"):
     """Draw styled text. kinds: p = pattern part (pcol), s = swappable (blue + underline), n = normal.
     hl=False draws everything in ncol (plain sentence)."""
     lh = int(fnt.size * 1.42)
@@ -95,9 +96,10 @@ def rich_block(d, cx, y, segs, fnt, maxw, pcol, ncol=INK, hl=True, center=True, 
                 j += 1
             run = "".join(c for c, _ in ln[i:j])
             col = ncol if not hl else (BLUE if k == "s" else pcol if k == "p" else ncol)
-            d.text((x, y), run, font=fnt, fill=col)
+            if ul != "only":
+                d.text((x, y), run, font=fnt, fill=col)
             rw = d.textlength(run, font=fnt)
-            if hl and k == "s":
+            if hl and k == "s" and ul != "none":
                 uy = y + int(fnt.size * 1.18)
                 d.line([(x + 2, uy), (x + rw - 2, uy)], fill=BLUE, width=max(3, fnt.size // 14))
             x += rw
@@ -221,15 +223,18 @@ def pattern_box(img, y, pattern, col, size=66):
     return y + h
 
 
-def sentence_card(img, y, segs, kana, col, hl, size=62):
+def sentence_card(img, y, segs, kana, col, hl, size=62, ul="both"):
     d = ImageDraw.Draw(img)
     f = jfont(size)
     hj = rich_height(d, segs, f, 860)
     kf = jfont(34, False)
     hk = len(kana_lines(d, kana, kf, 840)) * int(34 * 1.45) + 12 if kana else 0
     h = hj + hk + 70
+    if ul == "only":
+        rich_block(d, W / 2, y + 42, segs, f, 860, col, hl=hl, ul="only")
+        return y + h
     card(img, y, h, fill=(246, 250, 255) if not hl else (255, 255, 255))
-    yy = rich_block(d, W / 2, y + 42, segs, f, 860, col, ncol=(52, 110, 180) if not hl else INK, hl=hl)
+    yy = rich_block(d, W / 2, y + 42, segs, f, 860, col, ncol=(52, 110, 180) if not hl else INK, hl=hl, ul=ul)
     if kana:
         kana_block(d, yy + 12, kana, 34, (90, 130, 190) if not hl else GREY, 840)
     return y + h
@@ -240,10 +245,108 @@ def step_label(d, y, text, col):
     return y + 70
 
 
+# ---------------------------------------------------------------- scenes (layers for animation)
+def ease(x):
+    x = max(0.0, min(1.0, x))
+    return 1 - (1 - x) ** 3
+
+
+class Scene:
+    """A frame built from layers. Layer kinds:
+    static          always shown
+    in              slides up 46px and fades in (delay = start time)
+    fade            fades in (delay)
+    wipe            revealed left to right (delay) - used for the blue underlines
+    pop             grows from 85% to 100% and fades in (delay), around its own centre
+    bounce          speaking avatar: little hop at the start
+    sfx: list of (time, name) sound effects played at this frame's start + time."""
+
+    def __init__(self, tag, prog):
+        self.base = base(tag, prog)
+        self.layers = []
+        self.sfx = []
+
+    def layer(self, kind="static", delay=0.0, box=None):
+        im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        self.layers.append({"im": im, "kind": kind, "delay": delay})
+        return im
+
+    def anim_len(self):
+        ends = [l["delay"] + (0.6 if l["kind"] == "wipe" else 0.5 if l["kind"] == "bounce" else 0.38)
+                for l in self.layers if l["kind"] != "static"]
+        return max(ends) if ends else 0.0
+
+    def at(self, t):
+        if not hasattr(self, "_still"):
+            self._still = self.base.copy()
+            for l in self.layers:
+                if l["kind"] == "static":
+                    self._still.alpha_composite(l["im"])
+        img = self._still.copy()
+        for l in self.layers:
+            im, kind, e = l["im"], l["kind"], (t - l["delay"])
+            if kind == "static":
+                continue
+            if e <= 0:
+                if kind == "bounce":
+                    img.alpha_composite(im)
+                continue
+            if kind == "wipe":
+                p = ease(e / 0.6)
+                bb = l.setdefault("bb", im.getbbox())
+                if not bb or p <= 0:
+                    continue
+                x = int(bb[0] + (bb[2] - bb[0]) * p)
+                if p >= 1:
+                    img.alpha_composite(im)
+                else:
+                    img.alpha_composite(im.crop((0, 0, x, H)), (0, 0))
+                continue
+            if kind == "bounce":
+                p = min(1.0, e / 0.5)
+                n = int(26 * math.sin(math.pi * p)) if p < 1 else 0
+                img.alpha_composite(im, (0, 0), (0, n))
+                continue
+            p = ease(e / 0.38)
+            if p >= 1:
+                img.alpha_composite(im)
+                continue
+            src = im
+            if kind == "pop":
+                bb = l.setdefault("bb", im.getbbox())
+                if not bb:
+                    continue
+                part = im.crop(bb)
+                sc = 0.85 + 0.15 * p
+                nw, nh = max(1, int(part.width * sc)), max(1, int(part.height * sc))
+                part = part.resize((nw, nh), Image.BILINEAR)
+                a = part.getchannel("A").point(lambda v: int(v * p))
+                part.putalpha(a)
+                cx, cy = (bb[0] + bb[2]) // 2, (bb[1] + bb[3]) // 2
+                img.alpha_composite(part, (cx - nw // 2, cy - nh // 2))
+                continue
+            bb = l.setdefault("bb", im.getbbox())
+            if not bb:
+                continue
+            part = im.crop(bb)
+            part.putalpha(part.getchannel("A").point(lambda v: int(v * p)))
+            dy = int(46 * (1 - p)) if kind == "in" else 0
+            img.alpha_composite(part, (bb[0], bb[1] + dy))
+        return img.convert("RGB")
+
+    def flat(self):
+        return self.at(99.0)
+
+
+def ldraw(im):
+    return ImageDraw.Draw(im)
+
+
 # ---------------------------------------------------------------- frames
 def overview_frame(s, upto, prog):
-    img = base("4 STEPS STORY", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("4 STEPS STORY", prog)
+    st0 = sc.layer()
+    d = ldraw(st0)
     y = mm_block(d, 260, "ဒီ pattern ၄ ခုကို တစ်ခုပြီးတစ်ခု ဆက်ပြီး ပြောကြည့်ရအောင်!", 46, INK, weight=650)
     y += 40
     for k, st in enumerate(s["steps"]):
@@ -253,7 +356,9 @@ def overview_frame(s, upto, prog):
         hm = len(R.wrap(d, st.get("pattern_mm", ""), mfont(36), 760, jfont(32, False))) * 64
         h = hp + hm + 70
         cur = k == upto
-        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        layer = sc.layer("in", 0.05) if cur else sc.layer()
+        if k > upto:
+            layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         card(layer, y, h, outline=col if cur else (226, 230, 238), width=6 if cur else 3)
         ld = ImageDraw.Draw(layer)
         ld.ellipse([110, y + 34, 170, y + 94], fill=col if k <= upto else (220, 224, 232))
@@ -262,61 +367,87 @@ def overview_frame(s, upto, prog):
         R.lblock(ld, 200, yy + 4, st.get("pattern_mm", ""), mfont(36), SUB, 760)
         if k > upto:
             layer.putalpha(layer.getchannel("A").point(lambda v: int(v * 0.35)))
-        img.alpha_composite(layer)
+            st0.alpha_composite(layer)
         y += h + 30
-    return img.convert("RGB")
+    sc.sfx.append((0.05, "pop"))
+    return sc
+
+
+def sentence_layers(sc, y, segs, kana, col, hl, size, delay):
+    """Card + text slide in; blue underlines wipe in a bit later."""
+    lay = sc.layer("in", delay)
+    yy = sentence_card(lay, y, segs, kana, col, hl, size=size, ul="none")
+    if hl and any(k == "s" for _, k in segs):
+        sentence_card(sc.layer("wipe", delay + 0.45), y, segs, kana, col, hl, size=size, ul="only")
+        sc.sfx.append((delay + 0.45, "swish"))
+    return yy
+
+
+def avatar_layers(sc, y, speaker, size=190, delay=0.0):
+    if y + size > H - 160:
+        return y
+    for name, cx in (("Rio", W // 2 - 250), ("Yui", W // 2 + 250)):
+        on = speaker in (None, name)
+        s_ = size if on else int(size * 0.82)
+        a = avatar(name, s_, 9 if on else 6, 1.0 if on else 0.45)
+        lay = sc.layer("bounce", delay) if on and speaker else sc.layer()
+        lay.alpha_composite(a, (cx - s_ // 2, int(y + (size - s_) / 2)))
+    return y + size
 
 
 def intro_frame(s, k, prog):
     st, col = s["steps"][k], STEP_COL[k]
-    img = base("JAPANESE + HIRAGANA", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("JAPANESE + HIRAGANA", prog)
+    d = ldraw(sc.layer("fade", 0.0))
     y = step_label(d, 270, "STEP %d / 4" % (k + 1), col)
-    y = pattern_box(img, y, st["pattern"], col) + 26
-    y = mm_block(d, y, st.get("pattern_mm", ""), 40, SUB, weight=500) + 40
-    y = avatars(img, y, st["main"]["who"]) + 50
-    y = sentence_card(img, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, hl=False) + 34
-    mm_block(d, y, st["main"].get("mm", ""), 46, INK, weight=600)
-    return img.convert("RGB")
+    y = pattern_box(sc.layer("pop", 0.08), y, st["pattern"], col) + 26
+    y = mm_block(ldraw(sc.layer("fade", 0.3)), y, st.get("pattern_mm", ""), 40, SUB, weight=500) + 40
+    y = avatar_layers(sc, y, st["main"]["who"], delay=0.35) + 50
+    y = sentence_layers(sc, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, False, 62, 0.35) + 34
+    mm_block(ldraw(sc.layer("in", 0.5)), y, st["main"].get("mm", ""), 46, INK, weight=600)
+    sc.sfx += [(0.0, "ding"), (0.08, "pop"), (0.35, "whoosh")]
+    return sc
 
 
 def highlight_frame(s, k, prog):
     st, col = s["steps"][k], STEP_COL[k]
-    img = base("PATTERN HIGHLIGHT", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("PATTERN HIGHLIGHT", prog)
+    d = ldraw(sc.layer())
     y = step_label(d, 260, "STEP %d / 4" % (k + 1), col)
-    y = mm_block(d, y, "ပုံသေ = pattern ၊ အပြာ = ပြောင်းလို့ရတယ်", 40, INK, weight=550) + 30
-    y = pattern_box(img, y, st["pattern"], col) + 50
-    y = sentence_card(img, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, hl=True, size=64) + 40
-    y = mm_block(d, y, st["main"].get("mm", ""), 46, INK, weight=600) + 40
-    avatars(img, max(y, 1500), st["main"]["who"], size=150)
-    return img.convert("RGB")
+    y = mm_block(ldraw(sc.layer("fade", 0.0)), y, "ပုံသေ = pattern ၊ အပြာ = ပြောင်းလို့ရတယ်", 40, INK, weight=550) + 30
+    y = pattern_box(sc.layer(), y, st["pattern"], col) + 50
+    y = sentence_layers(sc, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, True, 64, 0.0) + 40
+    y = mm_block(ldraw(sc.layer()), y, st["main"].get("mm", ""), 46, INK, weight=600) + 40
+    avatar_layers(sc, max(y, 1500), st["main"]["who"], size=150, delay=0.1)
+    return sc
 
 
 def example_frame(s, k, j, prog):
     st, col = s["steps"][k], STEP_COL[k]
     ex = st["ex"][j]
     tag = (s.get("ex_tags") or ["", ""])[j]
-    img = base("NEW WORDS · SAME GRAMMAR", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("NEW WORDS · SAME GRAMMAR", prog)
+    d = ldraw(sc.layer("fade", 0.0))
     y = step_label(d, 270, "EXAMPLE %d  ・  %s" % (j + 1, tag) if tag else "EXAMPLE %d" % (j + 1), col)
-    y = pattern_box(img, y, st["pattern"], col) + 40
+    y = pattern_box(sc.layer(), y, st["pattern"], col) + 40
+    cd = ldraw(sc.layer("pop", 0.05))
     f = mfont(40, 650)
     chip = "စကားလုံးပဲ ပြောင်းတယ်၊ ပုံစံက အတူတူပဲ"
     alt = jfont(36, False)
-    tw = R.tlen(d, chip, f, alt)
-    d.rounded_rectangle([W / 2 - tw / 2 - 40, y, W / 2 + tw / 2 + 40, y + 84], 42, fill=(234, 242, 253))
-    R.block(d, y + 8, chip, f, BLUE, maxw=900)
+    tw = R.tlen(cd, chip, f, alt)
+    cd.rounded_rectangle([W / 2 - tw / 2 - 40, y, W / 2 + tw / 2 + 40, y + 84], 42, fill=(234, 242, 253))
+    R.block(cd, y + 8, chip, f, BLUE, maxw=900)
     y += 84 + 46
-    y = sentence_card(img, y, segments(ex["jp"]), ex.get("kana", ""), col, hl=True, size=64) + 40
-    y = mm_block(d, y, ex.get("mm", ""), 46, INK, weight=600) + 40
-    avatars(img, max(y, 1500), ex["who"], size=150)
-    return img.convert("RGB")
+    y = sentence_layers(sc, y, segments(ex["jp"]), ex.get("kana", ""), col, True, 64, 0.15) + 40
+    y = mm_block(ldraw(sc.layer("in", 0.3)), y, ex.get("mm", ""), 46, INK, weight=600) + 40
+    avatar_layers(sc, max(y, 1500), ex["who"], size=150, delay=0.15)
+    sc.sfx += [(0.15, "whoosh")]
+    return sc
 
 
-def rows(img, s, y, cur, bottom):
-    """The 4 lines of the story as stacked cards; cur is outlined in its step colour."""
-    d = ImageDraw.Draw(img)
+def rows(sc, s, y, cur, bottom, cur_kind="fade"):
+    """The 4 lines of the story as stacked cards; cur is outlined in its step colour (that card animates)."""
+    d = ldraw(sc.layer())
     for js, ks, ms, show_k in ((44, 26, 32, True), (40, 24, 30, True), (36, 22, 28, True), (36, 22, 28, False), (32, 20, 26, False)):
         fj, fk, fm = jfont(js), jfont(ks, False), mfont(ms)
         alt = jfont(ms - 4, False)
@@ -333,57 +464,68 @@ def rows(img, s, y, cur, bottom):
     for k, st in enumerate(s["steps"]):
         m, col, h = st["main"], STEP_COL[k], items[k]
         on = k == cur
-        card(img, y, h, outline=col if on else (226, 230, 238), width=6 if on else 3,
+        im = sc.layer(cur_kind, 0.0) if on else sc.layer()
+        card(im, y, h, outline=col if on else (226, 230, 238), width=6 if on else 3,
              fill=(255, 255, 255) if on or cur is None else (250, 251, 253))
-        d.text((112, y + 30), str(k + 1), font=jfont(34), fill=col)
-        yy = rich_block(d, 0, y + 26, segments(m["jp"]), fj, 780, col, center=False, x0=170)
+        dd = ldraw(im)
+        dd.text((112, y + 30), str(k + 1), font=jfont(34), fill=col)
+        yy = rich_block(dd, 0, y + 26, segments(m["jp"]), fj, 780, col, center=False, x0=170)
         if show_k and m.get("kana"):
-            yy = kana_block(d, yy - 2, m["kana"], ks, GREY, 780, x0=170)
-        R.lblock(d, 170, yy + 4, m.get("mm", ""), fm, SUB, 780)
+            yy = kana_block(dd, yy - 2, m["kana"], ks, GREY, 780, x0=170)
+        R.lblock(dd, 170, yy + 4, m.get("mm", ""), fm, SUB, 780)
         y += h + gap
     return y
 
 
 def chain_frame(s, cur, prog):
-    img = base("ALL 4 · SPEAK CONTINUOUSLY", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("ALL 4 · SPEAK CONTINUOUSLY", prog)
+    d = ldraw(sc.layer("pop", 0.0) if cur is None else sc.layer())
     d.text((W / 2, 250), "つなげて話すと…", font=jfont(60), fill=INK, anchor="mt")
     y = mm_block(d, 345, "၄ ကြောင်း ဆက်ပြောလိုက်ရင် ဇာတ်လမ်းတစ်ပုဒ် ဖြစ်သွားပြီ!", 38, SUB) + 24
-    rows(img, s, y, cur, H - 180)
-    return img.convert("RGB")
+    rows(sc, s, y, cur, H - 180)
+    sc.sfx.append((0.0, "whoosh" if cur is None else "tick"))
+    return sc
 
 
 def final_frame(s, cur, prog):
-    img = base("YOUR TURN", prog)
-    d = ImageDraw.Draw(img)
+    sc = Scene("YOUR TURN", prog)
+    d = ldraw(sc.layer("pop", 0.0) if cur is None else sc.layer())
     y = mm_block(d, 240, "အပြာရောင် စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး ပြောကြည့်နော်!", 44, INK, weight=650) + 24
-    rows(img, s, y, cur, H - 250)
-    d.text((W / 2, H - 205), "SWAP THE BLUE WORDS!", font=jfont(40), fill=BLUE, anchor="mm")
-    return img.convert("RGB")
+    rows(sc, s, y, cur, H - 250)
+    ldraw(sc.layer("pop", 0.25) if cur is None else sc.layer()).text(
+        (W / 2, H - 205), "SWAP THE BLUE WORDS!", font=jfont(40), fill=BLUE, anchor="mm")
+    sc.sfx.append((0.0, "sparkle") if cur is None else (0.0, "tick"))
+    return sc
 
 
 def outro_frame(prog):
-    img = base("FOLLOW", prog)
-    d = ImageDraw.Draw(img)
-    avatars(img, 520, None, size=230)
+    sc = Scene("FOLLOW", prog)
+    avatar_layers(sc, 520, None, size=230)
+    for l in sc.layers:
+        l["kind"], l["delay"] = "pop", 0.0
+    d = ldraw(sc.layer("in", 0.2))
     d.text((W / 2, 860), "Follow", font=jfont(62), fill=(222, 98, 150), anchor="mt")
     d.text((W / 2, 960), "Learn with Rio ♡", font=jfont(88), fill=INK, anchor="mt")
+    d = ldraw(sc.layer("fade", 0.45))
     y = R.block(d, 1150, "リアルな日本語を話したいなら、", jfont(46), SUB, maxw=900, gap=14)
     y = R.block(d, y, "Rioをフォローしてね！", jfont(46), SUB, maxw=900, gap=14)
     mm_block(d, y + 26, TAIL[1][3], 40, GREY)
-    return img.convert("RGB")
+    sc.sfx += [(0.0, "pop"), (0.2, "ding")]
+    return sc
 
 
 def title_frame(s, prog):
-    img = base("4 STEPS STORY", prog)
-    d = ImageDraw.Draw(img)
-    avatars(img, 420, "Rio", size=240)
+    sc = Scene("4 STEPS STORY", prog)
+    avatar_layers(sc, 420, "Rio", size=240, delay=0.1)
+    d = ldraw(sc.layer("in", 0.0))
     y = R.block(d, 760, s["hook"]["jp"], jfont(70), INK, maxw=920, gap=26)
     if s["hook"].get("kana"):
         y = kana_block(d, y + 6, s["hook"]["kana"], 34, GREY, 900)
+    d = ldraw(sc.layer("fade", 0.3))
     y = mm_block(d, y + 40, s["hook"].get("mm", ""), 46, SUB, weight=600)
-    R.block(d, max(y + 80, 1400), s["title"], jfont(50), (222, 98, 150), maxw=920)
-    return img.convert("RGB")
+    R.block(ldraw(sc.layer("pop", 0.5)), max(y + 80, 1400), s["title"], jfont(50), (222, 98, 150), maxw=920)
+    sc.sfx += [(0.0, "whoosh"), (0.5, "pop")]
+    return sc
 
 
 # ---------------------------------------------------------------- audio order
@@ -452,40 +594,147 @@ def timeline(s, mb):
     return tl
 
 
-def render(lesson_path, wav, out_path):
+# ---------------------------------------------------------------- sound effects (made here: free, no copyright)
+SR = 24000
+FPS = 30
+SFX_GAIN = 0.55
+
+
+def _env(n, attack, decay):
+    t = np.arange(n) / SR
+    return np.minimum(1.0, t / max(attack, 1e-4)) * np.exp(-t / decay)
+
+
+def _noise(n, smooth):
+    x = np.random.default_rng(len(_SFX_CACHE) + n).standard_normal(n)
+    k = np.ones(smooth) / smooth
+    return np.convolve(x, k, "same")
+
+
+_SFX_CACHE = {}
+
+
+def sfx(name):
+    if name in _SFX_CACHE:
+        return _SFX_CACHE[name]
+    if name == "pop":
+        n = int(SR * 0.09); t = np.arange(n) / SR
+        f = 900 * np.exp(-t * 25) + 260
+        y = np.sin(2 * np.pi * np.cumsum(f) / SR) * _env(n, 0.002, 0.03) * 0.3
+    elif name in ("whoosh", "swish"):
+        dur = 0.32 if name == "whoosh" else 0.2
+        n = int(SR * dur); t = np.arange(n) / SR
+        y = _noise(n, 6 if name == "swish" else 10) * np.sin(np.pi * t / dur) ** 2 * (0.22 if name == "whoosh" else 0.16)
+    elif name == "ding":
+        n = int(SR * 0.8); t = np.arange(n) / SR
+        y = (np.sin(2 * np.pi * 1318.5 * t) + 0.35 * np.sin(2 * np.pi * 2637 * t)) * _env(n, 0.003, 0.22) * 0.22
+    elif name == "tick":
+        n = int(SR * 0.05); t = np.arange(n) / SR
+        y = np.sin(2 * np.pi * 1760 * t) * _env(n, 0.001, 0.012) * 0.25
+    elif name == "sparkle":
+        n = int(SR * 0.9); y = np.zeros(n)
+        for i, fr in enumerate((1318.5, 1760, 2093, 2637)):
+            o = int(SR * 0.07 * i); m = n - o; t = np.arange(m) / SR
+            y[o:] += np.sin(2 * np.pi * fr * t) * _env(m, 0.002, 0.15) * 0.14
+    else:
+        y = np.zeros(1)
+    _SFX_CACHE[name] = y.astype(np.float32)
+    return _SFX_CACHE[name]
+
+
+def load_wav(path):
+    return R.pcm(path, SR)
+
+
+def clip_audio(x, mb_a, mb_b, pad):
+    a, b = int(mb_a * SR), int(mb_b * SR)
+    return np.concatenate([x[a:b], np.zeros(int(pad * SR), np.float32)])
+
+
+# ---------------------------------------------------------------- build
+def encode_frames(frames_iter, n, path):
+    """Pipe raw RGB frames to ffmpeg -> one mp4 (same settings for every piece)."""
+    part = path[:-4] + ".part.mp4"
+    p = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "%dx%d" % (W, H),
+                          "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
+                          "-r", str(FPS), part], stdin=subprocess.PIPE)
+    for _ in range(n):
+        p.stdin.write(next(frames_iter).tobytes())
+    p.stdin.close()
+    if p.wait() != 0:
+        raise RuntimeError("ffmpeg failed for " + path)
+    os.replace(part, path)
+
+
+def encode_still(img, n, path, tmp):
+    png = path[:-4] + ".png"
+    img.save(png)
+    part = path[:-4] + ".part.mp4"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", png,
+                    "-vf", "format=yuv420p,loop=-1:1", "-frames:v", str(n), "-c:v", "libx264", "-preset", "veryfast",
+                    "-pix_fmt", "yuv420p", "-r", str(FPS), part], check=True)
+    os.replace(part, path)
+
+
+def render(lesson_path, wav, out_path, only=None, animate=True):
+    """only: optional (first, last) timeline indices, for short demos."""
     s = json.load(open(lesson_path, encoding="utf-8"))
     tmp = tempfile.mkdtemp()
     mt = main_turns(s)
     mb, mT = bounds(wav, mt)
     tl = timeline(s, mb)
-    alst, vlst = os.path.join(tmp, "a.txt"), os.path.join(tmp, "v.txt")
+    voice = load_wav(wav)
+    rng = range(len(tl)) if only is None else range(only[0], only[1] + 1)
     n = len(tl)
-    with open(alst, "w") as fa, open(vlst, "w") as fv:
-        for i, (fn, spec) in enumerate(tl):
-            af = os.path.join(tmp, "a%03d.wav" % i)
-            if spec[0] == "silence":
-                cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono",
-                       "-t", "%.3f" % spec[1], af]
-            else:
-                a, b, pad = spec
-                cmd = ["ffmpeg", "-y", "-loglevel", "error", "-ss", "%.3f" % a, "-to", "%.3f" % b, "-i", wav,
-                       "-ar", "24000", "-ac", "1", "-af", "apad=pad_dur=%s" % pad, af]
-            subprocess.run(cmd, check=True)
-            p = os.path.join(tmp, "f%03d.png" % i)
-            fn((i + 1) / n).save(p)
-            fv.write("file '%s'\nduration %.3f\n" % (p, R.duration(af)))
-            fa.write("file '%s'\n" % af)
-        fv.write("file '%s'\n" % p)
+    pieces, audio, sfx_at, t0 = [], [], [], 0
+    for i in rng:
+        fn, spec = tl[i]
+        if spec[0] == "silence":
+            x = np.zeros(int(spec[1] * SR), np.float32)
+        else:
+            x = clip_audio(voice, *spec)
+        nf = max(1, int(round(len(x) / SR * FPS)))
+        x = np.concatenate([x, np.zeros(max(0, nf * SR // FPS - len(x)), np.float32)])[:nf * SR // FPS]
+        audio.append(x)
+        sc = fn((i + 1) / n)
+        na = min(nf, int(math.ceil(sc.anim_len() * FPS)) + 1) if animate else 0
+        if na:
+            f = os.path.join(tmp, "v%03da.mp4" % i)
+            encode_frames((sc.at(k / FPS) for k in range(na)), na, f)
+            pieces.append(f)
+        if nf - na > 0:
+            f = os.path.join(tmp, "v%03db.mp4" % i)
+            encode_still(sc.flat(), nf - na, f, tmp)
+            pieces.append(f)
+        if animate:
+            for when, name in sc.sfx:
+                sfx_at.append((t0 + int(when * SR), name))
+        t0 += len(x)
+    y = np.concatenate(audio)
+    for at, name in sfx_at:
+        e = sfx(name)
+        m = min(len(e), len(y) - at)
+        if m > 0:
+            y[at:at + m] += e[:m] * SFX_GAIN
+    y = (np.clip(y, -1, 1) * 32767).astype(np.int16)
     aud = os.path.join(tmp, "all.wav")
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", alst, "-c", "copy", aud], check=True)
+    import wave
+    with wave.open(aud, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(y.tobytes())
+    lst = os.path.join(tmp, "v.txt")
+    with open(lst, "w") as fv:
+        for f in pieces:
+            fv.write("file '%s'\n" % f)
+    vcat = os.path.join(tmp, "video.mp4")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", vcat], check=True)
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     part = out_path[:-4] + ".part.mp4"
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", vlst, "-i", aud,
-                    "-map", "0:v", "-map", "1:a", "-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", vcat, "-i", aud, "-map", "0:v", "-map", "1:a", "-c:v", "copy",
                     "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", part], check=True)
     os.replace(part, out_path)
-    print("rendered steps", out_path, n, "segments", round(R.duration(aud), 1), "s")
-    return R.duration(aud)
+    secs = len(y) / SR
+    print("rendered steps", out_path, len(pieces), "pieces", round(secs, 1), "s")
+    return secs
 
 
 if __name__ == "__main__":
