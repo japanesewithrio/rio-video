@@ -377,7 +377,7 @@ def main():
         D.WARN.append("Telegram sendVideo failed")
     D.tg("sendMessage", {"chat_id": chat, "text": transcript(s)})
     ok = {}
-    if not DRY:
+    if not DRY and D.ZKEY:  # normally empty: TikTok/YouTube are posted by the Make scenario "Rio ④" at 19:00
         import time
         url = D.REPO_RAW + vid
         time.sleep(20)
@@ -394,8 +394,9 @@ def main():
                                                                           "visibility": "public", "madeForKids": False,
                                                                           "containsSyntheticMedia": True}}],
                                   "publishNow": True})
-    summary = "✅ 4 Steps video %s %s\n%s (%ds)\nTikTok: %s / YouTube: %s" % (
-        "TEST" if DRY else "posted", key, title, secs, ok.get("tiktok", "-"), ok.get("youtube", "-"))
+    summary = "✅ 4 Steps video %s %s\n%s (%ds)\n%s" % (
+        "TEST" if DRY else "posted to Telegram", key, title, secs,
+        "(test only - not posted)" if DRY else "Facebook / TikTok / YouTube: Make posts it at 19:00")
     if D.WARN:
         summary += "\n(small problems: %s)" % "; ".join(D.WARN)[:600]
     if D.OWNER:
