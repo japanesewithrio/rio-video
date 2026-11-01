@@ -4,8 +4,16 @@
    "key": "F261101",
    "title": "人前で話せるようになった話",
    "arc": 0,
-   "date": "2026-11-01"
+   "date": "2026-11-01",
+   "hook": "人前で話すの、苦手じゃない？",
+   "tags": [
+    "料理",
+    "電話"
+   ]
   }
  ],
- "next_arc": 1
+ "next_arc": 1,
+ "themes": [
+  "speaking in front of people"
+ ]
 }

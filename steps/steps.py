@@ -29,6 +29,16 @@ THEMES = [
     "talking on the phone", "learning to swim", "taking an exam", "a morning newspaper delivery job",
     "a first date", "drinking coffee", "sleeping too little", "making onigiri", "shopping at a 100-yen shop",
     "watching anime without subtitles", "texting a crush on LINE", "going to the hospital in Japan",
+    "getting lost in a big train station", "ordering at a ramen ticket machine", "dancing at a festival", "camping for the first time",
+    "taking photos for Instagram", "playing an online game with strangers", "learning to cook curry from a friend's mom",
+    "being afraid of dogs", "talking to a crush", "dyeing your hair", "a part-time job at a cafe", "drawing pictures",
+    "playing the guitar", "riding a roller coaster", "spicy food", "eating sushi with your hands", "using chopsticks",
+    "making a speech at a wedding", "being shy at a drinking party", "living with a roommate", "keeping your room clean",
+    "learning to drive", "taking the night bus", "climbing Mt. Fuji", "the summer heat", "mosquitoes", "earthquakes",
+    "writing in a diary", "reading manga in Japanese", "speaking on Instagram Live", "TikTok dancing", "making a YouTube video",
+    "taking care of a cat", "growing vegetables", "getting up for sunrise", "running a marathon", "studying at a cafe",
+    "asking for directions", "saying no to a senpai", "handling a customer complaint at work", "fixing your own bike",
+    "waiting for a LINE reply", "buying clothes online", "a haircut that went wrong", "trying matcha sweets",
 ]
 
 GEN = """You write scripts for "Learn with Rio ♡", a channel that teaches REAL spoken Japanese to Burmese (Myanmar) people living in Japan.
@@ -40,7 +50,8 @@ each example thread continuing its own mini story across the 4 steps (example 1 
 Today's 4 patterns, in this exact order (〜 marks a slot; the text outside the slots must be used EXACTLY, character for character):
 @@ARC@@
 Story idea for Rio's sentences (inspiration, make it natural and a little warm or funny; if it does not fit the patterns, pick a related everyday situation that does): @@THEME@@
-Do NOT reuse these past titles or their stories: @@AVOID@@
+Do NOT reuse these past titles, hooks or their stories, and do not reuse their ideas or example topics: @@AVOID@@
+Make today's story feel fresh and interesting: a concrete, relatable situation with a small surprise or a warm/funny detail.
 
 Rules:
 - In every sentence ("main" and both "ex"), write the pattern text exactly and put the words that fill each slot inside ASCII square brackets [like this].
@@ -207,7 +218,7 @@ def finish(s):
 
 def make_lesson(arc, theme, avoid):
     arc_txt = "\n".join("%d. %s" % (i + 1, p) for i, p in enumerate(arc))
-    prompt = GEN.replace("@@ARC@@", arc_txt).replace("@@THEME@@", theme).replace("@@AVOID@@", "、".join(avoid[-40:]) or "(none)")
+    prompt = GEN.replace("@@ARC@@", arc_txt).replace("@@THEME@@", theme).replace("@@AVOID@@", "、".join(avoid[-80:]) or "(none)")
     rev = REV.replace("@@ARC@@", " / ".join(arc))
     best, best_err = None, None
     for attempt in range(2):
@@ -337,7 +348,12 @@ def main():
         key = "F" + now.strftime("%y%m%d%H%M")
     ai = st.get("next_arc", 0) % len(arcs)
     arc = arcs[ai]
-    theme = random.choice(THEMES)
+    # never repeat a story theme until all of them were used (Ye 2026-11-01: "content မထပ်စေနဲ့")
+    used = set(st.get("themes", []))
+    fresh = [t for t in THEMES if t not in used] or list(THEMES)
+    if len(fresh) == len(THEMES):
+        st["themes"] = []
+    theme = random.choice(fresh)
     D.log("key", key, "arc", ai, arc, "theme", theme)
     inp = os.environ.get("STEPS_INPUT", "")
     use_inp = bool(inp and os.path.exists(os.path.join(ROOT, inp)))
@@ -346,7 +362,8 @@ def main():
         arc = [x["pattern"] for x in s["steps"]]
         D.log("using prepared lesson", inp, "errors", validate(s, arc))
     else:
-        s = make_lesson(arc, theme, [d["title"] for d in st["done"]])
+        s = make_lesson(arc, theme, [d["title"] for d in st["done"]] + [d.get("hook", "") for d in st["done"] if d.get("hook")]
+                        + ["example topic " + t for d in st["done"][-6:] for t in d.get("tags", [])])
     s = finish(s)
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     jpath = os.path.join(ROOT, "text", key + ".json")
@@ -362,7 +379,8 @@ def main():
     vid = os.path.join("videos", key + ".mp4")
     secs = RS.render(jpath, main_wav, os.path.join(ROOT, vid))
     if not DRY and not use_inp:
-        st["done"].append({"key": key, "title": s["title"], "arc": ai, "date": now.strftime("%Y-%m-%d")})
+        st["done"].append({"key": key, "title": s["title"], "hook": s["hook"]["jp"], "tags": s.get("ex_tags", []), "arc": ai, "date": now.strftime("%Y-%m-%d")})
+        st.setdefault("themes", []).append(theme)
         st["next_arc"] = ai + 1
         json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     os.chdir(ROOT)
