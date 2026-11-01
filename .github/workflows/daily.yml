@@ -1,7 +1,6 @@
 name: daily
 on:
-  schedule:
-    - cron: "12 9 * * *"
+  # replaced by the 4 Steps format (steps.yml) from 2026-11; still runs by hand or via daily/trigger.txt
   push:
     paths: ["daily/trigger.txt"]
   workflow_dispatch:
