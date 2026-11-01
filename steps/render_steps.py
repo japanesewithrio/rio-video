@@ -24,12 +24,12 @@ STEP_COL = [(232, 112, 40), (222, 74, 128), (28, 150, 104), (134, 92, 214)]
 SPK_COL = {"Rio": (52, 120, 200), "Yui": (222, 98, 150)}
 GREEN = (40, 160, 120)
 
-TAIL = [("Yui", "青い言葉を、自分のことに変えて言ってみて！", "あおいことばを、じぶんのことにかえていってみて！",
-         "အပြာရောင် စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး ပြောကြည့်!"),
+TAIL = [("Yui", "青いところを自分の話に変えて、言ってみて！", "あおいところを じぶんの はなしに かえて、いってみて！",
+         "အပြာရောင် စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး ပြောကြည့်နော်!"),
         ("Rio", "リアルな日本語を話したいなら、Rioをフォローしてね！", "リアルなにほんごをはなしたいなら、Rioをフォローしてね！",
          "တကယ်သုံးတဲ့ ဂျပန်စကား ပြောချင်ရင် Rio ကို Follow လုပ်ထားနော်!"),
         ("Yui", "バイバーイ！", "", "Bye bye!")]
-FINAL_PRACTICE = 2.6  # silent seconds per line on the "your turn" card
+FINAL_PRACTICE = 4.0  # silent seconds per line on the "your turn" card
 _AV = {}
 
 # ---------------------------------------------------------------- text helpers
@@ -116,10 +116,32 @@ def mm_block(d, y, text, size=44, fill=INK, maxw=900, weight=500):
     return R.block(d, y, text, mfont(size, weight), fill, maxw=maxw, gap=22)
 
 
-def kana_block(d, y, text, size=32, fill=GREY, maxw=860):
+def kana_lines(d, text, fnt, maxw):
+    """Kana is written with spaces between words: wrap at the spaces (never inside a word)."""
+    out, cur = [], ""
+    for w in text.split():
+        t = (cur + " " + w) if cur else w
+        if cur and d.textlength(t, font=fnt) > maxw:
+            out.append(cur)
+            cur = w
+        else:
+            cur = t
+    if cur:
+        out.append(cur)
+    return out
+
+
+def kana_block(d, y, text, size=32, fill=GREY, maxw=860, cx=None, x0=None):
     if not text:
         return y
-    return R.block(d, y, text, jfont(size, False), fill, maxw=maxw, gap=10)
+    f = jfont(size, False)
+    for ln in kana_lines(d, text, f, maxw):
+        if x0 is None:
+            d.text(((cx or W / 2), y), ln, font=f, fill=fill, anchor="mt")
+        else:
+            d.text((x0, y), ln, font=f, fill=fill)
+        y += int(size * 1.45)
+    return y
 
 
 # ---------------------------------------------------------------- base frame
@@ -170,7 +192,9 @@ def avatar(name, size, ring, alpha=1.0):
 
 
 def avatars(img, y, speaker, size=190):
-    """Rio left, Yui right; the speaker is full strength, the other one faded."""
+    """Rio left, Yui right; the speaker is full strength, the other one faded. Skipped if they would hit the footer."""
+    if y + size > H - 160:
+        return y
     for name, cx in (("Rio", W // 2 - 250), ("Yui", W // 2 + 250)):
         on = speaker in (None, name)
         s = size if on else int(size * 0.82)
@@ -202,8 +226,8 @@ def sentence_card(img, y, segs, kana, col, hl, size=62):
     f = jfont(size)
     hj = rich_height(d, segs, f, 860)
     kf = jfont(34, False)
-    hk = (len(R.wrap(d, kana, kf, 840, kf)) * int(34 * 1.25 + 0)) + 30 if kana else 0
-    h = hj + hk + 90
+    hk = len(kana_lines(d, kana, kf, 840)) * int(34 * 1.45) + 12 if kana else 0
+    h = hj + hk + 70
     card(img, y, h, fill=(246, 250, 255) if not hl else (255, 255, 255))
     yy = rich_block(d, W / 2, y + 42, segs, f, 860, col, ncol=(52, 110, 180) if not hl else INK, hl=hl)
     if kana:
@@ -220,7 +244,7 @@ def step_label(d, y, text, col):
 def overview_frame(s, upto, prog):
     img = base("4 STEPS STORY", prog)
     d = ImageDraw.Draw(img)
-    y = mm_block(d, 260, "ဒီပုံစံ ၄ ခုကို တစ်ဆင့်ချင်း ချိတ်ပြီး ပြောကြည့်ရအောင်!", 46, INK, weight=650)
+    y = mm_block(d, 260, "ဒီ pattern ၄ ခုကို တစ်ခုပြီးတစ်ခု ဆက်ပြီး ပြောကြည့်ရအောင်!", 46, INK, weight=650)
     y += 40
     for k, st in enumerate(s["steps"]):
         col = STEP_COL[k]
@@ -261,7 +285,7 @@ def highlight_frame(s, k, prog):
     img = base("PATTERN HIGHLIGHT", prog)
     d = ImageDraw.Draw(img)
     y = step_label(d, 260, "STEP %d / 4" % (k + 1), col)
-    y = mm_block(d, y, "အရောင် = pattern ၊ အပြာမျဉ်း = ပြောင်းလို့ရတဲ့ စကားလုံး", 40, INK, weight=550) + 30
+    y = mm_block(d, y, "ပုံသေ = pattern ၊ အပြာ = ပြောင်းလို့ရတယ်", 40, INK, weight=550) + 30
     y = pattern_box(img, y, st["pattern"], col) + 50
     y = sentence_card(img, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, hl=True, size=64) + 40
     y = mm_block(d, y, st["main"].get("mm", ""), 46, INK, weight=600) + 40
@@ -278,7 +302,7 @@ def example_frame(s, k, j, prog):
     y = step_label(d, 270, "EXAMPLE %d  ・  %s" % (j + 1, tag) if tag else "EXAMPLE %d" % (j + 1), col)
     y = pattern_box(img, y, st["pattern"], col) + 40
     f = mfont(40, 650)
-    chip = "အပြာစကားလုံး ပြောင်းကြည့်!"
+    chip = "စကားလုံးပဲ ပြောင်းတယ်၊ ပုံစံက အတူတူပဲ"
     alt = jfont(36, False)
     tw = R.tlen(d, chip, f, alt)
     d.rounded_rectangle([W / 2 - tw / 2 - 40, y, W / 2 + tw / 2 + 40, y + 84], 42, fill=(234, 242, 253))
@@ -293,19 +317,19 @@ def example_frame(s, k, j, prog):
 def rows(img, s, y, cur, bottom):
     """The 4 lines of the story as stacked cards; cur is outlined in its step colour."""
     d = ImageDraw.Draw(img)
-    fj, fk, fm = jfont(44), jfont(26, False), mfont(32)
-    alt = jfont(28, False)
-    items = []
-    for k, st in enumerate(s["steps"]):
-        m = st["main"]
-        hj = rich_height(d, segments(m["jp"]), fj, 780)
-        hk = len(R.wrap(d, m.get("kana", ""), fk, 780, fk)) * 36 if m.get("kana") else 0
-        hm = len(R.wrap(d, m.get("mm", ""), fm, 780, alt)) * 58
-        items.append(hj + hk + hm + 56)
-    gap = 22
-    total = sum(items) + gap * 3
-    if total > bottom - y:  # shrink spacing if needed
-        gap = max(8, (bottom - y - sum(items)) // 3)
+    for js, ks, ms, show_k in ((44, 26, 32, True), (40, 24, 30, True), (36, 22, 28, True), (36, 22, 28, False), (32, 20, 26, False)):
+        fj, fk, fm = jfont(js), jfont(ks, False), mfont(ms)
+        alt = jfont(ms - 4, False)
+        items = []
+        for k, st in enumerate(s["steps"]):
+            m = st["main"]
+            hj = rich_height(d, segments(m["jp"]), fj, 780)
+            hk = len(kana_lines(d, m.get("kana", ""), fk, 780)) * int(ks * 1.45) if show_k and m.get("kana") else 0
+            hm = len(R.wrap(d, m.get("mm", ""), fm, 780, alt)) * int(ms * 1.8)
+            items.append(hj + hk + hm + 50)
+        if sum(items) + 3 * 14 <= bottom - y:
+            break
+    gap = max(8, min(40, (bottom - y - sum(items)) // 3))
     for k, st in enumerate(s["steps"]):
         m, col, h = st["main"], STEP_COL[k], items[k]
         on = k == cur
@@ -313,8 +337,8 @@ def rows(img, s, y, cur, bottom):
              fill=(255, 255, 255) if on or cur is None else (250, 251, 253))
         d.text((112, y + 30), str(k + 1), font=jfont(34), fill=col)
         yy = rich_block(d, 0, y + 26, segments(m["jp"]), fj, 780, col, center=False, x0=170)
-        if m.get("kana"):
-            yy = R.lblock(d, 170, yy - 2, m["kana"], fk, GREY, 780)
+        if show_k and m.get("kana"):
+            yy = kana_block(d, yy - 2, m["kana"], ks, GREY, 780, x0=170)
         R.lblock(d, 170, yy + 4, m.get("mm", ""), fm, SUB, 780)
         y += h + gap
     return y
@@ -330,11 +354,11 @@ def chain_frame(s, cur, prog):
 
 
 def final_frame(s, cur, prog):
-    img = base("YOUR TURN · FILLED EXAMPLES", prog)
+    img = base("YOUR TURN", prog)
     d = ImageDraw.Draw(img)
-    y = mm_block(d, 240, "ကိုယ့်အကြောင်းနဲ့ အပြာရောင် စကားလုံးတွေ ပြောင်းပြောကြည့်!", 44, INK, weight=650) + 24
-    y = rows(img, s, y, cur, H - 260)
-    d.text((W / 2, H - 222), "SWAP THE BLUE WORDS!", font=jfont(40), fill=BLUE, anchor="mm")
+    y = mm_block(d, 240, "အပြာရောင် စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး ပြောကြည့်နော်!", 44, INK, weight=650) + 24
+    rows(img, s, y, cur, H - 250)
+    d.text((W / 2, H - 205), "SWAP THE BLUE WORDS!", font=jfont(40), fill=BLUE, anchor="mm")
     return img.convert("RGB")
 
 
@@ -344,7 +368,8 @@ def outro_frame(prog):
     avatars(img, 520, None, size=230)
     d.text((W / 2, 860), "Follow", font=jfont(62), fill=(222, 98, 150), anchor="mt")
     d.text((W / 2, 960), "Learn with Rio ♡", font=jfont(88), fill=INK, anchor="mt")
-    y = R.block(d, 1150, TAIL[1][1], jfont(46), SUB, maxw=900, gap=14)
+    y = R.block(d, 1150, "リアルな日本語を話したいなら、", jfont(46), SUB, maxw=900, gap=14)
+    y = R.block(d, y, "Rioをフォローしてね！", jfont(46), SUB, maxw=900, gap=14)
     mm_block(d, y + 26, TAIL[1][3], 40, GREY)
     return img.convert("RGB")
 

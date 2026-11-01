@@ -19,14 +19,14 @@ MYA = re.compile("[က-႟]")
 KANJI = re.compile("[一-鿿々]")
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿]")
 PUNCT = re.compile(r"[、。！？!?,.\s「」…]")
-TRAIL = ("よね", "んだ", "んだよ", "よ", "ね", "な", "の", "わ", "かも", "なあ")
+TRAIL = ("", "よね", "んだよね", "んだよ", "んだ", "よな", "よ", "ね", "な", "の", "わ", "かも", "かな", "なあ")
 
 THEMES = [
-    "speaking in front of people", "cooking for yourself", "learning kanji", "waking up early for a part-time job",
-    "riding a bicycle in Japan", "making Japanese friends", "using keigo at work", "Japanese winter cold",
-    "eating natto", "sorting garbage in Japan", "crowded trains", "going to an onsen", "singing karaoke",
+    "speaking in front of people", "cooking for yourself", "learning English", "waking up early for a part-time job",
+    "riding a bicycle", "making new friends at university", "using keigo at work", "the winter cold",
+    "eating natto", "sorting garbage", "crowded trains", "going to an onsen", "singing karaoke",
     "working at a konbini", "living alone", "saving money", "going to the gym", "a part-time job interview",
-    "talking on the phone in Japanese", "understanding Kansai dialect", "taking the JLPT", "delivering newspapers",
+    "talking on the phone", "learning to swim", "taking an exam", "a morning newspaper delivery job",
     "a first date", "drinking coffee", "sleeping too little", "making onigiri", "shopping at a 100-yen shop",
     "watching anime without subtitles", "texting a crush on LINE", "going to the hospital in Japan",
 ]
@@ -39,21 +39,26 @@ each example thread continuing its own mini story across the 4 steps (example 1 
 
 Today's 4 patterns, in this exact order (〜 marks a slot; the text outside the slots must be used EXACTLY, character for character):
 @@ARC@@
-Story idea for Rio's sentences (inspiration, make it natural and a little warm or funny): @@THEME@@
+Story idea for Rio's sentences (inspiration, make it natural and a little warm or funny; if it does not fit the patterns, pick a related everyday situation that does): @@THEME@@
 Do NOT reuse these past titles or their stories: @@AVOID@@
 
 Rules:
-- In every sentence ("main" and both "ex"), write the pattern text exactly and put the words that fill each slot inside square brackets [like this].
+- In every sentence ("main" and both "ex"), write the pattern text exactly and put the words that fill each slot inside ASCII square brackets [like this].
   Replacing every [..] with 〜 must give exactly the pattern (punctuation 、。！？ may differ). You may add one sentence-final particle
-  (よ, ね, よね, な) at the very end, nothing else. Slot words must be natural Japanese that grammatically fit (e.g. 〜てみたら needs a verb te-stem
-  like [作っ]てみたら, 〜ようになってきた needs a potential/plain verb like [自分で作れる]ようになってきた).
+  (よ, ね, よね, な, んだ) at the very end, AFTER the pattern and OUTSIDE the brackets, nothing else. End every sentence with 。 or ！ or ？.
+  Slot words must be natural Japanese that grammatically fit:
+  〜てみたら needs a verb te-stem: [作っ]てみたら, [読ん]でみたら (て may become で, た may become だ, ちゃ may become じゃ: [飲ん]じゃった);
+  〜ようになってきた needs a potential/plain verb: [自分で作れる]ようになってきた; 〜ようとしたら: [寝]ようとしたら, [帰ろ]うとしたら;
+  〜せいで / 〜おかげで: [雨の]せいで, [先輩の]おかげで, [寝坊した]せいで; 〜をきっかけに: [アニメ]をきっかけに.
 - Sentences are short and natural (max 32 Japanese characters without brackets), casual spoken style young people really use, never textbook.
 - The 4 main sentences make one coherent little story; example 1's 4 sentences make one coherent mini story about ex_tags[0];
   example 2's 4 sentences make one about ex_tags[1]. ex_tags are short Japanese topic words (2-4 characters, e.g. 料理, 漢字, バイト).
 - Use vocabulary around JLPT N4-N3, useful for daily life in Japan.
-- kana = the full reading in hiragana (katakana words may stay katakana), with a space between words, WITHOUT brackets, matching the Japanese exactly.
-- mm = natural, short, spoken-style Burmese (correct Unicode, no double quotes) meaning of the sentence.
-- pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို မကျွမ်းကျင်ခဲ့ဘူး.
+- kana = the full reading, hiragana for kanji, katakana words stay katakana (バイト, スマホ), WITHOUT brackets, matching the Japanese exactly.
+  Put a space only between phrases (bunsetsu), never before particles: まえは、ひとまえで はなすのが にがてだった。 (NOT まえ は、 ひと まえ で).
+- mm = natural, short, spoken-style Burmese (correct Unicode, no double quotes) meaning of the sentence. Rio says main and ex[1] (a young man),
+  Yui says ex[0] (a young woman): if a pronoun or polite ending is needed, use ကျွန်တော် for Rio and ကျွန်မ for Yui.
+- pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို သိပ်မတော်ခဲ့ဘူး.
 - hook = one line by Rio TO THE VIEWER (max 26 characters) inviting them to tell their own story with today's 4 patterns, with kana and mm.
 - title = Japanese title of Rio's story like 人前で話せるようになった話 (max 16 characters); title_mm its Burmese.
 - caption = Burmese, max 180 characters, 1-2 emojis, mentions the 4 patterns chained today.
@@ -71,9 +76,10 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
 2. Each sentence uses its step's pattern text exactly, with the slot words inside [brackets]; replacing each [..] with 〜 gives the pattern
    (only punctuation and one final particle よ/ね/よね/な may differ). The patterns, in order, must be exactly: @@ARC@@
 3. Rio's 4 main sentences tell one coherent story; example 1's 4 sentences one mini story about ex_tags[0]; example 2's about ex_tags[1].
-4. Every kana is the exact full hiragana reading (spaces between words, no brackets, no kanji).
+4. Every kana is the exact full reading (hiragana for kanji, katakana words stay katakana, spaces only between phrases, no brackets, no kanji).
+4b. Sentence-final particles (よ, ね ...) are outside the brackets; brackets are ASCII [ ].
 5. All Burmese is correct, natural, spoken-style Unicode Burmese without double quotes, and matches the Japanese.
-6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences.
+6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. hook max 26 characters, title max 16, ex_tags 2-4 characters.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
@@ -85,15 +91,32 @@ def norm(t):
     return PUNCT.sub("", t.replace("～", "〜"))
 
 
+def brackets(t):
+    return t.replace("［", "[").replace("］", "]").replace("【", "[").replace("】", "]")
+
+
+def pattern_re(pattern):
+    """Regex for a filled pattern (slots = 〜). Right after a slot, sound changes of the verb are allowed:
+    て→で (読んで), た→だ (休んだら), ちゃ→じゃ (飲んじゃった), よう→う (帰ろうとしたら)."""
+    parts = norm(pattern).split("〜")
+    out = [re.escape(parts[0])]
+    for fixed in parts[1:]:
+        alt = re.escape(fixed)
+        for a, b in (("ちゃ", "(?:ちゃ|じゃ)"), ("て", "[てで]"), ("た", "[ただ]"), ("よう", "よ?う")):
+            if fixed.startswith(a):
+                alt = b + re.escape(fixed[len(a):])
+                break
+        out.append("〜" + alt)
+    return re.compile("".join(out) + "(?:" + "|".join(TRAIL) + ")")
+
+
 def fits(sentence, pattern):
-    """True if sentence (with [slots]) follows pattern exactly, allowing punctuation and one final particle."""
-    if sentence.count("[") != sentence.count("]") or re.search(r"\[[^\]]*\[|\[\s*\]", sentence):
+    """True if sentence (with [slots]) follows pattern exactly, allowing punctuation, verb sound changes and a final particle."""
+    sentence = brackets(sentence)
+    if sentence.count("[") != sentence.count("]") or re.search(r"\[[^\]]*\[|\[\s*\]|\][^\[]*\]", sentence):
         return False
     filled = norm(re.sub(r"\[[^\]]*\]", "〜", sentence))
-    p = norm(pattern)
-    if filled == p:
-        return True
-    return any(filled == p + t for t in TRAIL)
+    return bool(pattern_re(pattern).fullmatch(filled))
 
 
 def validate(s, arc):
@@ -129,7 +152,7 @@ def validate(s, arc):
             if len(ex) != 2:
                 err.append("step %d must have exactly 2 examples" % (k + 1))
             for name, l in [("main", st.get("main") or {})] + [("example %d" % (j + 1), e) for j, e in enumerate(ex)]:
-                jp = l.get("jp", "")
+                jp = l["jp"] = brackets(l.get("jp", ""))
                 where = "step %d %s" % (k + 1, name)
                 if not fits(jp, pat):
                     err.append("%s does not follow the pattern %s with [slot] words: %s" % (where, pat, jp))
@@ -181,7 +204,11 @@ def make_lesson(arc, theme, avoid):
     rev = REV.replace("@@ARC@@", " / ".join(arc))
     best, best_err = None, None
     for attempt in range(2):
-        s = S.ask_json(prompt)
+        try:
+            s = S.ask_json(prompt)
+        except Exception as e:
+            D.log("generation failed", e)
+            continue
         try:
             s = S.ask_json(rev.replace("@@ERRORS@@", "").replace("@@JSON@@", json.dumps(s, ensure_ascii=False)))
         except Exception as e:
@@ -198,6 +225,8 @@ def make_lesson(arc, theme, avoid):
                 s = S.ask_json(rev.replace("@@ERRORS@@", extra).replace("@@JSON@@", json.dumps(s, ensure_ascii=False)))
             except Exception as e:
                 D.log("fix failed", e)
+    if best_err is None:
+        raise RuntimeError("Gemini gave no usable lesson")
     soft = [e for e in best_err if " too long " in e]
     if len(soft) != len(best_err):
         raise RuntimeError("lesson failed validation: %s" % best_err)
@@ -217,7 +246,7 @@ def transcript(s):
     for k, st in enumerate(s["steps"]):
         out.append("%s %s — %s" % ("①②③④"[k], st["pattern"], st.get("pattern_mm", "")))
         m = st["main"]
-        out.append("Rio: " + RS.plain(m["jp"]))
+        out.append("Rio: " + m["jp"])
         if m.get("kana"):
             out.append("   " + m["kana"])
         out.append("   🇲🇲 " + m["mm"])
@@ -226,7 +255,7 @@ def transcript(s):
         out.append("")
     out.append("🗣 つなげて話すと…")
     out.append("\n".join(RS.plain(st["main"]["jp"]) for st in s["steps"]))
-    out += ["", "💡 အပြာရောင် [ ] နေရာက စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး comment မှာ ရေးပြကြနော်!"]
+    out += ["", "💡 [ ] ထဲက စကားလုံးတွေကို ကိုယ့်အကြောင်းနဲ့ ပြောင်းပြီး comment မှာ ရေးပြကြနော်!"]
     out += ["", "#ဂျပန်စာ #日本語 #LearnWithRio #RioAndYui"]
     return "\n".join(out)[:4000]
 
@@ -246,13 +275,19 @@ def main():
     st = json.load(open(STATE, encoding="utf-8")) if os.path.exists(STATE) else {"done": [], "next_arc": 0}
     arcs = json.load(open(os.path.join(HERE, "arcs.json"), encoding="utf-8"))
     now = dt.datetime.now(D.JST)
+    branch = os.environ.get("GITHUB_REF_NAME", "main")
+    if not DRY and branch != "main":
+        raise RuntimeError("real posting only from main (this is %s); use DRY in steps/trigger.txt" % branch)
     key = ("FT" + now.strftime("%y%m%d%H%M")) if DRY else ("F" + now.strftime("%y%m%d"))
+    if any(d["key"] == key for d in st["done"]):
+        key = "F" + now.strftime("%y%m%d%H%M")
     ai = st.get("next_arc", 0) % len(arcs)
     arc = arcs[ai]
     theme = random.choice(THEMES)
     D.log("key", key, "arc", ai, arc, "theme", theme)
     inp = os.environ.get("STEPS_INPUT", "")
-    if inp and os.path.exists(os.path.join(ROOT, inp)):
+    use_inp = bool(inp and os.path.exists(os.path.join(ROOT, inp)))
+    if use_inp:
         s = json.load(open(os.path.join(ROOT, inp), encoding="utf-8"))
         arc = [x["pattern"] for x in s["steps"]]
         D.log("using prepared lesson", inp, "errors", validate(s, arc))
@@ -269,16 +304,20 @@ def main():
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     vid = os.path.join("videos", key + ".mp4")
     secs = RS.render(jpath, main_wav, os.path.join(ROOT, vid))
-    if not DRY:
+    if not DRY and not use_inp:
         st["done"].append({"key": key, "title": s["title"], "arc": ai, "date": now.strftime("%Y-%m-%d")})
         st["next_arc"] = ai + 1
         json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     os.chdir(ROOT)
+    old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+\.mp4$", f))
+    for f in old[:-10]:
+        os.remove(os.path.join("videos", f))
     D.push("steps %s" % key, ["text", "videos", "steps/state.json"])
 
     title, cap = s["title"], s["caption"]
     chat = D.OWNER if DRY else D.CHANNEL
-    D.tg("sendVideo", {"chat_id": chat, "caption": ("🎬 %s\n%s" % (title, cap))[:1020], "supports_streaming": "true"}, {"video": open(vid, "rb")})
+    if not D.tg("sendVideo", {"chat_id": chat, "caption": ("🎬 %s\n%s" % (title, cap))[:1020], "supports_streaming": "true"}, {"video": open(vid, "rb")}):
+        D.WARN.append("Telegram sendVideo failed")
     D.tg("sendMessage", {"chat_id": chat, "text": transcript(s)})
     ok = {}
     if not DRY:

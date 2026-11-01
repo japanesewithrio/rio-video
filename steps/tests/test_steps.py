@@ -33,6 +33,15 @@ check("empty slot", not P.fits("前は、[]が苦手だった。", "前は、〜
 check("unbalanced", not P.fits("前は、[料理が苦手だった。", "前は、〜が苦手だった"))
 check("fullwidth tilde pattern", P.fits("前は、[料理]が苦手だった。", "前は、～が苦手だった"))
 check("question", P.fits("[日本の夏]って、[暑すぎ]じゃない？", "〜って、〜じゃない？"))
+check("de te-form", P.fits("でも、[飲ん]でみたら、[おいしかった]。", "でも、〜てみたら、〜"))
+check("da", P.fits("もし[休ん]だら、[旅行し]たい。", "もし〜たら、〜たい"))
+check("ja chatta", P.fits("結局、[全部飲ん]じゃった。", "結局、〜ちゃった"))
+check("godan volitional", P.fits("[帰ろ]うとしたら、[雨が降ってきた]。", "〜ようとしたら、〜"))
+check("ichidan volitional", P.fits("[寝]ようとしたら、[電話が来た]。", "〜ようとしたら、〜"))
+check("fullwidth brackets", P.fits("前は、［料理］が苦手だった。", "前は、〜が苦手だった"))
+check("ndayone", P.fits("今では、[話せる]んだよね。", "今では、〜"))
+check("de not anywhere", not P.fits("前は、[料理]で苦手だった。", "前は、〜が苦手だった"))
+check("two closing", not P.fits("前は、[料理]]が苦手だった。", "前は、〜が苦手だった"))
 check("random particle not ok", not P.fits("今では、[話せる]ぞ。", "今では、〜"))
 
 # segments / plain
