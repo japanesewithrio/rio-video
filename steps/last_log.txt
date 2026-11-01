@@ -1,6 +1,6 @@
 models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
 using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts', 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'] {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}}
-key F261101 arc 0 ['前は、〜が苦手だった', 'でも、〜てみたら、〜', 'それから、少しずつ〜ようになってきた', '今では、〜'] theme speaking in front of people
+key F261102 arc 1 ['〜を始めたばかりのころは、〜', '特に、〜のが大変だった', 'でも、〜おかげで、〜', '今は、〜'] theme getting lost in a big train station
 gemini gemini-3.1-pro-preview 429 {
   "error": {
     "code": 429,
@@ -11,8 +11,6 @@ gemini gemini-pro-latest 429 {
     "code": 429,
     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
 gemini: giving up on gemini-pro-latest
-gemini gemini-3.8-flash ReadTimeout
-gemini gemini-3.8-flash ConnectionError
 gemini gemini-3.8-flash 503 {
   "error": {
     "code": 503,
@@ -21,31 +19,25 @@ gemini gemini-3.8-flash 503 {
   }
 }
 
-gemini: giving up on gemini-3.8-flash
-attempt 0 fix 0 errors []
+attempt 0 fix 0 errors ['step 4 example 1: no emoji, 笑 or 〜 inside: 今は、笑顔でお客さんと話せるよ。']
+attempt 0 fix 1 errors []
+tts group main_g00.wav 1 lines 3.3 s speed 6.0 tempo 1.00
+tts group main_g01.wav 3 lines 13.9 s speed 8.0 tempo 0.90
 gemini gemini-3.1-flash-tts-preview 429 {
   "error": {
     "code": 429,
     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
 gemini: giving up on gemini-3.1-flash-tts-preview
-tts group main_g00.wav 1 lines 2.7 s speed 7.6 tempo 0.95
-tts group main_g01.wav 3 lines 11.9 s speed 7.8 tempo 0.92
-squeezed 2.9 s of silence out of main_g01.wav
-tts group main_g02.wav 3 lines 15.9 s speed 8.0 tempo 0.90
-squeezed 3.7 s of silence out of main_g02.wav
-tts group main_g03.wav 3 lines 11.2 s speed 8.5 tempo 0.85
-gemini gemini-2.5-flash-preview-tts 429 {
-  "error": {
-    "code": 429,
-    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
-tts group main_g04.wav 3 lines 9.6 s speed 7.7 tempo 0.93
-tts group main_g05.wav 3 lines 7.4 s speed 8.3 tempo 0.87
-rendered steps /home/runner/work/rio-video/rio-video/videos/F261101.mp4 56 pieces 100.6 s
+tts group main_g02.wav 3 lines 11.1 s speed 7.2 tempo 0.99
+tts group main_g03.wav 3 lines 11.5 s speed 8.5 tempo 0.85
+squeezed 0.8 s of silence out of main_g03.wav
+tts group main_g04.wav 3 lines 8.9 s speed 8.5 tempo 0.85
+squeezed 1.3 s of silence out of main_g04.wav
+tts group main_g05.wav 3 lines 7.6 s speed 8.3 tempo 0.87
+rendered steps /home/runner/work/rio-video/rio-video/videos/F261102.mp4 56 pieces 103.5 s
 telegram sendVideo ok
 telegram sendMessage ok
-zernio: no ZERNIO_API_KEY secret
-zernio: no ZERNIO_API_KEY secret
 telegram sendMessage ok
-✅ 4 Steps video posted F261101
-人前で話せるようになった話 (100s)
-TikTok: False / YouTube: False
+✅ 4 Steps video posted to Telegram F261102
+新宿駅で迷子になった話 (103s)
+Facebook / TikTok / YouTube: Make posts it at 19:00
