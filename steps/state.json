@@ -10,10 +10,22 @@
     "料理",
     "電話"
    ]
+  },
+  {
+   "key": "F261102",
+   "title": "新宿駅で迷子になった話",
+   "hook": "新宿駅、迷わずに歩ける？",
+   "tags": [
+    "バイト",
+    "一人暮し"
+   ],
+   "arc": 1,
+   "date": "2026-11-02"
   }
  ],
- "next_arc": 1,
+ "next_arc": 2,
  "themes": [
-  "speaking in front of people"
+  "speaking in front of people",
+  "getting lost in a big train station"
  ]
 }
