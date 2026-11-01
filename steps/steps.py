@@ -62,7 +62,9 @@ Rules:
   (no literary or bookish Burmese). Rio says main and ex[1] (a young man),
   Yui says ex[0] (a young woman): if a pronoun or polite ending is needed, use ကျွန်တော် for Rio and ကျွန်မ for Yui.
 - pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို သိပ်မတော်ခဲ့ဘူး.
-- hook = one line by Rio TO THE VIEWER (max 26 characters) inviting them to tell their own story with today's 4 patterns, with kana and mm.
+- hook = the first 2 seconds of the video: one SHORT, catchy line by Rio TO THE VIEWER (max 18 characters) that makes people stop scrolling:
+  a challenge, a surprising question or a promise linked to today's story, e.g. これ言えたら、もう初心者じゃない！ / 君は何が苦手だった？ /
+  4つの文で、自分の話ができる！ Never a greeting, never 今日は〜を勉強しよう. Easy words. With kana and mm (mm short and punchy too).
 - title = Japanese title of Rio's story like 人前で話せるようになった話 (max 16 characters); title_mm its Burmese.
 - caption = Burmese, max 180 characters, 1-2 emojis, mentions the 4 patterns chained today.
 - No emojis, 笑, w or the 〜 symbol inside any Japanese sentence.
@@ -84,7 +86,7 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
 5. All Burmese is correct, natural, spoken-style Unicode Burmese without double quotes, and matches the Japanese.
 5b. EASY WORDS: replace every word that is harder than JLPT N3 or formal/written (e.g. 日課, 克服, 習慣, 継続, 達成) with an easy everyday word
    a beginner knows, in hook, title and all sentences; make Burmese simple spoken words too. Keep each sentence short (about 20 characters).
-6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. hook max 26 characters, title max 16, ex_tags 2-4 characters.
+6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. hook max 18 characters and catchy enough to stop scrolling (a challenge or surprising question, never a greeting), title max 16, ex_tags 2-4 characters.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
