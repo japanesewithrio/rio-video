@@ -329,6 +329,9 @@ def main():
     branch = os.environ.get("GITHUB_REF_NAME", "main")
     if not DRY and branch != "main":
         raise RuntimeError("real posting only from main (this is %s); use DRY in steps/trigger.txt" % branch)
+    if not DRY and any(d.get("date") == now.strftime("%Y-%m-%d") for d in st["done"]):
+        D.log("today's video was already posted - nothing to do")  # GitHub cron can start hours late; never post twice a day
+        return
     key = ("FT" + now.strftime("%y%m%d%H%M")) if DRY else ("F" + now.strftime("%y%m%d"))
     if any(d["key"] == key for d in st["done"]):
         key = "F" + now.strftime("%y%m%d%H%M")
