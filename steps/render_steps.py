@@ -516,15 +516,17 @@ def outro_frame(prog):
 
 def title_frame(s, prog):
     sc = Scene("4 STEPS STORY", prog)
-    avatar_layers(sc, 420, "Rio", size=240, delay=0.1)
-    d = ldraw(sc.layer("in", 0.0))
-    y = R.block(d, 760, s["hook"]["jp"], jfont(70), INK, maxw=920, gap=26)
+    avatar_layers(sc, 330, "Rio", size=220, delay=0.15)
+    d = ldraw(sc.layer("pop", 0.0))
+    y = 640
+    for part in [x for x in re.split(r"(?<=[、，])", s["hook"]["jp"]) if x]:  # break the hook after 、 instead of inside a word
+        y = R.block(d, y, part, jfont(92), INK, maxw=940, gap=30)
     if s["hook"].get("kana"):
         y = kana_block(d, y + 6, s["hook"]["kana"], 34, GREY, 900)
     d = ldraw(sc.layer("fade", 0.3))
     y = mm_block(d, y + 40, s["hook"].get("mm", ""), 46, SUB, weight=600)
     R.block(ldraw(sc.layer("pop", 0.5)), max(y + 80, 1400), s["title"], jfont(50), (222, 98, 150), maxw=920)
-    sc.sfx += [(0.0, "whoosh"), (0.5, "pop")]
+    sc.sfx += [(0.0, "pop"), (0.15, "whoosh"), (0.5, "pop")]
     return sc
 
 
