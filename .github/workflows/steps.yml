@@ -1,7 +1,9 @@
 name: steps
 on:
+  # Normally started by the Make scenario "Rio ⓪" at 17:30 JST (workflow_dispatch). GitHub cron is often hours late,
+  # so this one is only a backup (steps.py skips it outside 17-23 JST and when today's video is already posted).
   schedule:
-    - cron: "12 9 * * *"
+    - cron: "40 10 * * *"
   push:
     paths: ["steps/trigger.txt"]
   workflow_dispatch:
@@ -37,8 +39,8 @@ jobs:
           TG_CHAT: ${{ secrets.TG_CHAT }}
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
-          if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q '^DRY' steps/trigger.txt; then export DRY=1; fi
-          if [ "$GITHUB_EVENT_NAME" != "schedule" ] && grep -q 'INPUT' steps/trigger.txt; then export STEPS_INPUT=steps/sample.json; fi
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' steps/trigger.txt; then export DRY=1; fi
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q 'INPUT' steps/trigger.txt; then export STEPS_INPUT=steps/sample.json; fi
           python steps/steps.py 2>&1 | tee "$RUNNER_TEMP/steps_log.txt"
           exit ${PIPESTATUS[0]}
       - name: Save log

@@ -340,6 +340,9 @@ def main():
     branch = os.environ.get("GITHUB_REF_NAME", "main")
     if not DRY and branch != "main":
         raise RuntimeError("real posting only from main (this is %s); use DRY in steps/trigger.txt" % branch)
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and not 17 <= now.hour <= 23:
+        D.log("backup cron started at %s JST - too late/early to post, skipping" % now.strftime("%H:%M"))
+        return
     if not DRY and any(d.get("date") == now.strftime("%Y-%m-%d") for d in st["done"]):
         D.log("today's video was already posted - nothing to do")  # GitHub cron can start hours late; never post twice a day
         return
