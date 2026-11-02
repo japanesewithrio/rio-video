@@ -286,6 +286,18 @@ def squeeze_silence(path, keep=0.6, longest=0.9, thr=0.012):
     return cut
 
 
+VOICE_MODELS = ["gemini-2.5-flash-preview-tts", "gemini-2.5-pro-preview-tts"]
+_gemini = D.gemini
+
+
+def patient_gemini(models, body, tries=3):
+    """TTS: wait longer on 'too many requests' instead of switching to a model with a different voice."""
+    first = models if isinstance(models, str) else (models[0] if models else "")
+    return _gemini(models, body, tries=6 if "tts" in first else tries)
+
+
+D.gemini = patient_gemini
+
 _tts_lines = S.tts_lines
 
 
@@ -328,6 +340,9 @@ def main():
         D.TEXT_CHAIN = [m for m in D.TEXT_CHAIN if m in ms] or [D.pick(ms, "none", r"^gemini-[\d.]+-(pro|flash)")]
         D.FAST_CHAIN = [m for m in D.FAST_CHAIN if m in ms] or [D.pick(ms, "none", r"^gemini-[\d.]+-flash")]
         D.TTS_CHAIN = [m for m in D.TTS_CHAIN if m in ms] or [D.pick(ms, "none", r"tts", avoid=())]
+    # Ye (2026-11-03): always use the Rio/Yui voice from F261102 = gemini-2.5-flash-preview-tts (Achird / Laomedeia).
+    # Other TTS models sound different, so they are only a last resort.
+    D.TTS_CHAIN = [m for m in VOICE_MODELS if not ms or m in ms] + [m for m in D.TTS_CHAIN if m not in VOICE_MODELS]
     vf = os.path.join(ROOT, "story", "voices.json")
     if os.path.exists(vf):
         vv = json.load(open(vf))
