@@ -320,6 +320,8 @@ def transcript(s):
     for k, st in enumerate(s["steps"]):
         out.append("%s %s — %s" % ("①②③④"[k], st["pattern"], st.get("pattern_mm", "")))
         m = st["main"]
+        if st.get("q"):
+            out.append("Yui: " + st["q"]["jp"] + "  (" + st["q"].get("mm", "") + ")")
         out.append("Rio: " + m["jp"])
         if m.get("kana"):
             out.append("   " + m["kana"])

@@ -40,7 +40,7 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
           if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^DRY' steps/trigger.txt; then export DRY=1; fi
-          if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q 'INPUT' steps/trigger.txt; then export STEPS_INPUT=steps/sample.json; fi
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q 'INPUT' steps/trigger.txt; then export STEPS_INPUT=$(grep -o 'steps/[A-Za-z0-9_]*\.json' steps/trigger.txt || echo steps/sample.json); fi
           python steps/steps.py 2>&1 | tee "$RUNNER_TEMP/steps_log.txt"
           exit ${PIPESTATUS[0]}
       - name: Save log

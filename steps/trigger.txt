@@ -1,1 +1,1 @@
-RUN 2026-11-01
+DRY INPUT steps/demo_talk.json
