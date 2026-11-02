@@ -1,1 +1,1 @@
-DRY INPUT steps/demo_talk.json
+DRY INPUT steps/demo_talk.json v2
