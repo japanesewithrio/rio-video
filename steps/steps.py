@@ -73,13 +73,12 @@ Rules:
   (no literary or bookish Burmese). Rio says main and ex[1] (a young man),
   Yui says ex[0] (a young woman): if a pronoun or polite ending is needed, use ကျွန်တော် for Rio and ကျွန်မ for Yui.
 - pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို သိပ်မတော်ခဲ့ဘူး.
-- hook = the first 2 seconds of the video, the most important line: one SHORT line by Rio TO THE VIEWER (max 16 characters) that makes a
-  young Burmese viewer stop scrolling and need to see the end. Write 5 candidates in your head using these proven hook types and keep the
-  strongest: (1) curiosity gap that teases today's funny twist without telling it: 富士山で、まさかの結末… / 温泉に行けなかった理由… ;
-  (2) relatable pain everyone in Japan knows: バイトの電話、怖くない？ / 満員電車、無理すぎる… ; (3) bold result: 一ヶ月で、人生変わった話 ;
-  (4) "only N% can say this" challenge: これ言えたら、日本人っぽい！ ; (5) shocking first line of the story itself: 富士山、途中で帰った。
-  It must connect to today's story, use easy words, and must not be a greeting, a lesson title or 今日は〜を勉強しよう.
-  With kana and mm (Burmese short and punchy, same feeling, not a literal translation).
+- hook = the first 2 seconds of the video, the most important line. Write it like Ye's favourite example 「勉強するつもりだったんだけど…」:
+  Rio's own FIRST LINE of today's story, spoken as if starting to tell a friend, about an everyday situation every young person knows,
+  cut off with … right before the funny part, so the viewer has to keep watching to hear what happened.
+  Good: 勉強するつもりだったんだけど… / 富士山、登ったんだけど… / 早く寝ようと思ったのに… / 告白しようとしたら… / ダイエット、始めたんだけど…
+  Max 16 characters, easy words, ends with …, must lead into today's story. Never address the viewer (no みんな/君), never a greeting,
+  never a lesson title like 今日は〜を勉強しよう. With kana and mm (Burmese also cut off with …, same feeling).
 - title = Japanese title of Rio's story like 人前で話せるようになった話 (max 16 characters); title_mm its Burmese.
 - caption = Burmese, max 180 characters, 1-2 emojis, mentions the 4 patterns chained today.
 - No emojis, 笑, w or the 〜 symbol inside any Japanese sentence.
@@ -114,8 +113,8 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
    exactly 2 lines (Yui tsukkomi, Rio deadpan punchline max 15 characters). Honestly rate how funny it is for a Burmese viewer around 20 (1-10);
    if below 9, rewrite q lines, Rio's slot words and the ending to be much funnier (unexpected turn, callback), keeping every pattern exact.
 6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. title max 16, ex_tags 2-4 characters.
-6b. HOOK: rate the hook 1-10 for how strongly a young Burmese TikTok viewer would stop scrolling for it. If below 9, rewrite it
-   (max 16 characters) as a curiosity gap about today's twist, a relatable pain, a bold result or a challenge; never a greeting or a lesson title.
+6b. HOOK: it must be Rio's relatable first line of the story, cut off with … right before the funny part (like 勉強するつもりだったんだけど…),
+   max 16 characters, not addressed to the viewer. Rate 1-10 how strongly a young Burmese TikTok viewer would stop scrolling; if below 9, rewrite it.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
