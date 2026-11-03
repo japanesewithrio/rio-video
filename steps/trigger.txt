@@ -1,1 +1,1 @@
-TEACH steps/teach_sample.json
+CHAT steps/chat_sample.json

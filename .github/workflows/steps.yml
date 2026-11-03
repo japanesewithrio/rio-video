@@ -39,6 +39,10 @@ jobs:
           TG_CHAT: ${{ secrets.TG_CHAT }}
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
         run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^CHAT' steps/trigger.txt; then
+            python steps/chat_run.py 2>&1 | tee "$RUNNER_TEMP/steps_log.txt"   # Format F test: owner DM only, never posts
+            exit ${PIPESTATUS[0]}
+          fi
           if [ "$GITHUB_EVENT_NAME" = "push" ] && grep -q '^TEACH' steps/trigger.txt; then
             python steps/teach.py 2>&1 | tee "$RUNNER_TEMP/steps_log.txt"   # Format E test: owner DM only, never posts
             exit ${PIPESTATUS[0]}
