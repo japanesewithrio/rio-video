@@ -73,17 +73,30 @@ Rules:
   (no literary or bookish Burmese). Rio says main and ex[1] (a young man),
   Yui says ex[0] (a young woman): if a pronoun or polite ending is needed, use ကျွန်တော် for Rio and ကျွန်မ for Yui.
 - pattern_mm = short Burmese gloss of the pattern keeping ~ for the slots, e.g. 前は、〜が苦手だった = အရင်က ~ ကို သိပ်မတော်ခဲ့ဘူး.
-- hook = the first 2 seconds of the video: one SHORT, catchy line by Rio TO THE VIEWER (max 18 characters) that makes people stop scrolling:
-  a challenge, a surprising question or a promise linked to today's story, e.g. これ言えたら、もう初心者じゃない！ / 君は何が苦手だった？ /
-  4つの文で、自分の話ができる！ Never a greeting, never 今日は〜を勉強しよう. Easy words. With kana and mm (mm short and punchy too).
+- hook = the first 2 seconds of the video, the most important line: one SHORT line by Rio TO THE VIEWER (max 16 characters) that makes a
+  young Burmese viewer stop scrolling and need to see the end. Write 5 candidates in your head using these proven hook types and keep the
+  strongest: (1) curiosity gap that teases today's funny twist without telling it: 富士山で、まさかの結末… / 温泉に行けなかった理由… ;
+  (2) relatable pain everyone in Japan knows: バイトの電話、怖くない？ / 満員電車、無理すぎる… ; (3) bold result: 一ヶ月で、人生変わった話 ;
+  (4) "only N% can say this" challenge: これ言えたら、日本人っぽい！ ; (5) shocking first line of the story itself: 富士山、途中で帰った。
+  It must connect to today's story, use easy words, and must not be a greeting, a lesson title or 今日は〜を勉強しよう.
+  With kana and mm (Burmese short and punchy, same feeling, not a literal translation).
 - title = Japanese title of Rio's story like 人前で話せるようになった話 (max 16 characters); title_mm its Burmese.
 - caption = Burmese, max 180 characters, 1-2 emojis, mentions the 4 patterns chained today.
 - No emojis, 笑, w or the 〜 symbol inside any Japanese sentence.
 
+CONVERSATION + COMEDY (most important, Ye 2026-11-03): the 4 main sentences are Rio's answers in a short FUNNY chat with Yui
+(Japanese young woman, 20, bright, teasing). Before each main sentence Yui says one short line "q" (max 18 characters, casual, a question
+or reaction that makes Rio's next sentence natural: e.g. 富士山、登ったって本当？ / えー、うそ！それで？ / で、どうしたの？ / は？上まで行かなかったの？).
+After step 4 add "ending": exactly 2 lines: Yui's sharp tsukkomi (それ、ラーメンの話じゃん！) and Rio's short deadpan punchline
+(max 15 characters, e.g. …来年は、ちゃんと登る。). A Burmese viewer around 20 must laugh: build up with a surprise, Rio's story
+takes an unexpected turn, never a moral, never a polite ending. Think of 3 premises first and keep the funniest (put it in "idea").
+q and ending lines: no brackets, no 〜, with kana and mm like the other lines.
+
 Output ONLY JSON with exactly this structure:
 {"idea": "", "title": "", "title_mm": "", "hook": {"jp": "", "kana": "", "mm": ""}, "ex_tags": ["", ""],
- "steps": [{"pattern": "(copy of pattern 1)", "pattern_mm": "", "main": {"jp": "", "kana": "", "mm": ""},
+ "steps": [{"pattern": "(copy of pattern 1)", "pattern_mm": "", "q": {"jp": "", "kana": "", "mm": ""}, "main": {"jp": "", "kana": "", "mm": ""},
             "ex": [{"jp": "", "kana": "", "mm": ""}, {"jp": "", "kana": "", "mm": ""}]}  (4 steps)],
+ "ending": [{"who": "Yui", "jp": "", "kana": "", "mm": ""}, {"who": "Rio", "jp": "", "kana": "", "mm": ""}],
  "caption": ""}"""
 
 REV = """You are a strict editor, a native speaker of both Japanese and Burmese (Myanmar). Below is a "4 Steps" script (JSON) for a channel teaching
@@ -97,7 +110,12 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
 5. All Burmese is correct, natural, spoken-style Unicode Burmese without double quotes, and matches the Japanese.
 5b. EASY WORDS: replace every word that is harder than JLPT N3 or formal/written (e.g. 日課, 克服, 習慣, 継続, 達成) with an easy everyday word
    a beginner knows, in hook, title and all sentences; make Burmese simple spoken words too. Keep each sentence short (about 20 characters).
-6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. hook max 18 characters and catchy enough to stop scrolling (a challenge or surprising question, never a greeting), title max 16, ex_tags 2-4 characters.
+5c. CONVERSATION + COMEDY: each step has Yui's short line q (max 18 characters) that leads naturally into Rio's main sentence; "ending" has
+   exactly 2 lines (Yui tsukkomi, Rio deadpan punchline max 15 characters). Honestly rate how funny it is for a Burmese viewer around 20 (1-10);
+   if below 9, rewrite q lines, Rio's slot words and the ending to be much funnier (unexpected turn, callback), keeping every pattern exact.
+6. Max 32 characters per sentence (without brackets). No emojis, 笑 or 〜 inside sentences. title max 16, ex_tags 2-4 characters.
+6b. HOOK: rate the hook 1-10 for how strongly a young Burmese TikTok viewer would stop scrolling for it. If below 9, rewrite it
+   (max 16 characters) as a curiosity gap about today's twist, a relatable pain, a bold result or a challenge; never a greeting or a lesson title.
 @@ERRORS@@
 Output ONLY the full corrected JSON with exactly the same structure.
 
@@ -188,6 +206,23 @@ def validate(s, arc):
                     err.append("%s kana must be the full kana reading (no kanji): %s" % (where, pj))
                 if not MYA.search(l.get("mm", "")):
                     err.append("%s needs a Burmese translation: %s" % (where, pj))
+        if s.get("mode") == "talk" or any(st.get("q") for st in s["steps"]):
+            talk_lines = [("step %d q" % (k + 1), st.get("q") or {}) for k, st in enumerate(s["steps"])]
+            end = s.get("ending") or []
+            if len(end) != 2:
+                err.append("ending must have exactly 2 lines (Yui tsukkomi, Rio punchline)")
+            talk_lines += [("ending %d" % (i + 1), e) for i, e in enumerate(end)]
+            for where, l in talk_lines:
+                jp = l.get("jp", "") if isinstance(l, dict) else ""
+                if not jp:
+                    err.append("%s is missing" % where)
+                    continue
+                if len(jp) > 24 or "[" in jp or "〜" in jp or EMOJI.search(jp):
+                    err.append("%s must be short (max 18 characters), without brackets, 〜 or emoji: %s" % (where, jp))
+                if KANJI.search(jp) and (not l.get("kana") or KANJI.search(l.get("kana", ""))):
+                    err.append("%s kana must be the full kana reading: %s" % (where, jp))
+                if not MYA.search(l.get("mm", "")):
+                    err.append("%s needs Burmese mm: %s" % (where, jp))
         if not MYA.search(s["caption"]):
             err.append("caption must be written in Burmese")
     except Exception as e:  # malformed structure
@@ -197,6 +232,12 @@ def validate(s, arc):
 
 def finish(s):
     """Speakers (fixed: Rio tells his story, Yui says example 1, Rio example 2) and Burmese punctuation."""
+    if any(st.get("q") for st in s["steps"]):
+        s["mode"] = "talk"
+        for st in s["steps"]:
+            st["q"]["who"] = "Yui"
+        for i, e in enumerate(s.get("ending", [])):
+            e["who"] = e.get("who") if e.get("who") in ("Rio", "Yui") else ("Yui" if i == 0 else "Rio")
     for st in s["steps"]:
         st["main"]["who"] = "Rio"
         st["ex"][0]["who"] = "Yui"
@@ -308,8 +349,9 @@ def tts_lines_squeezed(prompt_multi, prompt_one, turns, path):
 
 S.tts_lines = tts_lines_squeezed
 
-P_MULTI = ("TTS the following lines by two close Japanese friends around 20 years old. Rio: a young man, relaxed and friendly, telling "
-           "a short story about himself. Yui: a young woman, bright and friendly, saying her own example sentence. "
+P_MULTI = ("TTS the following lines by two close Japanese friends around 20 years old, chatting. Rio: a young man, relaxed and friendly, "
+           "telling a short funny story about himself. Yui: a young woman, bright, friendly and a bit teasing, reacting to him or saying her own "
+           "example sentence. "
            "Speak naturally like real young people, normal natural speed, very clear. Do NOT act and do NOT exaggerate; not like an "
            "announcer, a teacher or anime. Leave a clear pause of about one second between lines.\n")
 P_ONE = S.P_ONE
@@ -320,6 +362,8 @@ def transcript(s):
     for k, st in enumerate(s["steps"]):
         out.append("%s %s — %s" % ("①②③④"[k], st["pattern"], st.get("pattern_mm", "")))
         m = st["main"]
+        if st.get("q"):
+            out.append("Yui: " + st["q"]["jp"] + "  (" + st["q"].get("mm", "") + ")")
         out.append("Rio: " + m["jp"])
         if m.get("kana"):
             out.append("   " + m["kana"])

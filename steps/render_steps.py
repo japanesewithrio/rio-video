@@ -514,6 +514,121 @@ def outro_frame(prog):
     return sc
 
 
+def talk(s):
+    return s.get("mode") == "talk"
+
+
+def bubble(img, y, line, size=50, faded=False, x_pad=0, segs=None, pcol=None):
+    """Chat bubble: speaker name, Japanese, hiragana, Burmese. Yui on the right, Rio on the left.
+    segs/pcol: highlighted pattern segments (Rio's pattern lines)."""
+    who = line.get("who", "Yui")
+    col = SPK_COL.get(who, GREY)
+    d = ImageDraw.Draw(img)
+    f, kf, mf = jfont(size), jfont(int(size * 0.56), False), mfont(int(size * 0.74))
+    maxw = 760
+    jp = plain(line.get("jp", ""))
+    segs = segs or [(jp, "n")]
+    hj = rich_height(d, segs, f, maxw)
+    kana = line.get("kana", "")
+    hk = len(kana_lines(d, kana, kf, maxw)) * int(kf.size * 1.45) if kana else 0
+    hm = len(R.wrap(d, line.get("mm", ""), mf, maxw, jfont(int(size * 0.6), False))) * int(mf.size * 1.8) if line.get("mm") else 0
+    h = 58 + hj + hk + hm + 40
+    x0, x1 = (190, W - 60) if who == "Yui" else (60, W - 190)
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    card(layer, y, h, outline=col, width=5, x0=x0, x1=x1, fill=(255, 250, 252) if who == "Yui" else (247, 251, 255))
+    ld = ImageDraw.Draw(layer)
+    ld.text((x0 + 36, y + 16), who, font=jfont(30), fill=col)
+    yy = rich_block(ld, 0, y + 54, segs, f, maxw, pcol or col, hl=bool(pcol), ncol=INK, center=False, x0=x0 + 36)
+    if kana:
+        yy = kana_block(ld, yy - 4, kana, kf.size, GREY, maxw, x0=x0 + 36)
+    if line.get("mm"):
+        R.lblock(ld, x0 + 36, yy + 4, line["mm"], mf, SUB, maxw)
+    if faded:
+        layer.putalpha(layer.getchannel("A").point(lambda v: int(v * 0.5)))
+    img.alpha_composite(layer)
+    return y + h
+
+
+def question_frame(s, k, prog):
+    """Talk mode: Yui asks; the step's pattern is shown above so viewers know what Rio will use."""
+    st, col = s["steps"][k], STEP_COL[k]
+    sc = Scene("CONVERSATION", prog)
+    d = ldraw(sc.layer("fade", 0.0))
+    y = step_label(d, 270, "STEP %d / 4" % (k + 1), col)
+    y = pattern_box(sc.layer("pop", 0.08), y, st["pattern"], col) + 26
+    y = mm_block(ldraw(sc.layer("fade", 0.2)), y, st.get("pattern_mm", ""), 40, SUB, weight=500) + 40
+    y = avatar_layers(sc, y, "Yui", delay=0.1) + 46
+    bubble(sc.layer("in", 0.15), y, st["q"], size=58)
+    sc.sfx += [(0.0, "ding"), (0.08, "pop"), (0.15, "whoosh")]
+    return sc
+
+
+def answer_frame(s, k, prog):
+    """Talk mode: Yui's question (faded) + Rio's answer card with the pattern highlighted."""
+    st, col = s["steps"][k], STEP_COL[k]
+    sc = Scene("CONVERSATION", prog)
+    d = ldraw(sc.layer())
+    y = step_label(d, 260, "STEP %d / 4" % (k + 1), col)
+    y = pattern_box(sc.layer(), y, st["pattern"], col, size=56) + 30
+    y = bubble(sc.layer(), y, st["q"], size=40, faded=True) + 26
+    d2 = ldraw(sc.layer("fade", 0.0))
+    d2.text((96, y), "Rio", font=jfont(34), fill=SPK_COL["Rio"])
+    y += 52
+    y = sentence_layers(sc, y, segments(st["main"]["jp"]), st["main"].get("kana", ""), col, True, 62, 0.05) + 34
+    mm_block(ldraw(sc.layer("in", 0.3)), y, st["main"].get("mm", ""), 46, INK, weight=600)
+    sc.sfx += [(0.05, "whoosh")]
+    return sc
+
+
+def conv_lines(s):
+    """Talk mode conversation in spoken order: (line, step or None)."""
+    out = []
+    for k, st in enumerate(s["steps"]):
+        out.append((dict(st["q"], who=st["q"].get("who", "Yui")), None))
+        out.append((dict(st["main"], who="Rio"), k))
+    for line in s.get("ending", []):
+        out.append((line, None))
+    return out
+
+
+def conv_frame(s, n, prog):
+    """Talk mode: the conversation as a chat; line n is new (slides in), up to 2 earlier lines stay faded above."""
+    sc = Scene("CONVERSATION", prog)
+    lines = conv_lines(s)
+    d = ldraw(sc.layer())
+    d.text((W / 2, 250), s.get("title", ""), font=jfont(48), fill=(222, 98, 150), anchor="mt")
+    show = list(range(max(0, n - 2), n + 1))
+    y = 360
+    # measure on a scratch image so the newest line always fits above the footer
+    def h_of(i):
+        tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        line, k = lines[i]
+        segs = segments(line["jp"]) if k is not None else None
+        return bubble(tmp, 0, line, size=62 if i == n else 46, segs=segs, pcol=STEP_COL[k] if k is not None else None) + 28
+    while len(show) > 1 and y + sum(h_of(i) for i in show) > H - 190:
+        show.pop(0)
+    for i in show:
+        line, k = lines[i]
+        segs = segments(line["jp"]) if k is not None else None
+        lay = sc.layer("in", 0.0) if i == n else sc.layer()
+        y = bubble(lay, y, line, size=62 if i == n else 46, faded=i != n, segs=segs,
+                   pcol=STEP_COL[k] if k is not None else None) + 28
+    sc.sfx.append((0.0, "pop" if lines[n][0].get("who") == "Yui" else "whoosh"))
+    return sc
+
+
+def ending_frame(s, upto, prog):
+    """Talk mode: the punchline after step 4 (Yui reacts, Rio answers)."""
+    sc = Scene("CONVERSATION", prog)
+    d = ldraw(sc.layer())
+    d.text((W / 2, 280), "そして…", font=jfont(64), fill=INK, anchor="mt")
+    y = 420
+    for i, line in enumerate(s.get("ending", [])[:upto + 1]):
+        y = bubble(sc.layer("in", 0.05) if i == upto else sc.layer(), y, line, size=58) + 40
+    sc.sfx.append((0.05, "pop" if upto == 0 else "sparkle"))
+    return sc
+
+
 def title_frame(s, prog):
     sc = Scene("4 STEPS STORY", prog)
     avatar_layers(sc, 330, "Rio", size=220, delay=0.15)
@@ -534,10 +649,20 @@ def title_frame(s, prog):
 def main_turns(s):
     """Spoken order of main.wav."""
     t = [dict(s["hook"], who="Rio", type="hook")]
-    for k, st in enumerate(s["steps"]):
-        t.append(dict(st["main"], jp=plain(st["main"]["jp"]), type="main", step=k))
-        for j, ex in enumerate(st["ex"]):
-            t.append(dict(ex, jp=plain(ex["jp"]), type="ex", step=k, ex=j))
+    if talk(s):
+        for k, st in enumerate(s["steps"]):
+            t.append(dict(st["q"], jp=plain(st["q"]["jp"]), type="q", step=k, grp=k // 2))
+            t.append(dict(st["main"], jp=plain(st["main"]["jp"]), type="main", step=k, grp=k // 2))
+        for i, line in enumerate(s.get("ending", [])):
+            t.append(dict(line, jp=plain(line["jp"]), type="end", step=99, ex=i, grp=2))
+        for k, st in enumerate(s["steps"]):
+            ex = st["ex"][0]
+            t.append(dict(ex, jp=plain(ex["jp"]), type="ex", step=k, ex=0, grp=3 + k // 2))
+    else:
+        for k, st in enumerate(s["steps"]):
+            t.append(dict(st["main"], jp=plain(st["main"]["jp"]), type="main", step=k))
+            for j, ex in enumerate(st["ex"]):
+                t.append(dict(ex, jp=plain(ex["jp"]), type="ex", step=k, ex=j))
     for w, j, k, m in TAIL:
         t.append({"who": w, "jp": j, "kana": k, "mm": m, "type": "tail"})
     return t
@@ -546,8 +671,12 @@ def main_turns(s):
 def audio_groups(s):
     mt = main_turns(s)
     groups = [[mt[0]]]
-    for k in range(len(s["steps"])):
-        groups.append([t for t in mt if t.get("step") == k])
+    if talk(s):  # conversation in 3 TTS calls (so it flows like a real chat), examples in 2
+        for g in range(5):
+            groups.append([t for t in mt if t.get("grp") == g])
+    else:
+        for k in range(len(s["steps"])):
+            groups.append([t for t in mt if t.get("step") == k])
     groups.append([t for t in mt if t["type"] == "tail"])
     assert sum(len(g) for g in groups) == len(mt)
     return groups
@@ -573,9 +702,23 @@ def timeline(s, mb):
     # hook: title card, then overview rows appear one by one
     a, b = mb[0], mb[1]
     tl.append((lambda p: title_frame(s, p), (a, b, 0.3)))
-    for k in range(4):
+    for k in range(4 if not talk(s) else 0):
         tl.append((lambda p, k=k: overview_frame(s, k, p), ("silence", 0.8 if k < 3 else 1.3)))
-    for k in range(4):
+    if talk(s):
+        # 1) the whole conversation first
+        conv = [t for t in range(len(mt)) if mt[t]["type"] in ("q", "main", "end")]
+        for n, i in enumerate(conv):
+            last = n == len(conv) - 1
+            tl.append((lambda p, n=n: conv_frame(s, n, p), (mb[i], mb[i + 1], 1.2 if last else 0.35)))
+        # 2) today's 4 patterns, then each pattern: Rio's line again (highlighted) + one example with swapped words
+        for k in range(4):
+            tl.append((lambda p, k=k: overview_frame(s, k, p), ("silence", 0.8 if k < 3 else 1.3)))
+        for k in range(4):
+            i = idx[("main", k, None)]
+            tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.5)))
+            e = idx[("ex", k, 0)]
+            tl.append((lambda p, k=k: example_frame(s, k, 0, p), (mb[e], mb[e + 1], 0.6)))
+    for k in range(4 if not talk(s) else 0):
         i = idx[("main", k, None)]
         tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.6)))
         for j in range(2):
