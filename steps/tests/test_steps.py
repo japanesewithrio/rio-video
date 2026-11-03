@@ -154,5 +154,25 @@ with _w.open(_f, "wb") as w:
 P.squeeze_silence(_f)
 with _w.open(_f) as w:
     check("silence squeezed", abs(w.getnframes() / _sr - 4.1) < 0.2)
+# pattern pool: never reuse a used pattern; every frame must fit itself
+pool = json.load(open(os.path.join(STEPS, "pattern_pool.json"), encoding="utf-8"))
+allp = pool["start"] + pool["middle"] + pool["end"]
+check("pool has no duplicates", len(allp) == len(set(allp)))
+for fr in allp:
+    check("pool frame has a slot %s" % fr, "〜" in fr)
+    check("pool frame fits itself %s" % fr, P.fits(fr.replace("〜", "[ことば]"), fr))
+st0 = {"done": [], "used_patterns": list(pool["start"][:3])}
+av = P.available(st0)
+check("used start frames removed", not set(pool["start"][:3]) & set(av["start"]))
+x = copy.deepcopy(s0)
+x["steps"][0]["pattern"] = pool["start"][0]
+check("used pattern rejected", any("already used" in e for e in P.pool_errors(x, av)))
+x = copy.deepcopy(s0)
+for k, c in enumerate(["start", "middle", "middle", "end"]):
+    x["steps"][k]["pattern"] = av[c][0] if k != 2 else av["middle"][1]
+check("unused patterns accepted", P.pool_errors(x, av) == [])
+stx = {"done": [], "used_patterns": list(pool["end"])}
+avx = P.available(stx)
+check("pool resets when a category runs out", len(avx["end"]) == len(pool["end"]) and stx["used_patterns"] == [])
 print("FAILS", fails)
 sys.exit(1 if fails else 0)

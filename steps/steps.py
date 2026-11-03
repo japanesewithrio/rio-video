@@ -47,7 +47,7 @@ Each sentence is built on a fixed sentence pattern, and the 4 patterns chain int
 by swapping the words inside the slots. After each of Rio's sentences, two example sentences reuse the same pattern with different words,
 each example thread continuing its own mini story across the 4 steps (example 1 always about one topic, example 2 always about another topic).
 
-Today's 4 patterns, in this exact order (〜 marks a slot; the text outside the slots must be used EXACTLY, character for character):
+Today's 4 patterns (〜 marks a slot; the text outside the slots must be used EXACTLY, character for character):
 @@ARC@@
 Story idea for Rio's sentences (inspiration, make it natural and a little warm or funny; if it does not fit the patterns, pick a related everyday situation that does): @@THEME@@
 Do NOT reuse these past titles, hooks or their stories, and do not reuse their ideas or example topics: @@AVOID@@
@@ -102,7 +102,7 @@ REV = """You are a strict editor, a native speaker of both Japanese and Burmese 
 real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem:
 1. Every Japanese sentence is 100% natural Japanese that young people really say, grammatically correct, and fits its slot pattern.
 2. Each sentence uses its step's pattern text exactly, with the slot words inside [brackets]; replacing each [..] with 〜 gives the pattern
-   (only punctuation and one final particle よ/ね/よね/な may differ). The patterns, in order, must be exactly: @@ARC@@
+   (only punctuation and one final particle よ/ね/よね/な may differ). Allowed patterns: @@ARC@@
 3. Rio's 4 main sentences tell one coherent story; example 1's 4 sentences one mini story about ex_tags[0]; example 2's about ex_tags[1].
 4. Every kana is the exact full reading (hiragana for kanji, katakana words stay katakana, spaces only between phrases, no brackets, no kanji).
 4b. Sentence-final particles (よ, ね ...) are outside the brackets; brackets are ASCII [ ].
@@ -256,10 +256,62 @@ def finish(s):
     return s
 
 
+POOL = os.path.join(HERE, "pattern_pool.json")
+NEED = {"start": 1, "middle": 2, "end": 1}
+
+
+def available(st):
+    """Unused frames per category (Ye 2026-11-03: patterns must never repeat). Resets only when a category runs out."""
+    pool = json.load(open(POOL, encoding="utf-8"))
+    used = set(st.get("used_patterns", []))
+    avail = {c: [p for p in pool[c] if p not in used] for c in NEED}
+    if any(len(avail[c]) < n for c, n in NEED.items()):
+        D.WARN.append("pattern pool used up - starting again from the top; please add new frames to steps/pattern_pool.json")
+        st["used_patterns"] = []
+        avail = {c: list(pool[c]) for c in NEED}
+    return avail
+
+
+def pool_text(avail):
+    return ("Choose them yourself from these lists of patterns that were NEVER used before on the channel. Step 1 from START, steps 2 and 3 "
+            "from MIDDLE (two different ones), step 4 from END. Pick the 4 that chain into the most natural and funniest story; "
+            "copy each chosen pattern exactly into \"pattern\".\nSTART: " + " / ".join(avail["start"]) +
+            "\nMIDDLE: " + " / ".join(avail["middle"]) + "\nEND: " + " / ".join(avail["end"]))
+
+
+def pool_errors(s, avail):
+    err = []
+    try:
+        pats = [st.get("pattern", "") for st in s["steps"]]
+    except Exception:
+        return ["steps are missing"]
+    want = ["start", "middle", "middle", "end"]
+    for k, (p, c) in enumerate(zip(pats, want)):
+        hit = [x for x in avail[c] if norm(x) == norm(p)]
+        if not hit:
+            err.append("step %d pattern %s must be copied exactly from the %s list (patterns already used on the channel are not allowed)"
+                       % (k + 1, p, c.upper()))
+        else:
+            s["steps"][k]["pattern"] = hit[0]
+    if len(set(norm(p) for p in pats)) != len(pats):
+        err.append("the 4 patterns must all be different")
+    return err
+
+
 def make_lesson(arc, theme, avoid):
-    arc_txt = "\n".join("%d. %s" % (i + 1, p) for i, p in enumerate(arc))
+    """arc: a fixed list of 4 patterns, or a dict of available frames per category (pool mode)."""
+    pool = isinstance(arc, dict)
+    arc_txt = pool_text(arc) if pool else "\n".join("%d. %s" % (i + 1, p) for i, p in enumerate(arc))
     prompt = GEN.replace("@@ARC@@", arc_txt).replace("@@THEME@@", theme).replace("@@AVOID@@", "、".join(avoid[-80:]) or "(none)")
-    rev = REV.replace("@@ARC@@", " / ".join(arc))
+    rev = REV.replace("@@ARC@@", "keep the 4 chosen patterns (each copied exactly from these lists) - " + pool_text(arc) if pool else " / ".join(arc))
+
+    def check(x):
+        if pool:
+            e = pool_errors(x, arc)
+            if e:
+                return e
+            return validate(x, [st["pattern"] for st in x["steps"]])
+        return validate(x, arc)
     best, best_err = None, None
     for attempt in range(2):
         try:
@@ -272,7 +324,7 @@ def make_lesson(arc, theme, avoid):
         except Exception as e:
             D.log("review failed", e)
         for fix in range(3):
-            err = validate(s, arc)
+            err = check(s)
             D.log("attempt", attempt, "fix", fix, "errors", err)
             if not err:
                 return s
@@ -392,8 +444,7 @@ def main():
         for c in D.VOICES["multiSpeakerVoiceConfig"]["speakerVoiceConfigs"]:
             c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] = vv.get(c["speaker"], c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"])
     D.log("using", D.TEXT_CHAIN, D.TTS_CHAIN, D.VOICES)
-    st = json.load(open(STATE, encoding="utf-8")) if os.path.exists(STATE) else {"done": [], "next_arc": 0}
-    arcs = json.load(open(os.path.join(HERE, "arcs.json"), encoding="utf-8"))
+    st = json.load(open(STATE, encoding="utf-8")) if os.path.exists(STATE) else {"done": []}
     now = dt.datetime.now(D.JST)
     branch = os.environ.get("GITHUB_REF_NAME", "main")
     if not DRY and branch != "main":
@@ -407,15 +458,14 @@ def main():
     key = ("FT" + now.strftime("%y%m%d%H%M")) if DRY else ("F" + now.strftime("%y%m%d"))
     if any(d["key"] == key for d in st["done"]):
         key = "F" + now.strftime("%y%m%d%H%M")
-    ai = st.get("next_arc", 0) % len(arcs)
-    arc = arcs[ai]
+    avail = available(st)
     # never repeat a story theme until all of them were used (Ye 2026-11-01: "content မထပ်စေနဲ့")
     used = set(st.get("themes", []))
     fresh = [t for t in THEMES if t not in used] or list(THEMES)
     if len(fresh) == len(THEMES):
         st["themes"] = []
     theme = random.choice(fresh)
-    D.log("key", key, "arc", ai, arc, "theme", theme)
+    D.log("key", key, "unused patterns", {c: len(v) for c, v in avail.items()}, "theme", theme)
     inp = os.environ.get("STEPS_INPUT", "")
     use_inp = bool(inp and os.path.exists(os.path.join(ROOT, inp)))
     if use_inp:
@@ -423,7 +473,7 @@ def main():
         arc = [x["pattern"] for x in s["steps"]]
         D.log("using prepared lesson", inp, "errors", validate(s, arc))
     else:
-        s = make_lesson(arc, theme, [d["title"] for d in st["done"]] + [d.get("hook", "") for d in st["done"] if d.get("hook")]
+        s = make_lesson(avail, theme, [d["title"] for d in st["done"]] + [d.get("hook", "") for d in st["done"] if d.get("hook")]
                         + ["example topic " + t for d in st["done"][-6:] for t in d.get("tags", [])])
     s = finish(s)
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
@@ -440,9 +490,11 @@ def main():
     vid = os.path.join("videos", key + ".mp4")
     secs = RS.render(jpath, main_wav, os.path.join(ROOT, vid))
     if not DRY and not use_inp:
-        st["done"].append({"key": key, "title": s["title"], "hook": s["hook"]["jp"], "tags": s.get("ex_tags", []), "arc": ai, "date": now.strftime("%Y-%m-%d")})
+        pats = [x["pattern"] for x in s["steps"]]
+        st["done"].append({"key": key, "title": s["title"], "hook": s["hook"]["jp"], "tags": s.get("ex_tags", []), "patterns": pats,
+                           "date": now.strftime("%Y-%m-%d")})
         st.setdefault("themes", []).append(theme)
-        st["next_arc"] = ai + 1
+        st.setdefault("used_patterns", []).extend(p for p in pats if p not in st["used_patterns"])
         json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     os.chdir(ROOT)
     old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+\.mp4$", f))
