@@ -1,5 +1,6 @@
 models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026, deep-research-pro-preview-12-2025
-chat test /home/runner/work/rio-video/rio-video/steps/chat_sample.json voices {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}} tts ['gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts', 'gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts']
+chat test /home/runner/work/rio-video/rio-video/steps/chat_ep2.json voices {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}} tts ['gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts', 'gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts']
+tts group main_g00.wav 4 lines 6.6 s speed 6.8 tempo 1.00
 gemini gemini-2.5-flash-preview-tts 429 {
   "error": {
     "code": 429,
@@ -10,21 +11,37 @@ gemini gemini-2.5-pro-preview-tts 429 {
     "code": 429,
     "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
 gemini: giving up on gemini-2.5-pro-preview-tts
-tts group main_g00.wav 4 lines 8.7 s speed 6.6 tempo 1.00
-tts group main_g01.wav 1 lines 2.5 s speed 7.1 tempo 1.00
-gemini gemini-3.1-flash-tts-preview 503 {
+tts group main_g01.wav 1 lines 2.2 s speed 8.2 tempo 0.88
+tts group main_g02.wav 7 lines 20.8 s speed 8.1 tempo 0.89
+squeezed 1.3 s of silence out of main_g02.wav
+gemini gemini-3.1-flash-tts-preview 429 {
   "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
-tts group main_g02.wav 7 lines 29.7 s speed 7.5 tempo 0.96
-tts group main_g03.wav 1 lines 17.8 s speed 8.4 tempo 0.86
-tts group main_g04.wav 5 lines 17.2 s speed 10.2 tempo 0.85
-squeezed 4.3 s of silence out of main_g04.wav
-tts group main_g05.wav 2 lines 4.8 s speed 8.2 tempo 0.88
-rendered chat /home/runner/work/rio-video/rio-video/work/chat/chat_test.mp4 52 pieces 111.7 s
-telegram sendVideo ok
-sent /home/runner/work/rio-video/rio-video/work/chat/chat_test.mp4 111.73333333333333
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+gemini: giving up on gemini-3.1-flash-tts-preview
+FAILED RuntimeError gemini failed: gemini-3.1-flash-tts-preview 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
+telegram sendMessage ok
+Traceback (most recent call last):
+  File "/home/runner/work/rio-video/rio-video/steps/chat_run.py", line 71, in <module>
+    main()
+  File "/home/runner/work/rio-video/rio-video/steps/chat_run.py", line 60, in main
+    build(RC.audio_groups(s), wav)
+  File "/home/runner/work/rio-video/rio-video/steps/chat_run.py", line 29, in build
+    S.tts_lines(P_PLAIN if style == "plain" else P_CHAT, P_ONE, turns, gw)
+  File "/home/runner/work/rio-video/rio-video/steps/steps.py", line 397, in tts_lines_squeezed
+    _tts_lines(prompt_multi, prompt_one, turns, path)
+  File "/home/runner/work/rio-video/rio-video/story/story.py", line 264, in tts_lines
+    r = D.gemini([m] + [x for x in chain if x != m], {"contents": [{"parts": [{"text": text}]}],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/rio-video/rio-video/steps/steps.py", line 388, in patient_gemini
+    return _gemini(models, body, tries=6 if "tts" in first else tries)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/rio-video/rio-video/daily/daily.py", line 88, in gemini
+    raise RuntimeError("gemini failed: " + LAST_ERR[0])
+RuntimeError: gemini failed: gemini-3.1-flash-tts-preview 429 {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota ex
