@@ -77,10 +77,20 @@ def units(s):
     return out
 
 
+RUBY = 0.75   # Ye 2026-11-04: option D (kanji 40 / furigana 30)
+
+
+def adv(d, u, fnt, rf):
+    """Width a unit takes: furigana may overhang its neighbours a little (like printed books)."""
+    tw = d.textlength(u[0], font=fnt)
+    return max(tw, d.textlength(u[1], font=rf)) if u[1] else tw   # safe width for wrapping/sizing
+
+
 def wrap_units(d, us, fnt, maxw):
+    rf = jfont(int(fnt.size * RUBY), False)
     lines, cur, w = [], [], 0.0
     for u in us:
-        uw = d.textlength(u[0], font=fnt)
+        uw = adv(d, u, fnt, rf)
         if cur and w + uw > maxw and u[0] not in NO_START:
             lines.append(cur); cur, w = [], 0.0
         cur.append(u); w += uw
@@ -89,31 +99,51 @@ def wrap_units(d, us, fnt, maxw):
     return lines
 
 
-def draw_units(d, x, y, line, fnt, rf, base_col, ruby=True, step_cols=True):
+def line_layout(d, line, fnt, rf):
+    """-> list of (x_offset, box_width). Furigana may overhang neighbouring kana (printed-book style),
+    but it never starts left of the line or overlaps the previous furigana."""
+    out, x, last_r = [], 0.0, 0.0
     for t, r, st in line:
+        tw = d.textlength(t, font=fnt)
+        if not r:
+            out.append((x, tw)); x += tw
+            continue
+        rw = d.textlength(r, font=rf)
+        bw = max(tw, rw * 0.62)
+        left = x + bw / 2 - rw / 2
+        push = max(0.0, last_r + 6 - left)
+        x += push
+        out.append((x, bw))
+        last_r = x + bw / 2 + rw / 2
+        x += bw
+    return out
+
+
+def draw_units(d, x, y, line, fnt, rf, base_col, ruby=True, step_cols=True):
+    rf = jfont(int(fnt.size * RUBY), False)
+    for (t, r, st), (ox, bw) in zip(line, line_layout(d, line, fnt, rf)):
         col = STEP[st] if (st and step_cols) else base_col
         tw = d.textlength(t, font=fnt)
         if r and ruby:
-            d.text((x + tw / 2, y - 3), r, font=rf, fill=(120, 120, 135), anchor="md")
-        d.text((x, y), t, font=fnt, fill=col)
-        x += tw
+            d.text((x + ox + bw / 2, y - 2), r, font=rf, fill=(90, 96, 112), anchor="md")
+        d.text((x + ox + (bw - tw) / 2, y), t, font=fnt, fill=col)
     return x
 
 
 def text_block_h(d, s, size, maxw, ruby=True):
     f = jfont(size)
     n = len(wrap_units(d, units(s), f, maxw))
-    return n * (size + (int(size * 0.5) if ruby else 0) + 16)
+    return n * (size + (int(size * RUBY + 6) if ruby else 0) + 16)
 
 
 def draw_text_block(d, x, y, s, size, maxw, col=INK, ruby=True, center=False):
     f, rf = jfont(size), jfont(int(size * 0.46), False)
-    lh = size + (int(size * 0.5) if ruby else 0) + 16
+    lh = size + (int(size * RUBY + 6) if ruby else 0) + 16
     for line in wrap_units(d, units(s), f, maxw):
         xx = x
         if center:
-            xx = (W - sum(d.textlength(u[0], font=f) for u in line)) / 2
-        draw_units(d, xx, y + (int(size * 0.5) if ruby else 0), line, f, rf, col, ruby)
+            xx = (W - sum(adv(d, u, f, rf) for u in line)) / 2
+        draw_units(d, xx, y + (int(size * RUBY + 6) if ruby else 0), line, f, rf, col, ruby)
         y += lh
     return y
 
@@ -160,17 +190,17 @@ def avatar_img(name, size):
 
 
 # ---------------------------------------------------------------- bubbles
-def full_bubble(img, y, line, me, outline=None, size=48):
+def full_bubble(img, y, line, me, outline=None, size=50):
     """Spoken line: JP with furigana (pattern parts coloured) + Burmese."""
     d = ImageDraw.Draw(img)
     maxw = W - 330
     f = jfont(size)
     jl = wrap_units(d, units(line["jp"]), f, maxw)
     mml = mm_lines(d, line.get("mm", ""), 37, maxw)
-    jw = max(sum(d.textlength(u[0], font=f) for u in ln) for ln in jl)
+    jw = max(sum(adv(d, u, f, jfont(int(size * RUBY), False)) for u in ln) for ln in jl)
     mw = max([d.textlength(m, font=mfont(37, 600)) for m in mml] or [0])
     bw = min(max(jw, mw) + 70, W - 210)
-    lh = size + int(size * 0.5) + 16
+    lh = size + int(size * RUBY + 6) + 26
     bh = len(jl) * lh + len(mml) * 58 + 56
     x = W - 50 - bw if me else 150
     if not me:
@@ -182,7 +212,7 @@ def full_bubble(img, y, line, me, outline=None, size=48):
     yy = y + 22
     rf = jfont(int(size * 0.46), False)
     for ln in jl:
-        draw_units(d, x + 35, yy + int(size * 0.5), ln, f, rf, INK)
+        draw_units(d, x + 35, yy + int(size * RUBY + 6), ln, f, rf, INK)
         yy += lh
     yy += 4
     for m in mml:
@@ -224,7 +254,7 @@ def f_hook(s, stage, prog):
     y, _ = full_bubble(lay, y, s["q"], False)
     if stage >= 1:
         lay = sc.layer("pop", 0.0) if stage == 1 else sc.layer()
-        y, _ = full_bubble(lay, y, s["plain"], True, size=52)
+        y, _ = full_bubble(lay, y, s["plain"], True, size=50)
     if stage == 0:
         sc.sfx.append((0.0, "pon"))
     elif stage == 1:
@@ -248,9 +278,9 @@ def f_end(s, prog):
     y = 470
     st = sc.layer()
     y, _ = full_bubble(st, y, s["q"], False)
-    y, _ = full_bubble(st, y, s["plain"], True, size=52)
+    y, _ = full_bubble(st, y, s["plain"], True, size=50)
     lay = sc.layer("pop", 0.0)
-    y, _ = full_bubble(lay, y, s["end"], False, size=52)
+    y, _ = full_bubble(lay, y, s["end"], False, size=50)
     lay2 = sc.layer("fade", 0.6)
     d = ImageDraw.Draw(lay2)
     d.text((W / 2, y + 30), "・ ・ ・", font=jfont(70), fill=(175, 168, 160), anchor="mt")
@@ -287,7 +317,7 @@ def f_patterns(s, upto, prog):
         d.rounded_rectangle([70, y, W - 70, y + 215], 36, fill=(255, 255, 255), outline=c, width=6)
         d.ellipse([102, y + 44, 166, y + 108], fill=c)
         d.text((134, y + 76), str(k + 1), font=jfont(36), fill=(255, 255, 255), anchor="mm")
-        draw_text_block(d, 190, y + 26, p["jp"], 50, 800, col=c)
+        draw_text_block(d, 190, y + 10, p["jp"], 46, 800, col=c)
         d.text((190, y + 160), p["mm"], font=mfont(36, 600), fill=SUB, anchor="lm")
         y += 240
     if upto == 3:
@@ -333,10 +363,10 @@ def f_chain(s, prog):
     lay = sc.layer("pop", 0.0)
     d = ImageDraw.Draw(lay)
     top = 450
-    hj = text_block_h(d, s["chain"]["jp"], 50, 880)
+    hj = text_block_h(d, s["chain"]["jp"], 48, 880)
     mml = mm_lines(d, s["chain"]["mm"], 36, 880, 500)
     d.rounded_rectangle([50, top, W - 50, top + hj + len(mml) * 56 + 120], 40, fill=(255, 255, 255))
-    y = draw_text_block(d, 95, top + 40, s["chain"]["jp"], 50, 880)
+    y = draw_text_block(d, 95, top + 40, s["chain"]["jp"], 48, 880)
     for m in mml:
         R.lblock(d, 95, y + 6, m, mfont(36, 500), SUB, 940)
         y += 58
@@ -355,7 +385,7 @@ def f_your_turn(s, count, prog):
         c = STEP[k + 1]
         f = jfont(44)
         us = units(b)
-        w = sum(d.textlength(u[0], font=f) for u in us) + 70
+        w = sum(adv(d, u, f, jfont(int(44 * RUBY), False)) for u in us) + 70
         x = W - 50 - w
         d.rounded_rectangle([x, y, x + w, y + 112], 36, fill=(255, 255, 255), outline=c, width=6)
         draw_units(d, x + 35, y + 44, us, f, jfont(20, False), INK)
@@ -376,24 +406,25 @@ def f_example(s, upto, prog):
     st = sc.layer()
     d = ImageDraw.Draw(st)
     y = 430
-    d.rounded_rectangle([60, y, W - 60, y + 175], 34, fill=(250, 250, 250))
+    qh = text_block_h(d, s["q2"]["jp"], 44, 760)
+    d.rounded_rectangle([60, y, W - 60, y + qh + 80], 34, fill=(250, 250, 250))
     st.alpha_composite(avatar_img("Yui", 80), (85, y + 32))
-    draw_text_block(d, 195, y + 22, s["q2"]["jp"], 44, 760)
-    d.text((195, y + 128), s["q2"]["mm"], font=mfont(30, 500), fill=SUB, anchor="lm")
-    y += 200
+    yq = draw_text_block(d, 195, y + 18, s["q2"]["jp"], 44, 760)
+    R.lblock(d, 195, yq - 6, s["q2"]["mm"], mfont(32, 500), SUB, 760)
+    y += qh + 104
     for k, ex in enumerate(s["examples"]):
         if k > upto:
             break
         c = STEP[k + 1]
         lay = sc.layer("pop", 0.0) if k == upto else st
         dd = ImageDraw.Draw(lay)
-        hj = text_block_h(dd, ex["jp"], 40, 790)
+        hj = text_block_h(dd, ex["jp"], 42, 790)
         mml = mm_lines(dd, ex["mm"], 34, 790)
         h = hj + len(mml) * 54 + 66
         dd.rounded_rectangle([60, y, W - 60, y + h], 34, fill=(255, 255, 255), outline=c, width=5)
         dd.ellipse([85, y + 25, 135, y + 75], fill=c)
         dd.text((110, y + 50), str(k + 1), font=jfont(28), fill=(255, 255, 255), anchor="mm")
-        yy = draw_text_block(dd, 155, y + 18, ex["jp"], 40, 790)
+        yy = draw_text_block(dd, 155, y + 18, ex["jp"], 42, 790)
         for m in mml:
             R.lblock(dd, 155, yy - 4, m, mfont(34, 600), INK, 850)
             yy += 54

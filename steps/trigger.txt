@@ -1,1 +1,1 @@
-CHAT steps/chat_sample.json
+CHAT steps/chat_ep2.json steps/chat_ep3.json

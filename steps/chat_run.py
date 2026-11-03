@@ -48,20 +48,22 @@ def main():
         for c in D.VOICES["multiSpeakerVoiceConfig"]["speakerVoiceConfigs"]:
             c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] = vv.get(c["speaker"], c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"])
     trig = open(os.path.join(HERE, "trigger.txt"), encoding="utf-8").read()
-    m = re.search(r"steps/[A-Za-z0-9_]+\.json", trig)
-    lesson = os.path.join(ROOT, m.group(0) if m else "steps/chat_sample.json")
-    s = json.load(open(lesson, encoding="utf-8"))
-    D.log("chat test", lesson, "voices", D.VOICES, "tts", D.TTS_CHAIN)
-    work = os.path.join(ROOT, "work", "chat")
-    os.makedirs(work, exist_ok=True)
-    wav = os.path.join(work, "main.wav")
-    build(RC.audio_groups(s), wav)
-    out = os.path.join(work, "chat_test.mp4")
-    secs = RC.render(lesson, wav, out)
-    cap = "🧪 Format F TEST (Chat Before → After) — %s (%ds)\nမတင်ရသေးဘူး၊ မင်းကြည့်ဖို့ပဲ။" % (s["title"], secs)
-    if not D.tg("sendVideo", {"chat_id": D.OWNER, "caption": cap[:1020], "supports_streaming": "true"}, {"video": open(out, "rb")}):
-        raise RuntimeError("Telegram sendVideo failed")
-    D.log("sent", out, secs)
+    lessons = re.findall(r"steps/[A-Za-z0-9_]+\.json", trig) or ["steps/chat_sample.json"]
+    for name in lessons:
+        lesson = os.path.join(ROOT, name)
+        s = json.load(open(lesson, encoding="utf-8"))
+        D.log("chat test", lesson, "voices", D.VOICES, "tts", D.TTS_CHAIN)
+        key = os.path.splitext(os.path.basename(name))[0]
+        work = os.path.join(ROOT, "work", "chat", key)
+        os.makedirs(work, exist_ok=True)
+        wav = os.path.join(work, "main.wav")
+        build(RC.audio_groups(s), wav)
+        out = os.path.join(work, key + ".mp4")
+        secs = RC.render(lesson, wav, out)
+        cap = "🧪 Format F TEST — %s (%ds)\nမတင်ရသေးဘူး၊ မင်းကြည့်ဖို့ပဲ။" % (s["title"], secs)
+        if not D.tg("sendVideo", {"chat_id": D.OWNER, "caption": cap[:1020], "supports_streaming": "true"}, {"video": open(out, "rb")}):
+            raise RuntimeError("Telegram sendVideo failed")
+        D.log("sent", out, secs)
 
 
 if __name__ == "__main__":
