@@ -617,6 +617,102 @@ def conv_frame(s, n, prog):
     return sc
 
 
+CHAT_BG = (150, 178, 220)      # chat-app wallpaper (blue-grey)
+CHAT_RIO = (214, 246, 196)     # my side (Rio) = pale green
+CHAT_YUI = (255, 255, 255)     # friend (Yui) = white
+PAT_DARK = [(196, 86, 14), (196, 40, 100), (10, 120, 80), (110, 66, 196)]  # pattern colours readable on the bubbles
+
+
+def chat_base(prog, title):
+    img = Image.new("RGBA", (W, H), CHAT_BG + (255,))
+    d = ImageDraw.Draw(img)
+    # soft pattern on the wallpaper
+    for yy in range(260, H - 160, 140):
+        for xx in range(-40 + (yy // 140 % 2) * 70, W, 140):
+            d.ellipse([xx, yy, xx + 10, yy + 10], fill=(166, 192, 230))
+    d.rectangle([0, 0, W, 210], fill=(255, 255, 255))
+    d.line([(0, 210), (W, 210)], fill=(220, 224, 232), width=2)
+    d.text((56, 118), "‹", font=jfont(72), fill=(50, 50, 60), anchor="lm")
+    img.alpha_composite(avatar("Yui", 92, 4), (150, 72))
+    d.text((262, 100), "Yui", font=jfont(44), fill=(30, 30, 40), anchor="lm")
+    d.text((262, 152), title, font=jfont(28, False), fill=(120, 124, 140), anchor="lm")
+    d.text((W - 70, 118), "Learn with Rio \u2661", font=jfont(30), fill=(222, 98, 150), anchor="rm")
+    d.rectangle([0, H - 150, W, H], fill=(255, 255, 255))
+    d.rounded_rectangle([84, H - 128, W - 84, H - 116], 6, fill=(232, 236, 242))
+    d.rounded_rectangle([84, H - 128, 84 + max(16, int((W - 168) * min(1.0, prog))), H - 116], 6, fill=GREEN)
+    d.text((W / 2, H - 62), "話せるようになろう  ・  LET'S SPEAK", font=jfont(30, False), fill=(120, 126, 142), anchor="mm")
+    return img
+
+
+def chat_bubble(img, y, line, k, big):
+    """One chat message. Yui = left (white, avatar), Rio = right (green). Rio's pattern lines: pattern coloured, slot words blue underline."""
+    who = line.get("who", "Yui")
+    d = ImageDraw.Draw(img)
+    js, ks, ms = (50, 28, 34) if big else (40, 24, 28)
+    f, kf, mf = jfont(js), jfont(ks, False), mfont(ms)
+    maxw = 660
+    segs = segments(line["jp"]) if k is not None else [(plain(line["jp"]), "n")]
+    lines = rich_lines(d, segs, f, maxw)
+    tw = max(sum(d.textlength(c, font=f) for c, _ in ln) for ln in lines)
+    kl = kana_lines(d, line.get("kana", ""), kf, maxw) if line.get("kana") else []
+    if kl:
+        tw = max(tw, max(d.textlength(x, font=kf) for x in kl))
+    ml = R.wrap(d, line.get("mm", ""), mf, maxw, jfont(ms - 4, False)) if line.get("mm") else []
+    if ml:
+        tw = max(tw, max(R.tlen(d, x, mf, jfont(ms - 4, False)) for x in ml))
+    bh = len(lines) * int(js * 1.42) + len(kl) * int(ks * 1.45) + len(ml) * int(ms * 1.8) + 46
+    bw = min(maxw, tw) + 64
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ld = ImageDraw.Draw(layer)
+    if who == "Rio":
+        x1 = W - 56
+        x0 = x1 - bw
+        col = CHAT_RIO
+        ld.text((x0 - 14, y + bh - 34), "既読", font=jfont(22, False), fill=(240, 244, 252), anchor="rs")
+    else:
+        layer.alpha_composite(avatar("Yui", 96, 4), (36, y))
+        x0 = 150
+        x1 = x0 + bw
+        col = CHAT_YUI
+    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([x0, y + 6, x1, y + bh + 6], 40, fill=(40, 60, 100, 40))
+    layer.alpha_composite(sh.filter(ImageFilter.GaussianBlur(6)))
+    ld.rounded_rectangle([x0, y, x1, y + bh], 40, fill=col)
+    pcol = PAT_DARK[k] if k is not None else INK
+    yy = rich_block(ld, 0, y + 22, segs, f, maxw, pcol, ncol=INK, hl=k is not None, center=False, x0=x0 + 32)
+    if kl:
+        yy = kana_block(ld, yy - 6, line["kana"], ks, (110, 116, 130), maxw, x0=x0 + 32)
+    if ml:
+        R.lblock(ld, x0 + 32, yy + 2, line["mm"], mf, (70, 76, 92), maxw)
+    img.alpha_composite(layer)
+    return y + bh, layer
+
+
+def chat_frame(s, n, prog):
+    """Talk mode as a chat app: messages appear one by one (newest slides in at the bottom, older ones scroll up)."""
+    sc = Scene("CHAT", prog)
+    sc.base = chat_base(prog, s.get("title", ""))
+    lines = conv_lines(s)
+    # pick how many earlier messages fit above the newest one
+    top, bottom = 250, H - 175
+
+    def height(i):
+        tmp = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        return chat_bubble(tmp, 0, lines[i][0], lines[i][1], i == n)[0] + 30
+    show, total = [n], height(n)
+    i = n - 1
+    while i >= 0 and total + height(i) <= bottom - top:
+        total += height(i)
+        show.insert(0, i)
+        i -= 1
+    y = bottom - total
+    for i in show:
+        lay = sc.layer("in", 0.0) if i == n else sc.layer()
+        y = chat_bubble(lay, y, lines[i][0], lines[i][1], i == n)[0] + 30
+    sc.sfx.append((0.0, "pop" if lines[n][0].get("who") == "Yui" else "tick"))
+    return sc
+
+
 def ending_frame(s, upto, prog):
     """Talk mode: the punchline after step 4 (Yui reacts, Rio answers)."""
     sc = Scene("CONVERSATION", prog)
@@ -709,23 +805,25 @@ def timeline(s, mb):
         conv = [t for t in range(len(mt)) if mt[t]["type"] in ("q", "main", "end")]
         for n, i in enumerate(conv):
             last = n == len(conv) - 1
-            tl.append((lambda p, n=n: conv_frame(s, n, p), (mb[i], mb[i + 1], 1.2 if last else 0.35)))
-        # 2) today's 4 patterns, then each pattern: Rio's line again (highlighted) + one example with swapped words
-        for k in range(4):
-            tl.append((lambda p, k=k: overview_frame(s, k, p), ("silence", 0.8 if k < 3 else 1.3)))
+            tl.append((lambda p, n=n: chat_frame(s, n, p), (mb[i], mb[i + 1], 1.0 if last else 0.3)))
+        # 2) the 4 pattern lines in a row, 3) one example per pattern (new words, same grammar)
+        tl.append((lambda p: chain_frame(s, None, p), ("silence", 0.7)))
         for k in range(4):
             i = idx[("main", k, None)]
-            tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.5)))
+            tl.append((lambda p, k=k: chain_frame(s, k, p), (mb[i], mb[i + 1], 0.3)))
+        for k in range(4):
             e = idx[("ex", k, 0)]
-            tl.append((lambda p, k=k: example_frame(s, k, 0, p), (mb[e], mb[e + 1], 0.6)))
+            tl.append((lambda p, k=k: example_frame(s, k, 0, p), (mb[e], mb[e + 1], 0.5)))
     for k in range(4 if not talk(s) else 0):
         i = idx[("main", k, None)]
         tl.append((lambda p, k=k: intro_frame(s, k, p), (mb[i], mb[i + 1], 0.6)))
         for j in range(2):
             e = idx[("ex", k, j)]
             tl.append((lambda p, k=k, j=j: example_frame(s, k, j, p), (mb[e], mb[e + 1], 0.45 if j == 0 else 0.7)))
-    tl.append((lambda p: chain_frame(s, None, p), ("silence", 0.8)))
-    for k in range(4):
+    for k in ([] if talk(s) else [None, 0, 1, 2, 3]):
+        if k is None:
+            tl.append((lambda p: chain_frame(s, None, p), ("silence", 0.8)))
+            continue
         i = idx[("main", k, None)]
         tl.append((lambda p, k=k: chain_frame(s, k, p), (mb[i], mb[i + 1], 0.35)))
     tail_i = [i for i, t in enumerate(mt) if t["type"] == "tail"]
