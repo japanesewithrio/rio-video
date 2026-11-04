@@ -77,7 +77,8 @@ def units(s):
     return out
 
 
-RUBY = 0.75   # Ye 2026-11-04: option D (kanji 40 / furigana 30)
+RUBY = 0.75
+RIGHT = 150   # TikTok safe zone: keep text clear of the like/comment buttons on the right   # Ye 2026-11-04: option D (kanji 40 / furigana 30)
 
 
 def adv(d, u, fnt, rf):
@@ -193,16 +194,16 @@ def avatar_img(name, size):
 def full_bubble(img, y, line, me, outline=None, size=50):
     """Spoken line: JP with furigana (pattern parts coloured) + Burmese."""
     d = ImageDraw.Draw(img)
-    maxw = W - 330
+    maxw = W - 150 - RIGHT - 70
     f = jfont(size)
     jl = wrap_units(d, units(line["jp"]), f, maxw)
     mml = mm_lines(d, line.get("mm", ""), 37, maxw)
     jw = max(sum(adv(d, u, f, jfont(int(size * RUBY), False)) for u in ln) for ln in jl)
     mw = max([d.textlength(m, font=mfont(37, 600)) for m in mml] or [0])
-    bw = min(max(jw, mw) + 70, W - 210)
+    bw = min(max(jw, mw) + 70, W - 150 - RIGHT)
     lh = size + int(size * RUBY + 6) + 26
     bh = len(jl) * lh + len(mml) * 58 + 56
-    x = W - 50 - bw if me else 150
+    x = W - RIGHT - bw if me else 150
     if not me:
         img.alpha_composite(avatar_img(line["who"], 84), (46, int(y)))
     sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -225,10 +226,10 @@ def small_bubble(img, y, text, me):
     d = ImageDraw.Draw(img)
     f = jfont(32)
     t = plain(text)
-    while d.textlength(t, font=f) > W - 330 and len(t) > 4:
+    while d.textlength(t, font=f) > W - 150 - RIGHT - 50 and len(t) > 4:
         t = t[:-2] + "…" if not t.endswith("…") else t[:-3] + "…"
     w = d.textlength(t, font=f) + 50
-    x = W - 50 - w if me else 150
+    x = W - RIGHT - w if me else 150
     if not me:
         d.ellipse([96, y + 6, 136, y + 46], fill=(235, 190, 205))
     d.rounded_rectangle([x, y, x + w, y + 56], 26, fill=(205, 232, 198) if me else (250, 250, 250))
@@ -314,7 +315,7 @@ def f_patterns(s, upto, prog):
         c = STEP[k + 1]
         lay = sc.layer("pop", 0.0) if k == upto else sc.layer()
         d = ImageDraw.Draw(lay)
-        d.rounded_rectangle([70, y, W - 70, y + 215], 36, fill=(255, 255, 255), outline=c, width=6)
+        d.rounded_rectangle([70, y, W - RIGHT + 40, y + 215], 36, fill=(255, 255, 255), outline=c, width=6)
         d.ellipse([102, y + 44, 166, y + 108], fill=c)
         d.text((134, y + 76), str(k + 1), font=jfont(36), fill=(255, 255, 255), anchor="mm")
         draw_text_block(d, 190, y + 10, p["jp"], 46, 800, col=c)
@@ -363,12 +364,12 @@ def f_chain(s, prog):
     lay = sc.layer("pop", 0.0)
     d = ImageDraw.Draw(lay)
     top = 450
-    hj = text_block_h(d, s["chain"]["jp"], 48, 880)
-    mml = mm_lines(d, s["chain"]["mm"], 36, 880, 500)
-    d.rounded_rectangle([50, top, W - 50, top + hj + len(mml) * 56 + 120], 40, fill=(255, 255, 255))
-    y = draw_text_block(d, 95, top + 40, s["chain"]["jp"], 48, 880)
+    hj = text_block_h(d, s["chain"]["jp"], 48, 800)
+    mml = mm_lines(d, s["chain"]["mm"], 36, 800, 500)
+    d.rounded_rectangle([50, top, W - RIGHT + 60, top + hj + len(mml) * 56 + 120], 40, fill=(255, 255, 255))
+    y = draw_text_block(d, 95, top + 40, s["chain"]["jp"], 48, 800)
     for m in mml:
-        R.lblock(d, 95, y + 6, m, mfont(36, 500), SUB, 940)
+        R.lblock(d, 95, y + 6, m, mfont(36, 500), SUB, 860)
         y += 58
     sc.sfx += [(0.0, "whoosh"), (0.1, "pon")]
     return sc
@@ -386,7 +387,7 @@ def f_your_turn(s, count, prog):
         f = jfont(44)
         us = units(b)
         w = sum(adv(d, u, f, jfont(int(44 * RUBY), False)) for u in us) + 70
-        x = W - 50 - w
+        x = W - RIGHT - w
         d.rounded_rectangle([x, y, x + w, y + 112], 36, fill=(255, 255, 255), outline=c, width=6)
         draw_units(d, x + 35, y + 44, us, f, jfont(20, False), INK)
         y += 132
@@ -407,28 +408,34 @@ def f_example(s, upto, prog):
     d = ImageDraw.Draw(st)
     y = 430
     qh = text_block_h(d, s["q2"]["jp"], 44, 760)
-    d.rounded_rectangle([60, y, W - 60, y + qh + 80], 34, fill=(250, 250, 250))
+    d.rounded_rectangle([60, y, W - RIGHT + 40, y + qh + 80], 34, fill=(250, 250, 250))
     st.alpha_composite(avatar_img("Yui", 80), (85, y + 32))
     yq = draw_text_block(d, 195, y + 18, s["q2"]["jp"], 44, 760)
     R.lblock(d, 195, yq - 6, s["q2"]["mm"], mfont(32, 500), SUB, 760)
     y += qh + 104
+    probe = ImageDraw.Draw(Image.new("RGB", (8, 8)))
+    for js, ms_ in ((42, 34), (40, 32), (38, 31), (36, 30), (34, 28)):  # shrink until all 4 cards fit above the footer
+        tot = sum(text_block_h(probe, ex["jp"], js, 720) + len(mm_lines(probe, ex["mm"], ms_, 720)) * int(ms_ * 1.6) + 66 + 14
+                  for ex in s["examples"])
+        if y + tot <= H - 170:
+            break
     for k, ex in enumerate(s["examples"]):
         if k > upto:
             break
         c = STEP[k + 1]
         lay = sc.layer("pop", 0.0) if k == upto else st
         dd = ImageDraw.Draw(lay)
-        hj = text_block_h(dd, ex["jp"], 42, 790)
-        mml = mm_lines(dd, ex["mm"], 34, 790)
-        h = hj + len(mml) * 54 + 66
-        dd.rounded_rectangle([60, y, W - 60, y + h], 34, fill=(255, 255, 255), outline=c, width=5)
+        hj = text_block_h(dd, ex["jp"], js, 720)
+        mml = mm_lines(dd, ex["mm"], ms_, 720)
+        h = hj + len(mml) * int(ms_ * 1.6) + 66
+        dd.rounded_rectangle([60, y, W - RIGHT + 40, y + h], 34, fill=(255, 255, 255), outline=c, width=5)
         dd.ellipse([85, y + 25, 135, y + 75], fill=c)
         dd.text((110, y + 50), str(k + 1), font=jfont(28), fill=(255, 255, 255), anchor="mm")
-        yy = draw_text_block(dd, 155, y + 18, ex["jp"], 42, 790)
+        yy = draw_text_block(dd, 155, y + 18, ex["jp"], js, 720)
         for m in mml:
-            R.lblock(dd, 155, yy - 4, m, mfont(34, 600), INK, 850)
-            yy += 54
-        y += h + 16
+            R.lblock(dd, 155, yy - 4, m, mfont(ms_, 600), INK, 780)
+            yy += int(ms_ * 1.6)
+        y += h + 14
     sc.sfx.append((0.0, "pon"))
     return sc
 
