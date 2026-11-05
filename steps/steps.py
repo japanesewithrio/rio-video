@@ -248,7 +248,7 @@ def finish(s):
         if isinstance(o, dict):
             for k, v in o.items():
                 if k in ("mm", "pattern_mm", "title_mm", "caption") and isinstance(v, str):
-                    v = re.sub(r"[\[\]［］【】「」『』]", "", v)
+                    v = re.sub(r"[\[\]［］【】「」『』]", "", v).replace("。", "။").replace("、", "၊")
                     o[k] = v.replace("！", "!").replace("？", "?").replace('"', "")
                 else:
                     fix(v)
@@ -369,6 +369,11 @@ def squeeze_silence(path, keep=0.6, longest=0.9, thr=0.012):
             k = int(keep * sr / 2)
             out += [seg[:k], seg[-k:]]
             cut += len(seg) / sr - keep
+        elif not loud[i] and (i == 0 or j == m) and len(seg) / sr > 0.3:
+            # leading/trailing silence of a TTS group (seen: 2.3 s dead air right after the hook) -> 0.15 s
+            k = int(0.15 * sr)
+            out.append(seg[-k:] if i == 0 else seg[:k])
+            cut += len(seg) / sr - 0.15
         else:
             out.append(seg)
         i = j
