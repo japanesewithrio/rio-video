@@ -1,0 +1,27 @@
+name: n3key
+# One-time: makes the key pair that keeps Ye's N3 notes private in this public repo.
+# The private key is stored only encrypted with the TG_TOKEN secret; notes are encrypted with the public key.
+on:
+  push:
+    paths: ["n3/key/make.txt"]
+permissions:
+  contents: write
+jobs:
+  key:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make key pair
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+        run: |
+          test -f n3/key/pub.pem && { echo "key already exists"; exit 0; }
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out /tmp/priv.pem 2>/dev/null
+          openssl pkey -in /tmp/priv.pem -pubout -out n3/key/pub.pem
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -in /tmp/priv.pem -out n3/key/priv.enc -pass env:TG_TOKEN
+          rm /tmp/priv.pem
+          git config user.name rio-bot
+          git config user.email rio-bot@users.noreply.github.com
+          git add n3/key/pub.pem n3/key/priv.enc
+          git commit -qm "n3 key pair (private key encrypted)"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done

@@ -460,6 +460,32 @@ def transcript(s):
     return "\n".join(out)[:4000]
 
 
+def post_n3(st, key, now):
+    sys.path.insert(0, os.path.join(ROOT, "n3"))
+    import n3 as N3
+    vid, title, cap, secs, tr = N3.daily(st, key, DRY)
+    if not DRY:
+        st["done"].append({"key": key, "title": title, "n3": st["n3_next"] - 1, "date": now.strftime("%Y-%m-%d")})
+        json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    os.chdir(ROOT)
+    old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+\.mp4$", f))
+    for f in old[:-10]:
+        os.remove(os.path.join("videos", f))
+    D.push("steps %s" % key, ["text", "videos", "steps/state.json"])
+    chat = D.OWNER if DRY else D.CHANNEL
+    if not D.tg("sendVideo", {"chat_id": chat, "caption": ("🎬 %s\n%s" % (title, cap))[:1020], "supports_streaming": "true"},
+                {"video": open(vid, "rb")}):
+        D.WARN.append("Telegram sendVideo failed")
+    D.tg("sendMessage", {"chat_id": chat, "text": tr})
+    summary = "✅ N3 video %s %s\n%s (%ds)\n%s" % ("TEST" if DRY else "posted to Telegram", key, title, secs,
+                                                 "(test only - not posted)" if DRY else "Facebook / TikTok / YouTube: Make posts it at 19:00")
+    if D.WARN:
+        summary += "\n(small problems: %s)" % "; ".join(D.WARN)[:600]
+    if D.OWNER:
+        D.tg("sendMessage", {"chat_id": D.OWNER, "text": summary})
+    D.log(summary)
+
+
 def main():
     ms = D.list_models()
     if ms:
@@ -489,6 +515,8 @@ def main():
     key = ("FT" + now.strftime("%y%m%d%H%M")) if DRY else ("F" + now.strftime("%y%m%d"))
     if any(d["key"] == key for d in st["done"]):
         key = "F" + now.strftime("%y%m%d%H%M")
+    if st.get("format") == "n3":  # Ye 11/06: one N3 grammar from his note per day (Rio先生 video) instead of 4 Steps
+        return post_n3(st, key, now)
     avail = available(st)
     # never repeat a story theme until all of them were used (Ye 2026-11-01: "content မထပ်စေနဲ့")
     used = set(st.get("themes", []))
