@@ -13,6 +13,10 @@ arcs = json.load(open(os.path.join(STEPS, "arcs.json"), encoding="utf-8"))
 fails = 0
 
 
+def V(x, a):
+    return [e for e in P.validate(x, a) if "difficult kanji" not in e and "hook too long" not in e]
+
+
 def check(name, cond):
     global fails
     if not cond:
@@ -50,8 +54,10 @@ check("segments", RS.segments("でも、[作っ]てみたら、[おいしくで�
 check("plain", RS.plain("でも、[作っ]てみたら") == "でも、作ってみたら")
 
 # validate sample
-e = P.validate(copy.deepcopy(s0), arc0)
+e = [x for x in P.validate(copy.deepcopy(s0), arc0) if "difficult kanji" not in x and "hook too long" not in x]
 check("sample valid %s" % e, e == [])
+check("hard kanji caught", P.hard_kanji("暖房の電池") == sorted(set("暖房池")))
+check("easy kanji ok", P.hard_kanji("毎日友達と電車で学校に行く") == [])
 
 # validate catches problems
 bad = copy.deepcopy(s0); bad["steps"][1]["ex"][0]["jp"] = "でも、作ってみたら、おいしかった。"
@@ -70,7 +76,7 @@ bad = copy.deepcopy(s0); bad["ex_tags"] = "料理"
 check("string tags caught", P.validate(bad, arc0) != [])
 check("wrong arc caught", P.validate(copy.deepcopy(s0), arcs[1]) != [])
 bad = copy.deepcopy(s0); bad["steps"][0]["main"]["kana"] = "まえは、[ひとまえで はなすの]が にがてだった。"
-check("bracket kana cleaned", P.validate(bad, arc0) == [] and "[" not in bad["steps"][0]["main"]["kana"])
+check("bracket kana cleaned", V(bad, arc0) == [] and "[" not in bad["steps"][0]["main"]["kana"])
 
 # every arc: a pattern filled with slot words must pass its own check
 for a in arcs:
@@ -126,7 +132,7 @@ for n in range(3000):
                 del sv[i]
             tgt[field] = "".join(sv)
     try:
-        err = P.validate(x, arc0)
+        err = V(x, arc0)
     except Exception as ex:
         check("validate crashed %r" % ex, False)
         continue

@@ -64,8 +64,10 @@ Rules:
 - Sentences are short and natural (max 32 Japanese characters without brackets), casual spoken style young people really use, never textbook.
 - The 4 main sentences make one coherent little story; example 1's 4 sentences make one coherent mini story about ex_tags[0];
   example 2's 4 sentences make one about ex_tags[1]. ex_tags are short Japanese topic words (2-4 characters, e.g. 料理, 漢字, バイト).
-- EASY WORDS ONLY: everyone must understand at once. Use common everyday spoken words up to JLPT N3 (mostly N5-N4, a few N3 words are fine,
-  e.g. 好き, 苦手, 毎日, 友達, 作る, 話す, 慣れる, 緊張する, 自信). Never use formal, written or rare words such as 日課, 克服, 継続,
+- EASY WORDS ONLY (Ye 2026-11-06: "hook and wording are too hard"): a beginner must understand every word at once. Use only JLPT N5-N4
+  everyday words (好き, 毎日, 友達, 作る, 話す, 寝る, 起きる, 食べる, 楽しい, 寒い, 高い, 部屋, 電車, お金, 時間 ...). NO N3-N1 words and no rare
+  kanji at all (bad: 暖房, 毛布, 電池, 節約, 貯金箱, 雑草, 怠け者 - say it with easy words instead, e.g. エアコン, お金をためる).
+  Short sentences: Yui's lines max 14 characters, Rio's lines max 22 characters, the hook max 12 characters. Never use formal, written or rare words such as 日課, 克服, 継続,
   実践, 達成, 徐々に, and avoid rare kanji. Keep sentences SHORT (about 18 characters, max 28). The same for hook and title.
 - kana = the full reading, hiragana for kanji, katakana words stay katakana (バイト, スマホ), WITHOUT brackets, matching the Japanese exactly.
   Put a space only between phrases (bunsetsu), never before particles: まえは、ひとまえで はなすのが にがてだった。 (NOT まえ は、 ひと まえ で).
@@ -77,9 +79,9 @@ Rules:
 - hook = the first 2 seconds of the video, the most important line. Like Ye's favourite 「勉強するつもりだったんだけど…」, it is Rio's own
   FIRST LINE of today's story and it must already promise that something went wrong or surprising: a plan or expectation + けど/のに/はずが/
   ようとしたら, cut off with … right before the funny part, so the viewer must keep watching to hear what happened.
-  Good: 勉強するつもりだったんだけど… / 早く寝るはずだったのに… / 節約しようとしたら… / ダイエット中なのに… / 告白しようとしたら…
+  Good: 勉強するつもりだったのに… / 早く寝たかったのに… / やせたかったのに… / 朝ごはんを作ったら… / 告白しようとしたら…
   Bad (no promise of a twist, boring): 最近、トマト育ててるんだけど… / 今日は料理の話。 Never address the viewer, never a greeting or a lesson title.
-  Max 16 characters, easy words. With kana and mm (Burmese also cut off with …, same feeling, soft and natural).
+  Max 12 characters, only N5-N4 words. With kana and mm (Burmese also cut off with …, same feeling, soft and natural).
 - title = Japanese title of Rio's story like 人前で話せるようになった話 (max 16 characters); title_mm its Burmese.
 - caption = Burmese, max 180 characters, 1-2 emojis, mentions the 4 patterns chained today.
 - No emojis, 笑, w or the 〜 symbol inside any Japanese sentence.
@@ -108,7 +110,7 @@ real spoken Japanese to Burmese learners. Check EVERYTHING and fix every problem
 4. Every kana is the exact full reading (hiragana for kanji, katakana words stay katakana, spaces only between phrases, no brackets, no kanji).
 4b. Sentence-final particles (よ, ね ...) are outside the brackets; brackets are ASCII [ ].
 5. All Burmese is correct, natural, soft and friendly spoken-style Unicode Burmese (no harsh or scary words, no brackets or symbols, no double quotes) and matches the Japanese.
-5b. EASY WORDS: replace every word that is harder than JLPT N3 or formal/written (e.g. 日課, 克服, 習慣, 継続, 達成) with an easy everyday word
+5b. EASY WORDS: replace every word that is harder than JLPT N4 or formal/written (e.g. 日課, 克服, 習慣, 継続, 達成) with an easy everyday word
    a beginner knows, in hook, title and all sentences; make Burmese simple spoken words too. Keep each sentence short (about 20 characters).
 5c. CONVERSATION + COMEDY: each step has Yui's short line q (max 18 characters) that leads naturally into Rio's main sentence; "ending" has
    exactly 2 lines (Yui tsukkomi, Rio deadpan punchline max 15 characters). Honestly rate how funny it is for a Burmese viewer around 20 (1-10);
@@ -122,6 +124,13 @@ Output ONLY the full corrected JSON with exactly the same structure.
 
 JSON:
 @@JSON@@"""
+
+
+EASY_KANJI = set('一二三四五六七八九十百千万円年月日時分半週今先毎午前後上下左右中外東西南北名人子女男学生校友会社国語本話読書聞見言行来出入食飲買休立山川田天気雨電車駅道店長高安新古大小白何多少早間手足目口耳花水火木金土空家父母近遠親兄弟姉妹私自同所去朝昼夜夕方晩起寝着帰待持使作住知思考教習勉強試験問題答質説明意味字文漢映画音楽歌写真旅仕事場銀病院医者薬体頭顔声首心色赤青黒茶犬猫鳥魚肉野菜料理牛豚味品物服洋和室部屋窓門台洗弁当飯注暑寒冷熱重軽弱短暗広悪良好楽悲痛速遅静便利不特別急最初終始止乗降運転走歩通送届開閉切貸借払売返計歳才代度番号回発集末曜昨夏冬春秋頃全以内主力元活世界地図町村市区県都京員究英工業様自転飛機港館合格準備予定約束忘覚泳遊踊祭戻授宿題鉛筆紙箱誕達緒結局然丈夫頑張疲実際心配楽好嫌寂怖笑泣怒困夢会社員彼週末今度一回次的無温晴曇雪風引押違助調')
+
+
+def hard_kanji(text):
+    return sorted(set(c for c in text if KANJI.match(c) and c not in EASY_KANJI))
 
 
 def norm(t):
@@ -224,6 +233,20 @@ def validate(s, arc):
                     err.append("%s kana must be the full kana reading: %s" % (where, jp))
                 if not MYA.search(l.get("mm", "")):
                     err.append("%s needs Burmese mm: %s" % (where, jp))
+        # easy words only (Ye 2026-11-06: hook and wording were too hard): kanji outside N5-N4 (+ the pattern text itself) are not allowed
+        fixed = set(c for st in s["steps"] for c in st.get("pattern", ""))
+        texts = [("hook", s["hook"].get("jp", ""))] + [("title", s.get("title", ""))]
+        for k, st in enumerate(s["steps"]):
+            texts += [("step %d q" % (k + 1), (st.get("q") or {}).get("jp", "")), ("step %d main" % (k + 1), st["main"].get("jp", "")),
+                      ("step %d example 1" % (k + 1), (st.get("ex") or [{}])[0].get("jp", ""))]
+        texts += [("ending %d" % (i + 1), e.get("jp", "")) for i, e in enumerate(s.get("ending") or []) if isinstance(e, dict)]
+        for where, t in texts:
+            bad = [c for c in hard_kanji(t) if c not in fixed]
+            if bad:
+                err.append("%s uses difficult kanji/words (%s) - replace them with easy everyday words a beginner knows (too hard: %s)"
+                           % (where, "".join(bad), t))
+        if len(RS.plain(s["hook"].get("jp", ""))) > 14:
+            err.append("hook too long: max 12 characters, very easy words")
         if not MYA.search(s["caption"]):
             err.append("caption must be written in Burmese")
     except Exception as e:  # malformed structure
@@ -340,7 +363,7 @@ def make_lesson(arc, theme, avoid):
                 D.log("fix failed", e)
     if best_err is None:
         raise RuntimeError("Gemini gave no usable lesson")
-    soft = [e for e in best_err if " too long " in e]
+    soft = [e for e in best_err if " too long " in e or "difficult kanji" in e or "hook too long" in e]
     if len(soft) != len(best_err):
         raise RuntimeError("lesson failed validation: %s" % best_err)
     D.WARN.extend(best_err)
