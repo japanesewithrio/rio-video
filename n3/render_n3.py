@@ -177,7 +177,7 @@ def fill_kana(n):
 
 
 def script(n):
-    """Spoken lines (TTS) grouped into 3 TTS requests + the plan of the video."""
+    """Spoken lines (TTS) grouped into 5 short TTS requests + the plan of the video."""
     k = n.get("kana", {})
     title = n["title"]
     say = []
@@ -221,16 +221,16 @@ def script(n):
             else:
                 add("r%d" % i, "Rio", no[min(w, 2)], 3)
                 w += 1
-    add("o0", "Yui", "わかった！ありがとう、先生！", 2)
-    add("o1", "Rio", "リアルな日本語を話したいなら、Rioをフォローしてね！", 2)
-    add("o2", "Yui", "バイバーイ！", 2)
+    add("o0", "Yui", "わかった！ありがとう、先生！", 4)
+    add("o1", "Rio", "リアルな日本語を話したいなら、Rioをフォローしてね！", 4)
+    add("o2", "Yui", "バイバーイ！", 4)
     return hook, say
 
 
 def audio_groups(n):
     fill_kana(n)
     _, say = script(n)
-    return [g for g in ([t for t in say if t["grp"] == k] for k in range(4)) if g]
+    return [g for g in ([t for t in say if t["grp"] == k] for k in range(5)) if g]
 
 
 # ---------------------------------------------------------------- drawing helpers

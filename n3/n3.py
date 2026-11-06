@@ -70,6 +70,9 @@ def main():
     import shutil  # keep the voice + line bounds of the test so the sync can be checked offline
     shutil.copy(wav, os.path.join(ROOT, "n3", "out", "test_main.wav"))
     shutil.copy(wav[:-4] + ".bounds.json", os.path.join(ROOT, "n3", "out", "test_main.bounds.json"))
+    import datetime as dt
+    json.dump({"no": n["no"], "date": dt.datetime.now(D.JST).strftime("%Y-%m-%d"), "lines": len(N.script(n)[1])},
+              open(os.path.join(ROOT, "n3", "out", "test_meta.json"), "w"))
     os.chdir(ROOT)
     D.push("n3 test %03d" % n["no"], ["n3/out"])
     cap = "🧪 N3 test No.%d %s (%ds) - Rio先生 grammar video" % (n["no"], n["title"], secs)
@@ -130,7 +133,17 @@ def daily(st, key, dry):
     work = os.path.join(ROOT, "work", "n3")
     os.makedirs(work, exist_ok=True)
     wav = os.path.join(work, "main.wav")
-    S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
+    # a test of the same note made today (checked by Claude) -> reuse its voice: no second TTS round (quota is ~10 a day)
+    import datetime as dt, shutil
+    mf = os.path.join(ROOT, "n3", "out", "test_meta.json")
+    meta = json.load(open(mf)) if os.path.exists(mf) else {}
+    if (meta.get("no") == no and meta.get("date") == dt.datetime.now(D.JST).strftime("%Y-%m-%d")
+            and meta.get("lines") == len(N.script(n)[1]) and os.path.exists(os.path.join(ROOT, "n3", "out", "test_main.wav"))):
+        shutil.copy(os.path.join(ROOT, "n3", "out", "test_main.wav"), wav)
+        shutil.copy(os.path.join(ROOT, "n3", "out", "test_main.bounds.json"), wav[:-4] + ".bounds.json")
+        D.log("using today's checked test voice for note", no)
+    else:
+        S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     vid = os.path.join(ROOT, "videos", key + ".mp4")
     secs = N.render(path, wav, vid)
