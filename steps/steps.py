@@ -465,7 +465,7 @@ def post_n3(st, key, now):
     import n3 as N3
     vid, title, cap, secs, tr = N3.daily(st, key, DRY)
     if not DRY:
-        st["done"].append({"key": key, "title": title, "n3": st["n3_next"] - 1, "date": now.strftime("%Y-%m-%d")})
+        st["done"].append({"key": key, "title": title, "n3": st.get("n3_last"), "date": now.strftime("%Y-%m-%d")})
         json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     os.chdir(ROOT)
     old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+\.mp4$", f))

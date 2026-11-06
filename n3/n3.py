@@ -1,5 +1,8 @@
-"""Learn with Rio - N3 grammar video (Rio先生) from Ye's note. TEST mode only for now: the video goes to the owner's Telegram DM.
-trigger: put 'DRY n3/notes/001.json' into n3/trigger.txt and push."""
+"""Learn with Rio - N3 grammar video (Rio先生) from Ye's note "N3 文法 先生ノート".
+Daily: steps/steps.py calls daily() when steps/state.json has "format": "n3" (Ye 11/06: N3 replaces 4 Steps).
+Test: put 'DRY 1' (note number) into n3/trigger.txt and push -> the video goes to the owner's Telegram DM only.
+Ye's notes are private: n3/notes_enc/NNN.enc (AES) + NNN.key (AES key encrypted with n3/key/pub.pem). The private key is
+n3/key/priv.enc, encrypted with the TG_TOKEN secret, so only the GitHub runner can read the notes."""
 import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -16,6 +19,34 @@ P_ONE = ("Say the following short Japanese phrases like a kind young teacher rea
          "than normal, very clear. Leave a clear pause of about one second between phrases.\n")
 
 
+def load_note(no):
+    """Decrypt note `no` into work/n3 (never committed). Returns the path, or None if there is no such note."""
+    import subprocess
+    enc = os.path.join(HERE, "notes_enc", "%03d" % no)
+    if not os.path.exists(enc + ".enc"):
+        return None
+    work = os.path.join(ROOT, "work", "n3")
+    os.makedirs(work, exist_ok=True)
+    priv = os.path.join(work, "priv.pem")
+    if not os.path.exists(priv):
+        subprocess.run(["openssl", "enc", "-d", "-aes-256-cbc", "-pbkdf2", "-iter", "200000", "-in", os.path.join(HERE, "key", "priv.enc"),
+                        "-out", priv, "-pass", "env:TG_TOKEN"], check=True)
+    k = subprocess.run(["openssl", "pkeyutl", "-decrypt", "-inkey", priv, "-pkeyopt", "rsa_padding_mode:oaep", "-in", enc + ".key"],
+                       capture_output=True, check=True).stdout
+    data = subprocess.run(["openssl", "enc", "-d", "-aes-256-cbc", "-pbkdf2", "-iter", "100000", "-in", enc + ".enc", "-pass", "env:K"],
+                          capture_output=True, check=True, env=dict(os.environ, K=k.decode())).stdout
+    out = os.path.join(work, "note_%03d.json" % no)
+    open(out, "wb").write(data)
+    return out
+
+
+def next_note(st):
+    no = st.get("n3_next", 1)
+    while no <= 80 and not os.path.exists(os.path.join(HERE, "notes_enc", "%03d.enc" % no)):
+        no += 1   # a few numbers are missing in the parsed PDF (13, 29, 62, 63, 65, 66) - skipped until they are added
+    return no
+
+
 def main():
     ms = D.list_models()
     D.TTS_CHAIN = [m for m in ST.VOICE_MODELS if not ms or m in ms] + [m for m in D.TTS_CHAIN if m not in ST.VOICE_MODELS]
@@ -25,14 +56,14 @@ def main():
         for c in D.VOICES["multiSpeakerVoiceConfig"]["speakerVoiceConfigs"]:
             c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] = vv.get(c["speaker"], c["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"])
     trig = open(os.path.join(HERE, "trigger.txt"), encoding="utf-8").read()
-    note = re.search(r"n3/notes/\d+\.json", trig).group(0)
-    n = json.load(open(os.path.join(ROOT, note), encoding="utf-8"))
+    note = load_note(int(re.search(r"\d+", trig).group(0)))
+    n = json.load(open(note, encoding="utf-8"))
     work = os.path.join(ROOT, "work", "n3")
     os.makedirs(work, exist_ok=True)
     wav = os.path.join(work, "main.wav")
     S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
     out = os.path.join(work, "N3_%03d.mp4" % n["no"])
-    secs = N.render(os.path.join(ROOT, note), wav, out)
+    secs = N.render(note, wav, out)
     os.makedirs(os.path.join(ROOT, "n3", "out"), exist_ok=True)
     keep = os.path.join(ROOT, "n3", "out", "test_%03d.mp4" % n["no"])
     os.replace(out, keep)
@@ -91,10 +122,10 @@ def transcript(n):
 
 def daily(st, key, dry):
     """Make today's N3 video -> videos/<key>.mp4 + text/<key>.json (Make 'Rio ④' posts it at 19:00). Returns (path, title, caption, secs)."""
-    no = st.get("n3_next", 1)
-    path = os.path.join(ROOT, "n3", "notes", "%03d.json" % no)
-    if not os.path.exists(path):
-        raise RuntimeError("N3 note %03d is not in n3/notes yet" % no)
+    no = next_note(st)
+    path = load_note(no)
+    if not path:
+        raise RuntimeError("N3 note %03d is not in n3/notes_enc yet (all notes done?)" % no)
     n = N.fill_kana(json.load(open(path, encoding="utf-8")))
     work = os.path.join(ROOT, "work", "n3")
     os.makedirs(work, exist_ok=True)
@@ -111,4 +142,5 @@ def daily(st, key, dry):
         f.write("===TITLE===\n%s\n===CAPTION===\n%s\n===END===\n" % (title, cap))
     if not dry:
         st["n3_next"] = no + 1
+        st["n3_last"] = no
     return vid, title, cap, secs, transcript(n)
