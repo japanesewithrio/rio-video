@@ -41,6 +41,7 @@ def core_forms(title):
     """'〜ようになる/〜ようにする' -> ['ようになる', 'ようにする'] (the part to highlight in sentences)."""
     out = []
     for p in re.split(r"[/／・]", title):
+        p = re.sub(r"[（(〈][^）)〉]*[）)〉]", "", p)
         p = re.sub(r"[〜~（）()]", "", p).strip()
         if p:
             out.append(p)
@@ -52,7 +53,7 @@ def grammar_segs(sentence, title):
     cores = sorted(core_forms(title), key=len, reverse=True)
     spans = []
     for c in cores:
-        for cut in (c, c[:-1] if len(c) > 2 else c):   # 'ようになる' also matches 'ようになった'
+        for cut in [c] + [c[:k] for k in range(len(c) - 1, 2, -1)] + ([c[0]] if re.match("[\u4e00-\u9fff]", c) else []):   # 'ようにする' also matches 'ようにしている'
             for m in re.finditer(re.escape(cut), sentence):
                 if not any(a < m.end() and m.start() < b for a, b in spans):
                     spans.append((m.start(), m.end()))
@@ -89,7 +90,12 @@ def jp_terms(text):
         if head.startswith("Na"):
             return "な形容詞" + ("＋" + head[2:] if head[2:] else "") + rest
         return "名詞" + ("＋" + head[1:] if head[1:] else "") + rest
-    return TOKEN.sub(one, text)
+    out = TOKEN.sub(one, text)
+    while True:   # 動詞(辞書形)・動詞(ない形) -> 動詞(辞書形・ない形)
+        new = re.sub(r"動詞\(([^()]*)\)・動詞\(([^()]*)\)", r"動詞(\1・\2)", out)
+        if new == out:
+            return out
+        out = new
 
 
 def form_label(form):
@@ -105,6 +111,32 @@ def form_label(form):
 
 
 NUM_MM = {"A": "1", "B": "2", "C": "3", "D": "4"}
+CLEAN_JP = re.compile(r"^[\u3040-\u30ff\u4e00-\u9fff、。ー〜！？]+$")
+LABEL_JP = {"V": "動詞", "N": "名詞", "Adj": "形容詞", "Aい": "い形容詞", "Naな": "な形容詞"}
+
+
+def form_row(row):
+    """A row of the note's ② table, in any of its shapes -> (label, connection, [examples]).
+    ['V辞・Vない', '忘れないうちに・寝ているうちに']  /  ['ようになる', 'V辞 (…可能形) — 話せるようになる']  /  ['全部 普通形 + … — 行くとしたら']"""
+    if len(row) == 1:
+        left, right = "", row[0]
+    else:
+        left, right = row[0], row[1]
+    if "—" in right:
+        conn, _, exs = right.partition("—")
+    elif left and TOKEN.search(left) and not TOKEN.search(right):
+        conn, exs, left = left, right, ""
+    else:
+        conn, exs = right, ""
+    label = LABEL_JP.get(left.strip(), NUM_MM.get(left.strip(), left.strip()))
+    examples = [x.strip() for x in re.split("[・/]", exs) if x.strip()]
+    return label, jp_terms(conn.strip()), examples
+
+
+def speakable(jp):
+    """Only plain Japanese goes to the voice (11/08: Burmese and 'V辞 —' were read aloud and broke the sync)."""
+    t = jp.replace("N3", "").replace("Rio", "")
+    return bool(jp.strip()) and not re.search(r"[က-႟A-Za-z—()（）/＋+]", t)
 
 
 def split_meaning(line):
@@ -183,6 +215,8 @@ def script(n):
     say = []
 
     def add(key, who, jp, grp):
+        if not speakable(jp):
+            return
         say.append({"key": key, "who": who, "jp": jp, "kana": k.get(jp, ""), "grp": grp})
 
     hook = n.get("hook") or [
@@ -193,8 +227,9 @@ def script(n):
     # the meaning is Burmese text on the board; Rio only introduces it (the examples come later, so no repeats here)
     add("m0", "Rio", "意味は二つあるよ。" if len(n["meaning"]) > 1 else "意味はこれだよ。", 0)
     spoken = {x for e in n["examples"][:3] for x in [e["jp"]]}
-    for i, (form, exs) in enumerate(n["form"][:4]):
-        cands = [x.strip() for x in re.split("[・、]", exs) if x.strip()]
+    for i, row in enumerate(n["form"][:4]):
+        _, _, cands = form_row(row)
+        cands = [c for c in cands if CLEAN_JP.match(c)]
         pick = next((c for c in cands if not any(c in x for x in spoken)), cands[0] if cands else "")
         if pick:
             add("f%d" % i, "Rio", pick + "。", 1)
@@ -205,7 +240,8 @@ def script(n):
         wrong, right, _ = split_mistake(n["mistakes"][0])
         cores = core_forms(title)
         cut = next((wrong[:wrong.find(c) + len(c)] for c in cores if c in wrong), "")
-        add("x0", "Rio", ("%s…じゃなくて、%s！" % (cut, right)) if cut else ("正しいのは、%s！" % right), 2)
+        line = ("%s…じゃなくて、%s！" % (cut, right)) if cut else ("正しいのは、%s！" % right)
+        add("x0", "Rio", line if speakable(line) else "正しいのは、こっち！", 2)
     if n.get("quiz"):
         q = n["quiz"][0]
         add("q0", "Yui", "問題！", 2)
@@ -333,6 +369,43 @@ def rich(img, segs, y, size=56, alpha=1.0, hl_p=1.0, col=CHALK, hcol=YEL, maxw=9
         y += int(size * 1.5)
     put(img, lay, alpha, dy)
     return y
+
+
+MM_RUN = re.compile(r"([က-႟][က-႟\s၊။]*)")
+
+
+def _runs(s, size):
+    for i, part in enumerate(MM_RUN.split(s)):
+        if part:
+            yield part, (RS.mfont(size, 600) if i % 2 else RS.jfont(size))
+
+
+def mixed_width(s, size):
+    return sum(d0.textlength(t, font=f) for t, f in _runs(s, size))
+
+
+def mixed_line(d, x, y, s, size, col):
+    """One left-aligned line that mixes Japanese and Burmese (each run in its own font)."""
+    for t, f in _runs(s, size):
+        d.text((x, y), t, font=f, fill=col, anchor="lm")
+        x += d.textlength(t, font=f)
+
+
+def fit_title(img, s, y, base, alpha, col=YEL):
+    """Big grammar title that always fits the board (long titles go on 2 lines at ' / ')."""
+    parts = [s]
+    f = RS.jfont(int(base))
+    if d0.textlength(s, font=f) > 900 and re.search(r"\s*[/／]\s*", s):
+        parts = [x.strip() for x in re.split(r"\s*[/／]\s*", s)]
+        if len(parts) > 2:
+            parts = [" / ".join(parts[:(len(parts) + 1) // 2]), " / ".join(parts[(len(parts) + 1) // 2:])]
+    size = base if len(parts) == 1 else base * 0.75
+    while size > 30 and max(d0.textlength(x, font=RS.jfont(int(size))) for x in parts) > 900:
+        size -= 4
+    lh = size * 1.15
+    y0 = y - lh * (len(parts) - 1) / 2
+    for i, x in enumerate(parts):
+        text(img, (W / 2, y0 + i * lh), x, size, col, "mm", alpha)
 
 
 def heading(img, s, t):
@@ -494,7 +567,10 @@ class Video:
         # header on the board (every scene)
         text(img, (W / 2, 196), "Rio先生の N3 文法  No.%d" % n["no"], 36, SOFT, "mt", 1.0)
         if sc["name"] != "hook":
-            text(img, (W / 2, 244), n["title"], 44, CHALK, "mt", 1.0)
+            hs = 44
+            while hs > 24 and d0.textlength(n["title"], font=RS.jfont(hs)) > 900:
+                hs -= 2
+            text(img, (W / 2, 244), n["title"], hs, CHALK, "mt", 1.0)
         # scene enter: board wipe
         p_in = ease(lt / 0.45)
         getattr(self, "s_" + sc["name"])(img, sc, lt, p_in)
@@ -528,7 +604,7 @@ class Video:
             text(img, (W / 2, 262), "★ N3によく出る！", 40, PINK, "mt", ease((lt - 0.2) / 0.3))
         text(img, (W / 2, 326), n.get("category", ""), 32, SOFT, "mt", ease((lt - 0.3) / 0.3))
         sp = back(lt / 0.5)
-        text(img, (W / 2, 470), n["title"], 120 * min(1.1, sp), YEL, "mm", min(1, sp * 1.5))
+        fit_title(img, n["title"], 470, 120 * min(1.1, sp), min(1, sp * 1.5))
         y = 590
         for i, h in enumerate(self.hook):
             a = self.ev(sc, "h%d" % i, 99)
@@ -552,48 +628,38 @@ class Video:
 
     def s_form(self, img, sc, lt, p):
         heading(img, "② ချိတ်ပုံ", lt)
-        y = 450
-        rows = self.n["form"][:4]
-        for i, (form, exs) in enumerate(rows):
-            a = self.ev(sc, "f%d" % i, 0.5 + i * 0.4)
+        rows = [form_row(r) for r in self.n["form"][:4]]
+        gap = 210 if len(rows) <= 3 else 172
+        y = 420
+        for i, (label, conn, exs) in enumerate(rows):
+            a = self.ev(sc, "f%d" % i, 0.5 + i * 0.6)
             q = back((lt - a + 0.2) / 0.4)
             if q <= 0:
                 continue
+            al = min(1, q * 1.5)
             lay, d = layer()
-            d.rounded_rectangle([100, y, 460, y + 112], 24, fill=(255, 255, 255, 235))
-            lab, lab_mm = form_label(form)
-            main_, _, sub = lab.partition("(")
-            sub = sub.rstrip(")")
-            fs = 40 if len(main_) <= 6 else 32
-            d.text((280, y + 34), main_, font=RS.jfont(fs), fill=RS.INK, anchor="mm")
-            if sub:
-                d.text((280, y + 82), sub, font=RS.jfont(26 if len(sub) <= 11 else 21), fill=(90, 92, 110), anchor="mm")
-            elif lab_mm:
-                d.text((280, y + 84), lab_mm, font=RS.mfont(26, 600), fill=(110, 112, 130), anchor="mm")
-            d.polygon([(478, y + 40), (510, y + 56), (478, y + 72)], fill=YEL)
-            put(img, lay, min(1, q * 1.5), 0)
-            first = re.split("[・、]", exs)[0]
-            ex_line = [x for x in re.split("[・、]", exs) if x]
-            said = next((t["jp"].rstrip("。") for t in self.say if t["key"] == "f%d" % i), first)
-            fnt = RS.jfont(50)
+            d.rounded_rectangle([96, y, W - 96, y + gap - 22], 26, fill=(255, 255, 255, 30), outline=(255, 255, 255, 70), width=2)
+            x = 120
+            if label:
+                f = RS.mfont(30, 700) if re.search("[က-႟]", label) else RS.jfont(30)
+                tw = d.textlength(label, font=f)
+                d.rounded_rectangle([x, y + 16, x + tw + 36, y + 66], 25, fill=(255, 255, 255, 235))
+                d.text((x + 18 + tw / 2, y + 41), label, font=f, fill=RS.INK, anchor="mm")
+                x += tw + 56
+            put(img, lay, al)
+            # connection (may mix Japanese and Burmese) - left aligned, auto size
+            size = 34
+            while size > 20 and mixed_width(conn, size) > W - 130 - x:
+                size -= 2
             lay, d = layer()
-            x = 535
-            for e in sorted(ex_line[:2], key=lambda e: e != said)[:1]:
-                hp = ease((lt - a) / 0.5)
-                for part, hl in grammar_segs(e, self.n["title"]):
-                    w = d.textlength(part, font=fnt)
-                    if hl:
-                        d.rounded_rectangle([x - 4, y + 22, x + w + 4, y + 92], 12, fill=(255, 214, 92, int(70 * hp)))
-                        d.line([(x, y + 92), (x + w * hp, y + 92)], fill=YEL, width=6)
-                    d.text((x, y + 56), part, font=fnt, fill=YEL if hl else CHALK, anchor="lm")
-                    x += w
-            put(img, lay, min(1, q * 1.5), 0)
-            y += 150
-        # usage (③) under the table
-        ua = self.ev(sc, "f%d" % (len(rows) - 1), 2.0) + 0.8
-        u = [x for x in self.n.get("usage", []) if x.startswith(("「", "A", "B")) and len(x) < 60][:1]
-        if u and False:  # usage lines of the PDF are sometimes wrapped out of order - not shown yet
-            mm(img, u[0], 1070, ease((lt - ua) / 0.5), 34, SOFT, 900)
+            mixed_line(d, x, y + 41, conn, size, CHALK)
+            put(img, lay, al)
+            said = next((t["jp"].rstrip("。") for t in self.say if t["key"] == "f%d" % i), "")
+            ex = said or next((x for x in exs if CLEAN_JP.match(x)), "")
+            if ex:
+                rich(img, grammar_segs(ex, self.n["title"]), y + 82, 48 if gap > 180 else 42, al, ease((lt - a) / 0.5),
+                     CHALK, YEL, 860)
+            y += gap
 
     def s_examples(self, img, sc, lt, p):
         heading(img, "④ ဥပမာ", lt)
@@ -714,18 +780,20 @@ class Video:
         n = self.n
         sp = back(lt / 0.5)
         text(img, (W / 2, 330), "今日の文法", 40, SOFT, "mt", min(1, sp))
-        text(img, (W / 2, 470), n["title"], 110 * min(1.1, sp), YEL, "mm", min(1, sp * 1.5))
-        y = 580
+        fit_title(img, n["title"], 470, 110 * min(1.1, sp), min(1, sp * 1.5))
+        y = 600
         for ln in n["meaning"][:2]:
             label, head, _, _ = split_meaning(ln)
-            y = mm(img, ("%s. %s" % (NUM_MM.get(label, label), head)) if label else head, y, ease((lt - 0.3) / 0.4), 40, CHALK, 880)
+            if y > 700 or (y > 650 and len(head) > 40):
+                break
+            y = mm(img, ("%s. %s" % (NUM_MM.get(label, label), head)) if label else head, y, ease((lt - 0.3) / 0.4), 34, CHALK, 880)
         q = back((lt - self.ev(sc, "o1")) / 0.5)
         if q > 0:
             lay, d = layer()
-            d.rounded_rectangle([W / 2 - 300, 860, W / 2 + 300, 980], 60, fill=(222, 98, 150))
-            d.text((W / 2, 920), "Follow ♡ Rio", font=RS.jfont(56), fill=(255, 255, 255), anchor="mm")
+            d.rounded_rectangle([W / 2 - 300, 900, W / 2 + 300, 1010], 55, fill=(222, 98, 150))
+            d.text((W / 2, 955), "Follow ♡ Rio", font=RS.jfont(56), fill=(255, 255, 255), anchor="mm")
             put(img, lay, min(1, q * 1.5), 30 * (1 - min(1, q)))
-        mm(img, "မနက်ဖြန် နောက်ထပ် grammar တစ်ခု ✨" if False else "မနက်ဖြန် နောက်ထပ် grammar တစ်ခု လာမယ်နော်", 1030,
+        mm(img, "မနက်ဖြန် နောက်ထပ် grammar တစ်ခု လာမယ်နော်", 1050,
            ease((lt - self.ev(sc, "o2")) / 0.4), 34, SOFT)
 
     # ---- output

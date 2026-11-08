@@ -47,6 +47,35 @@ def next_note(st):
     return no
 
 
+def check_sync(n, wav):
+    """Each line's piece of audio must sound like that line: Japanese is ~4-12 characters a second.
+    Returns the lines that look wrong (a piece too short/long = the voice and the text drift apart)."""
+    import numpy as np
+    b = json.load(open(wav[:-4] + ".bounds.json"))
+    x = N.RS.load_wav(wav)
+    bad = []
+    for i, t in enumerate(N.script(n)[1]):
+        seg = np.abs(x[int(b[i] * 24000):int(b[i + 1] * 24000)])
+        m = len(seg) // 480
+        sp = float((seg[:m * 480].reshape(m, 480).max(1) > 0.02).sum()) * 0.02 if m else 0.0
+        rate = len(re.sub(r"[、。！？…〜「」]", "", t["jp"])) / max(sp, 0.05)
+        if sp < 0.3 or not 3.0 <= rate <= 13.5:
+            bad.append("%s %.1f/s %s" % (t["key"], rate, t["jp"]))
+    return bad
+
+
+def voice(n, wav):
+    """TTS with one retry when the sync check fails (a whole voice set is 5 calls; the daily quota is ~10)."""
+    for attempt in (1, 2):
+        S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
+        bad = check_sync(n, wav)
+        D.log("sync check", attempt, bad or "ok")
+        if not bad:
+            return []
+    D.WARN.append("voice/text may not match: " + " | ".join(bad)[:300])
+    return bad
+
+
 def main():
     ms = D.list_models()
     D.TTS_CHAIN = [m for m in ST.VOICE_MODELS if not ms or m in ms] + [m for m in D.TTS_CHAIN if m not in ST.VOICE_MODELS]
@@ -61,7 +90,7 @@ def main():
     work = os.path.join(ROOT, "work", "n3")
     os.makedirs(work, exist_ok=True)
     wav = os.path.join(work, "main.wav")
-    S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
+    voice(n, wav)
     out = os.path.join(work, "N3_%03d.mp4" % n["no"])
     secs = N.render(note, wav, out)
     os.makedirs(os.path.join(ROOT, "n3", "out"), exist_ok=True)
@@ -137,16 +166,20 @@ def daily(st, key, dry):
     import datetime as dt, shutil
     mf = os.path.join(ROOT, "n3", "out", "test_meta.json")
     meta = json.load(open(mf)) if os.path.exists(mf) else {}
-    if (meta.get("no") == no and meta.get("date") == dt.datetime.now(D.JST).strftime("%Y-%m-%d")
+    today = dt.datetime.now(D.JST)
+    if (meta.get("no") == no and meta.get("date") in (today.strftime("%Y-%m-%d"), (today - dt.timedelta(days=1)).strftime("%Y-%m-%d"))
             and meta.get("lines") == len(N.script(n)[1]) and os.path.exists(os.path.join(ROOT, "n3", "out", "test_main.wav"))):
         shutil.copy(os.path.join(ROOT, "n3", "out", "test_main.wav"), wav)
         shutil.copy(os.path.join(ROOT, "n3", "out", "test_main.bounds.json"), wav[:-4] + ".bounds.json")
         D.log("using today's checked test voice for note", no)
     else:
-        S.build_audio(N.audio_groups(n), P_MULTI, P_ONE, wav)
+        voice(n, wav)
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     vid = os.path.join(ROOT, "videos", key + ".mp4")
     secs = N.render(path, wav, vid)
+    os.makedirs(os.path.join(ROOT, "n3", "out"), exist_ok=True)   # keep the last voice to check it later
+    shutil.copy(wav, os.path.join(ROOT, "n3", "out", "last_main.wav"))
+    shutil.copy(wav[:-4] + ".bounds.json", os.path.join(ROOT, "n3", "out", "last_main.bounds.json"))
     title, cap = title_caption(n)
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     json.dump({"title": title, "caption": cap, "n3": no}, open(os.path.join(ROOT, "text", key + ".json"), "w", encoding="utf-8"),

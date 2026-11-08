@@ -471,7 +471,7 @@ def post_n3(st, key, now):
     old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+\.mp4$", f))
     for f in old[:-10]:
         os.remove(os.path.join("videos", f))
-    D.push("steps %s" % key, ["text", "videos", "steps/state.json"])
+    D.push("steps %s" % key, ["text", "videos", "steps/state.json", "n3/out"])
     chat = D.OWNER if DRY else D.CHANNEL
     if not D.tg("sendVideo", {"chat_id": chat, "caption": ("🎬 %s\n%s" % (title, cap))[:1020], "supports_streaming": "true"},
                 {"video": open(vid, "rb")}):
