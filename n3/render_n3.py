@@ -393,6 +393,7 @@ def mixed_line(d, x, y, s, size, col):
 
 def fit_title(img, s, y, base, alpha, col=YEL):
     """Big grammar title that always fits the board (long titles go on 2 lines at ' / ')."""
+    base = max(8, base)
     parts = [s]
     f = RS.jfont(int(base))
     if d0.textlength(s, font=f) > 900 and re.search(r"\s*[/／]\s*", s):
@@ -500,7 +501,8 @@ class Video:
         S.append(("form", [("hold", 0.5)] + [("say", "f%d" % i) for i in range(4) if "f%d" % i in has] + [("hold", 1.2)]))
         ex = []
         for i in range(min(3, len(n["examples"]))):
-            ex += [("say", "e%d" % i), ("hold", 1.7)]
+            if "e%d" % i in has:
+                ex += [("say", "e%d" % i), ("hold", 1.7)]
         S.append(("examples", [("hold", 0.4)] + ex))
         if "x0" in has:
             S.append(("mistake", [("hold", 1.4), ("say", "x0"), ("hold", 2.6)]))
@@ -519,6 +521,8 @@ class Video:
             sc = {"name": name, "t0": t, "ev": {}, "count": None}
             self.sfx.append((t + 0.02, "whoosh" if name != "hook" else "ding"))
             for kind, v in steps:
+                if kind == "say" and v not in self.piece:
+                    continue   # a line that could not be voiced (not plain Japanese) is left out
                 if kind == "say":
                     a, b = self.piece[v]
                     dur = b - a
@@ -663,20 +667,22 @@ class Video:
 
     def s_examples(self, img, sc, lt, p):
         heading(img, "④ ဥပမာ", lt)
-        exs = self.n["examples"][:3]
-        cur = 0
-        for i in range(len(exs)):
+        idx = [i for i in range(min(3, len(self.n["examples"]))) if "e%d" % i in sc["ev"]] or [0]
+        exs = self.n["examples"]
+        cur = idx[0]
+        for i in idx:
             if lt >= self.ev(sc, "e%d" % i) - 0.3:
                 cur = i
         e = exs[cur]
         a = self.ev(sc, "e%d" % cur)
         q = ease((lt - a + 0.3) / 0.4)
-        out = ease((lt - (self.ev(sc, "e%d" % (cur + 1), 999) - 0.3)) / 0.3)
+        nxt = next((j for j in idx if j > cur), None)
+        out = ease((lt - (self.ev(sc, "e%d" % nxt, 999) - 0.3)) / 0.3) if nxt is not None else 0.0
         al = q * (1 - out)
         if e.get("tag"):
             badge(img, W / 2, 500, NUM_MM.get(e["tag"], e["tag"]), (52, 120, 200) if e["tag"] == "A" else (222, 98, 150), back((lt - a + 0.3) / 0.4))
-        who = "Rio" if cur % 2 == 0 else "Yui"
-        text(img, (W / 2, 560), "%d / %d  ·  %s" % (cur + 1, len(exs), who), 28, SOFT, "mt", al)
+        who = self.who.get("e%d" % cur, "Rio")
+        text(img, (W / 2, 560), "%d / %d  ·  %s" % (idx.index(cur) + 1, len(idx), who), 28, SOFT, "mt", al)
         y = rich(img, grammar_segs(e["jp"], self.n["title"]), 660, 72, al, ease((lt - a - 0.2) / 0.6), CHALK, YEL, 900, 30 * (1 - q))
         y = kana(img, self.k.get(e["jp"], ""), y, al, 34)
         mm(img, e.get("mm", ""), y + 40, al, 46, CHALK)
