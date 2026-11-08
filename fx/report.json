@@ -1,5 +1,5 @@
 {
- "time_jst": "2026-11-08 09:24",
+ "time_jst": "2026-11-08 16:10",
  "price": 158.425,
  "change_24h": 0.748,
  "high_24h": 158.653,
@@ -54,7 +54,7 @@
   "role": "control bot: 2-year test showed no edge, kept running only to compare against B/C",
   "backtest_30d": {
    "trades": 32,
-   "pnl": -119.57,
+   "pnl": -119.19,
    "win_rate": 25.0
   },
   "rules": "EMA20/EMA50 trend + RSI, stop 1.5xATR, target 3xATR, $10 risk/trade, stop for the day at -$30, spread 0.3 pip counted, entries only 16:00-05:59 JST (London/NY), closes before the weekend",
