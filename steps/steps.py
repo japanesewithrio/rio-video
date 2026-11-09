@@ -486,6 +486,37 @@ def post_n3(st, key, now):
     D.log(summary)
 
 
+def post_n3chat(st, key, now):
+    """Ye 11/09: 2 N3 chat-style videos a day (A = <key> at 19:00, B = <key>b: TikTok/YouTube 12:00 next day)."""
+    sys.path.insert(0, os.path.join(ROOT, "n3"))
+    import chat3 as C3
+    res = C3.daily(st, key, DRY)
+    if not DRY:
+        for vid, title, cap, secs, tr, no, k in res:
+            st["done"].append({"key": k, "title": title, "n3chat": no, "date": now.strftime("%Y-%m-%d")})
+        json.dump(st, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    os.chdir(ROOT)
+    old = sorted(f for f in os.listdir("videos") if re.match(r"FT?\d+b?\.mp4$", f))
+    for f in old[:-12]:
+        os.remove(os.path.join("videos", f))
+    # B first: Make reads the newest commit on text/ and takes its message "steps <key>" as video A
+    D.push("steps %s" % key, ["text", "videos", "steps/state.json"])
+    chat = D.OWNER if DRY else D.CHANNEL
+    for vid, title, cap, secs, tr, no, k in res:
+        if not D.tg("sendVideo", {"chat_id": chat, "caption": ("🎬 %s\n%s" % (title, cap))[:1020], "supports_streaming": "true"},
+                    {"video": open(vid, "rb")}):
+            D.WARN.append("Telegram sendVideo failed " + k)
+        D.tg("sendMessage", {"chat_id": chat, "text": tr})
+    summary = "✅ N3 chat videos %s\n%s\n%s" % ("TEST" if DRY else "posted to Telegram",
+                                              "\n".join("%s No.%d %s (%ds)" % (k, no, t, s) for _, t, _, s, _, no, k in res),
+                                              "(test only - not posted)" if DRY else "Make 19:00: A -> FB/TikTok/YouTube, B -> FB now, TikTok/YouTube 12:00 tomorrow")
+    if D.WARN:
+        summary += "\n(small problems: %s)" % "; ".join(D.WARN)[:600]
+    if D.OWNER:
+        D.tg("sendMessage", {"chat_id": D.OWNER, "text": summary})
+    D.log(summary)
+
+
 def main():
     ms = D.list_models()
     if ms:
@@ -515,6 +546,8 @@ def main():
     key = ("FT" + now.strftime("%y%m%d%H%M")) if DRY else ("F" + now.strftime("%y%m%d"))
     if any(d["key"] == key for d in st["done"]):
         key = "F" + now.strftime("%y%m%d%H%M")
+    if st.get("format") == "n3chat":  # Ye 11/09: Rio & Yui chat-style N3 video, 2 a day
+        return post_n3chat(st, key, now)
     if st.get("format") == "n3":  # Ye 11/06: one N3 grammar from his note per day (Rio先生 video) instead of 4 Steps
         return post_n3(st, key, now)
     avail = available(st)
