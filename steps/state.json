@@ -108,6 +108,12 @@
    "n3": 2,
    "date": "2026-11-08",
    "skipped": "11/08 No.2 had errors - not posted to TikTok/FB/YouTube, redo 11/09"
+  },
+  {
+   "key": "F261109",
+   "title": "N3文法 No.2｜〜ようになる / 〜ようにする",
+   "n3": 2,
+   "date": "2026-11-09"
   }
  ],
  "themes": [
@@ -145,6 +151,6 @@
   "気づいたら、〜てた"
  ],
  "format": "n3",
- "n3_next": 2,
+ "n3_next": 3,
  "n3_last": 2
 }
