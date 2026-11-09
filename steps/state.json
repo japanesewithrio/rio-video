@@ -113,7 +113,8 @@
    "key": "F261109",
    "title": "N3文法 No.2｜〜ようになる / 〜ようにする",
    "n3": 2,
-   "date": "2026-11-09"
+   "date": "2026-11-09",
+   "skipped": "11/09 Ye: hold old-style No.2 - remake in the new chat style first (not posted to TikTok/FB/YouTube)"
   }
  ],
  "themes": [
@@ -151,6 +152,6 @@
   "気づいたら、〜てた"
  ],
  "format": "n3",
- "n3_next": 3,
+ "n3_next": 2,
  "n3_last": 2
 }
