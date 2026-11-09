@@ -40,7 +40,7 @@ s.bad{color:#c92a2a}
 .flow span.a{color:#f08c00} .pill{background:#eef4ff;border-radius:18px;padding:6px 20px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px} .grid div{background:#eef4ff;border-radius:18px;padding:10px 18px;font-size:40px;font-weight:700}
 .grid small{display:block;font-family:My;font-size:26px;color:#4a5568;font-weight:400}
-.vs{display:flex;gap:24px} .vs .card{flex:1;text-align:center;padding:30px 20px}
+.vs{display:flex;gap:24px;flex-wrap:wrap} .vs .card{flex:1;text-align:center;padding:30px 20px} .vs.v4 .card{flex:1 1 40%%;margin-bottom:0}
 .big{font-size:90px}
 .warn{background:#fff7ea} .warn .tt{color:#c46a00;font-size:38px}
 .opt{border:4px solid #cfdcf2;border-radius:24px;padding:12px 26px;font-size:44px;font-weight:700;margin:12px 0;background:#fff}
@@ -117,7 +117,7 @@ def chat_beats(c):
 def compare_beats(c):
     cp, out = c["compare"], []
     def cards(n, new):
-        s = "<div class='vs' style='margin-top:30px'>"
+        s = "<div class='vs%s' style='margin-top:30px'>" % (" v4" if len(cp["items"]) > 3 else "")
         for k, it in enumerate(cp["items"][:n]):
             s += ("<div class='card%s'><div class='big'>%s</div><div class='tt'>%s</div><div class='my'>%s</div>"
                   "<div class='jp' style='font-size:38px;margin-top:10px'>%s</div></div>" % (" new" if k == new else "", it["icon"], it["g"], it["mm"], hl(it["ex"])))
