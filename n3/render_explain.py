@@ -1,5 +1,5 @@
 """N3 explainer video (Ye 11/11 night): ONE narrator style, no two-person chat.
-Hook (story + emotion) -> formula blocks -> timeline picture -> 2 examples -> ⚠️ trap -> JLPT 問題 3-2-1 -> end.
+Title (Ye 11/12) -> timeline picture -> formula blocks -> 2 examples -> ⚠️ trap -> JLPT 問題 3-2-1 -> end.
 Clean mint design, every element animated (pop / slide / word by word), self-made sound effects, Rio reads the Japanese.
 Every frame is drawn as HTML and filmed with Chrome (playwright)."""
 import asyncio, math, os, re, subprocess, sys, wave
@@ -73,24 +73,33 @@ def words(chunks, t, a, size, font="Round", gap=0.32):
 
 
 # ---------------------------------------------------------------- scenes: each returns (html(t_local), duration, audio events, sfx events)
-def scene_hook(x, L):
-    h = x["hook"]
-    a_jp, a_ask = 0.5, None
-    t_mm = a_jp + L["h_jp"] + 0.4
-    a_ask = t_mm + 1.2
-    dur = a_ask + L["h_ask"] + 1.4
+def scene_title(x, L):
+    ti = x["title_card"]
+    a_say = 0.6
+    dur = a_say + L["t_say"] + 1.2
 
     def f(t):
-        s = "<div style='position:absolute;top:330px;left:40px;right:40px'>"
-        s += "<div style='text-align:center;font-size:160px;%s'><span style='display:inline-block;transform:rotate(%.0fdeg)'>%s</span></div>" % (
-            pop(t, 0.0), math.sin(t * 9) * 6 * (t < 1.4), h["emoji"])
-        for i, line in enumerate(h["jp"]):
-            s += words(line.split(" "), t, 0.5 + i * 0.7, 92 if i == 0 else 84)
-        s += "<div class='my' style='text-align:center;font-size:44px;margin-top:34px;%s'>%s</div>" % (pop(t, t_mm), h["mm"])
-        s += ("<div style='text-align:center;margin-top:60px;%s'><span class='card' style='display:inline-block;padding:20px 40px;font-size:50px;font-weight:700'>%s</span></div>"
-              % (pop(t, a_ask), h["ask"]))
+        s = "<div style='position:absolute;top:420px;left:60px;right:60px;text-align:center'>"
+        s += "<div style='display:inline-block;background:#fff;border-radius:30px;padding:8px 30px;font-family:Round;font-size:34px;color:%s;%s'>今日の N3 文法 📘</div>" % (G, pop(t, 0.0))
+        s += "<div style='font-family:Round;font-size:150px;margin-top:50px;%s'><span class='pill' style='padding:0 34px'>%s</span></div>" % (pop(t, 0.3), ti["g"])
+        s += "<div class='my' style='font-size:46px;margin-top:50px;%s'>%s</div>" % (pop(t, 0.9), ti["mm"])
+        s += ("<div style='display:flex;justify-content:center;align-items:center;gap:24px;margin-top:70px;%s'><img src='file://%s/rio.png' style='width:130px;height:130px;"
+              "border-radius:50%%;border:5px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.12)'><div class='card' style='padding:20px 30px;font-size:40px;font-weight:700;text-align:left'>%s</div></div>"
+              % (pop(t, a_say), AV, ti["bubble"]))
         return s + "</div>"
-    return f, dur, [(a_jp, "h_jp"), (a_ask, "h_ask")], [(0, "pop"), (0.5, "whoosh"), (1.2, "ding"), (t_mm, "swish"), (a_ask, "pop")]
+    return f, dur, [(a_say, "t_say")], [(0, "pop"), (0.3, "ding"), (0.9, "swish")]
+
+
+def form_chip(t, a, fm, name):
+    """📌 立ち上がる → 立ち上がった + とたん  /  た形（たけい）· Ta-form"""
+    return ("<div style='text-align:center;%s'><div style='display:inline-block;background:#eef5f1;border-radius:24px;padding:12px 26px'>"
+            "<span style='font-size:40px;font-weight:700'>📌 %s <span style='color:#e8a33d'>→</span> %s</span>"
+            "<div class='my' style='font-size:28px;color:#4a6a5c'>%s</div></div></div>" % (pop(t, a), fm[0], hl(fm[1]), name))
+
+
+def why_card(t, a, txt):
+    return ("<div class='card my' style='margin:26px 40px 0;padding:22px 30px;font-size:36px;line-height:1.65;border-left:10px solid #e8a33d;%s'>"
+            "<b style='color:#c46a00'>💡 ဘာလို့?</b><br>%s</div>" % (pop(t, a), txt))
 
 
 def blk(t, a, txt, sub, on=False, w=300):
@@ -114,7 +123,8 @@ def scene_formula(x, L):
         s += "<div style='text-align:center;font-size:60px;margin-top:36px;opacity:%.2f'>⬇️</div>" % c01(P(t, 2.1, 0.3))
         s += "<div style='display:flex;justify-content:center;gap:20px;margin-top:30px'>%s%s</div>" % (
             blk(t, a_ex, *fm["ex"][0], w=270), blk(t, a_ex + 0.5, *fm["ex"][1], on=True, w=270))
-        s += ("<div class='card my' style='margin:60px 90px 0;padding:28px;text-align:center;font-size:48px;font-weight:700;%s'>%s</div>"
+        s += "<div class='my' style='text-align:center;font-size:30px;color:#4a6a5c;margin-top:18px;%s'>%s</div>" % (pop(t, a_ex + 0.8), x["form_name"])
+        s += ("<div class='card my' style='margin:50px 90px 0;padding:28px;text-align:center;font-size:48px;font-weight:700;%s'>%s</div>"
               % (pop(t, t_mm), fm["mm"]))
         return s + "</div>"
     return f, dur, [(a_ex, "f_say")], [(0.1, "whoosh"), (0.6, "pop"), (1.3, "pop"), (a_ex, "tick"), (a_ex + 0.5, "tick"), (t_mm, "ding")]
@@ -122,7 +132,8 @@ def scene_formula(x, L):
 
 def scene_timeline(x, L):
     tl = x["timeline"]
-    dur = 8.5
+    a_say = 2.0
+    dur = max(8.5, a_say + L.get("tl_say", 0) + 5.5)
 
     def f(t):
         ln = inout(P(t, 0.4, 1.0))
@@ -139,41 +150,46 @@ def scene_timeline(x, L):
         s += "<div class='my' style='font-size:36px;background:#eaf7f0;border-radius:24px;padding:16px 28px;%s'>%s</div>" % (pop(t, 5.4), tl["ok"])
         s += "<div class='my' style='font-size:36px;background:#fdecec;border-radius:24px;padding:16px 28px;%s'>%s</div>" % (pop(t, 6.2), tl["ng"])
         return s + "</div></div>"
-    return f, dur, [], [(0.1, "whoosh"), (1.4, "pop"), (2.2, "pop"), (2.9, "ding"), (3.8, "swish"), (5.4, "tick"), (6.2, "tick")]
+    return f, dur, ([(a_say, "tl_say")] if "tl_say" in L else []), [(0.1, "whoosh"), (1.4, "pop"), (2.2, "pop"), (2.9, "ding"), (3.8, "swish"), (5.4, "tick"), (6.2, "tick")]
 
 
 def scene_example(x, L, k):
     e = x["examples"][k]
-    a_jp = 0.9
+    a_jp = 1.6
     t_mm = a_jp + L["e%d" % k] + 0.4
-    dur = t_mm + 3.0
+    t_why = t_mm + 1.4
+    dur = t_why + 5.0
 
     def f(t):
-        s = "<div style='position:absolute;top:360px;left:40px;right:40px'><div class='lab' style='%s'>ဥပမာ %d</div>" % (pop(t, 0.1), k + 1)
-        s += "<div style='text-align:center;font-size:150px;margin-top:30px;%s'>%s</div>" % (pop(t, 0.4), e["emoji"])
-        s += "<div class='card' style='margin:40px 40px 0;padding:30px 30px;%s'>%s" % (pop(t, a_jp - 0.2), words(e["jp"].split(" "), t, a_jp, 64, "Noto Sans CJK JP", 0.28))
+        s = "<div style='position:absolute;top:300px;left:40px;right:40px'><div class='lab' style='%s'>ဥပမာ %d</div>" % (pop(t, 0.1), k + 1)
+        s += "<div style='text-align:center;font-size:120px;margin-top:16px;%s'>%s</div>" % (pop(t, 0.4), e["emoji"])
+        s += "<div style='margin-top:16px'>%s</div>" % form_chip(t, 0.9, e["form"], x["form_name"])
+        s += "<div class='card' style='margin:26px 40px 0;padding:30px 30px;%s'>%s" % (pop(t, a_jp - 0.2), words(e["jp"].split(" "), t, a_jp, 64, "Noto Sans CJK JP", 0.28))
         s += "<div class='my' style='text-align:center;font-size:40px;color:#4a5a52;margin-top:16px;%s'>%s</div></div>" % (pop(t, t_mm), e["mm"])
+        s += why_card(t, t_why, e["why"])
         return s + "</div>"
-    return f, dur, [(a_jp, "e%d" % k)], [(0.1, "whoosh"), (0.4, "pop"), (t_mm, "swish")]
+    return f, dur, [(a_jp, "e%d" % k)], [(0.1, "whoosh"), (0.4, "pop"), (0.9, "tick"), (t_mm, "swish"), (t_why, "ding")]
 
 
 def scene_trap(x, L):
     tr = x["trap"]
     a_good = 3.2
     t_mm = a_good + L["trap"] + 0.5
-    dur = t_mm + 3.2
+    t_why = t_mm + 1.6
+    dur = t_why + 5.0
 
     def f(t):
         st = inout(P(t, 2.3, 0.5))
-        s = "<div style='position:absolute;top:380px;left:30px;right:30px;text-align:center'>"
+        s = "<div style='position:absolute;top:300px;left:30px;right:30px;text-align:center'>"
         s += "<div style='font-size:120px;%s'><span style='display:inline-block;transform:rotate(%.0fdeg)'>⚠️</span></div>" % (pop(t, 0.1), math.sin(t * 14) * 6 * (t < 1.2))
         s += "<div class='my' style='font-size:48px;font-weight:700;color:#c46a00;%s'>ဒီလို မပြောနဲ့!</div>" % pop(t, 0.5)
         s += ("<div style='position:relative;display:inline-block;font-size:58px;font-weight:700;margin-top:44px;%s'>%s ❌"
               "<div style='position:absolute;left:0;top:50%%;height:8px;width:%.0f%%;background:#d9534f;border-radius:4px'></div></div>" % (pop(t, 1.2), tr["bad"], st * 100))
         s += "<div style='font-size:58px;font-weight:700;margin-top:34px;%s'>%s ✅</div>" % (pop(t, a_good), hl(tr["good"]))
-        s += "<div class='card my' style='margin:56px 60px 0;padding:26px;font-size:40px;%s'>%s</div>" % (pop(t, t_mm), tr["mm"])
+        s += "<div class='card my' style='margin:44px 40px 0;padding:24px;font-size:38px;%s'>%s</div>" % (pop(t, t_mm), tr["mm"])
+        s += "<div style='text-align:left'>%s</div>" % why_card(t, t_why, tr["why"])
         return s + "</div>"
-    return f, dur, [(a_good, "trap")], [(0.1, "pop"), (1.2, "whoosh"), (2.3, "swish"), (a_good, "ding"), (t_mm, "swish")]
+    return f, dur, [(a_good, "trap")], [(0.1, "pop"), (1.2, "whoosh"), (2.3, "swish"), (a_good, "ding"), (t_mm, "swish"), (t_why, "ding")]
 
 
 def scene_quiz(x, L):
@@ -206,6 +222,8 @@ def scene_quiz(x, L):
         if a_cd <= t < a_ans:
             n = 3 - int(t - a_cd)
             s += "<div style='text-align:center;font-family:Round;font-size:170px;color:%s;%s'>%d</div>" % (G, pop(t, a_cd + (3 - n)), n)
+        if t >= a_ans + 0.6 and q.get("form"):
+            s += "<div style='margin-top:20px'>%s</div>" % form_chip(t, a_ans + 0.6, q["form"], x["form_name"])
         if t >= t_th:
             s += "<div class='card my' style='margin:30px 40px 0;padding:22px 30px;font-size:36px;border-left:10px solid %s;%s'>💭 %s</div>" % (G, pop(t, t_th), q["think"])
         return s + "</div>"
@@ -226,7 +244,7 @@ def scene_end(x, L):
 
 def lines(x):
     """Every spoken line (all Rio). Two TTS requests."""
-    g1 = [("h_jp", plain("".join(x["hook"]["jp"]).replace(" ", ""))), ("h_ask", x["hook"]["ask_say"]), ("f_say", x["formula"]["say"]),
+    g1 = [("t_say", x["title_card"]["say"]), ("tl_say", x["timeline"]["say"]), ("f_say", x["formula"]["say"]),
           ("e0", plain(x["examples"][0]["jp"]).replace(" ", "")), ("e1", plain(x["examples"][1]["jp"]).replace(" ", ""))]
     g2 = [("trap", plain(x["trap"]["good"])), ("q0", "じゃあ、問題！どれが入ると思う？"), ("q1", plain(x["quiz"]["full"])),
           ("out", "JLPTまで、いっしょにがんばろう！")]
@@ -234,7 +252,7 @@ def lines(x):
 
 
 def timeline(x, L):
-    sc = [scene_hook(x, L), scene_formula(x, L), scene_timeline(x, L), scene_example(x, L, 0), scene_example(x, L, 1),
+    sc = [scene_title(x, L), scene_timeline(x, L), scene_formula(x, L), scene_example(x, L, 0), scene_example(x, L, 1),
           scene_trap(x, L), scene_quiz(x, L), scene_end(x, L)]
     part = [0, 1, 2, 3, 3, 4, 5, 5]
     out, t = [], 0.0
