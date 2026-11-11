@@ -1,0 +1,375 @@
+"""v4 (Ye 11/11: "edit ကို မင်းလုပ်ချင်တဲ့ပုံစံ"): clean mint design + motion. Based on render_chat3.
+N3 chat-style grammar video (Ye 11/09): Rio & Yui talk -> short 📝 notes -> なる vs する -> ⚠️ cautions -> 📖 word note
+-> JLPT 問題 (3-2-1) -> answer + why the other 3 are wrong (one example each) -> follow outro.
+Frames are HTML pages screenshotted with Chrome (playwright); the newest element slides in over 5 frames."""
+import asyncio, json, os, re, subprocess, sys
+import numpy as np
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+FONTS = os.environ.get("RIO_FONTS", os.path.join(ROOT, "fonts"))
+AV = os.path.join(ROOT, "steps")
+SR, FPS, W, H = 24000, 30, 1080, 1920
+B = "#2558b8"
+SFX_GAIN = 0.5
+ANIM = [i / 10 for i in range(1, 10)]          # progress of the newest element in the first frames of a beat
+
+CSS = """@font-face{font-family:My;src:url('file://%(F)s/NotoSansMyanmar.ttf')}
+@font-face{font-family:Round;src:url('file://%(F)s/MPLUSRounded1c-Bold.ttf')}
+*{box-sizing:border-box} body{margin:0;width:1080px;height:1920px;font-family:'Noto Sans CJK JP','Noto Sans JP',My,sans-serif;
+background:linear-gradient(180deg,#f3faf7,#e3f1ea);color:#173b2e;overflow:hidden;position:relative}
+.top{position:absolute;top:150px;left:60px;right:150px;display:flex;justify-content:space-between;align-items:center;font-family:Round,My;color:#1f8a5b;font-size:30px}
+.chip{background:#fff;color:#1f8a5b;border-radius:40px;padding:4px 22px;font-size:26px;box-shadow:0 4px 14px rgba(31,90,70,.10)}
+.bar{position:absolute;top:205px;left:60px;right:150px;height:8px;background:#d6e8df;border-radius:6px} .bar i{display:block;height:100%%;background:#1f8a5b;border-radius:6px}
+.wrap{position:absolute;top:250px;left:60px;right:150px}
+.row{display:flex;gap:22px;margin-bottom:24px;align-items:flex-start} .row.r{flex-direction:row-reverse}
+.av{width:116px;height:116px;border-radius:50%%;object-fit:cover;border:5px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.12);flex:none}
+.bub{background:#fff;border-radius:34px;padding:22px 32px;box-shadow:0 12px 30px rgba(31,90,70,.12);max-width:740px}
+.nm{font-family:Round,My;font-size:26px;color:#2558b8} .r .nm{color:#d6336c}
+.jp{font-size:50px;font-weight:700;line-height:1.5} .kana{font-size:26px;color:#8a9a92} .my{font-family:My,sans-serif;font-size:33px;color:#4a5a52;line-height:1.7}
+.my b,.note b{font-family:'Noto Sans CJK JP',My;color:#173b2e}
+.hl{background:#1f8a5b;color:#fff;border-radius:14px;padding:0 10px}
+s.bad{color:#d9534f;text-decoration-thickness:4px}
+.dim{opacity:.35}
+.note{display:flex;gap:16px;align-items:center;background:#fff;border-left:10px solid #1f8a5b;border-radius:26px;padding:18px 26px;margin:0 0 20px 138px;font-family:My;font-size:32px;line-height:1.6;box-shadow:0 10px 24px rgba(31,90,70,.10)}
+.r + .note, .note.rn{margin:0 138px 20px 0}
+.tag{background:#e6f4ee;color:#1f8a5b;border-radius:14px;padding:2px 14px;font-size:26px;font-family:'Noto Sans CJK JP';white-space:nowrap}
+.ncard{background:#fff;border-radius:30px;padding:22px 30px;margin:0 0 20px;box-shadow:0 12px 30px rgba(31,90,70,.12)}
+.ncard .lab{font-family:My;font-size:30px;color:#1f8a5b;font-weight:700}
+.fx{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+.fx .k{padding:8px 24px;border-radius:20px;background:#eef5f1;font-size:50px;font-weight:700} .fx .k.on{background:#1f8a5b;color:#fff}
+.fx .a{font-size:46px;color:#e8a33d}
+.ic{display:flex;align-items:center;justify-content:center;gap:22px;font-size:78px;margin-top:6px} .ic .d{color:#1f8a5b;font-size:34px;letter-spacing:6px}
+.mm1{font-family:My;font-size:40px;font-weight:700;text-align:center;margin-top:8px}
+.sub{text-align:center;font-family:My;font-size:26px;color:#7b8a83;margin-top:8px}
+.card{background:#fff;border-radius:36px;box-shadow:0 12px 34px rgba(31,90,70,.12);padding:32px 40px;margin-bottom:26px}
+.tt{font-family:Round,My;font-size:44px;color:#173b2e;margin-bottom:6px} .en{font-family:Round,My;font-size:32px;color:#1f8a5b}
+.flow{display:grid;grid-template-columns:auto auto auto;justify-content:start;align-items:center;gap:12px 18px;font-size:44px;font-weight:700;margin-top:12px}
+.flow span.a{color:#e8a33d} .pill{background:#eef5f1;border-radius:18px;padding:6px 20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px} .grid div{background:#eef5f1;border-radius:18px;padding:10px 18px;font-size:40px;font-weight:700}
+.grid small{display:block;font-family:My;font-size:26px;color:#4a5a52;font-weight:400}
+.vs{display:flex;gap:24px;flex-wrap:wrap} .vs .card{flex:1;text-align:center;padding:30px 20px} .vs.v4 .card{flex:1 1 40%%;margin-bottom:0}
+.big{font-size:90px}
+.warn{background:#fff;border-left:10px solid #e8a33d} .warn .tt{color:#c46a00;font-size:38px}
+.opt{border:4px solid #d6e8df;border-radius:24px;padding:12px 26px;font-size:44px;font-weight:700;margin:12px 0;background:#fff}
+.opt.ok{border-color:#1f8a5b;background:#eaf7f0;color:#1f8a5b} .opt.ng{opacity:.35}
+.ok2{background:#eaf7f0;border-radius:20px;padding:12px 22px;margin-top:10px}
+.cnt{font-family:Round;text-align:center;color:#1f8a5b;font-size:150px;line-height:1.1}
+.badge{display:inline-block;background:#1f8a5b;color:#fff;font-family:Round,My;border-radius:30px;padding:6px 30px;font-size:40px}
+.outro{text-align:center;margin-top:140px} .outro .av{width:260px;height:260px;margin:0 20px}
+.outro .tt{font-size:66px;margin-top:50px} .outro .pink{color:#d6336c}
+.hk{text-align:center;margin-top:10px}
+.hk .t{font-family:Round,My;font-size:86px;line-height:1.35;color:#173b2e}
+.hk .scene{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:50px;min-height:240px}
+.hk .sc{width:220px;height:220px;border-radius:40px;background:#fff;box-shadow:0 14px 34px rgba(31,90,70,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:100px}
+.hk .sc small{font-family:My;font-size:26px;color:#1f8a5b;margin-top:4px}
+.hk .dl{width:50px;border-top:8px dotted #1f8a5b;opacity:.7}
+.hk .mmh{font-family:My;font-size:42px;margin-top:40px;color:#33415a}
+.hk .tw{margin:36px auto 0;width:860px;background:#fffbe6;border:4px dashed #f0c419;border-radius:28px;padding:20px 28px;font-family:My;font-size:34px;line-height:1.6;color:#5a4300;text-align:left}
+.hk .q{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:36px}
+.hk .q .bub{font-size:44px;font-weight:700}
+.new{opacity:var(--o,1);transform:translateY(var(--y,0px)) scale(var(--s,1))}
+"""
+
+
+def hl(s):
+    s = re.sub(r"\[(.+?)\]", r"<span class='hl'>\1</span>", s)
+    return re.sub(r"\{(.+?)\}", r"<s class='bad'>\1</s>", s)
+
+
+def plain(s):
+    return re.sub(r"[\[\]{}]", "", s)
+
+
+def page(body, tag, prog):
+    return ("<html><head><meta charset='utf-8'><style>%s</style></head><body><div class='top'><span>Learn with Rio ♡</span>"
+            "<span class='chip'>%s</span></div><div class='bar'><i style='width:%d%%'></i></div><div class='wrap'>%s</div></body></html>"
+            % (CSS % {"F": FONTS, "B": B}, tag, round(prog * 100), body))
+
+
+def bubble(l, cls=""):
+    r = l["who"] == "Yui"
+    return ("<div class='row%s %s'><img class='av' src='file://%s/%s.png'><div class='bub'><div class='nm'>%s</div><div class='jp'>%s</div>"
+            "<div class='kana'>%s</div><div class='my'>%s</div></div></div>"
+            % (" r" if r else "", cls, AV, "yui" if r else "rio", l["who"], hl(l["jp"]), l.get("kana", ""), l.get("mm", "")))
+
+
+def note(t, l, cls=""):
+    if isinstance(t, dict):
+        if t.get("type") == "formula":
+            ps = t["parts"]
+            inner = "".join(("<span class='a'>%s</span>" % ("+" if i == len(ps) - 1 else "→") if i else "") +
+                            "<span class='k%s'>%s</span>" % (" on" if i == len(ps) - 1 else "", x) for i, x in enumerate(ps))
+            return "<div class='ncard %s'><div class='lab'>📝 ပုံစံ</div><div class='fx'>%s</div><div class='sub'>%s</div></div>" % (cls, inner, t.get("label", ""))
+        ic = "<span class='d'>・・・</span>".join("<span>%s</span>" % x for x in t.get("icons", []))
+        return "<div class='ncard %s'><div class='lab'>💡 အဓိပ္ပာယ်</div><div class='ic'>%s</div><div class='mm1'>%s</div></div>" % (cls, ic, t["mm"])
+    return "<div class='note %s%s'>📝 <div>%s</div></div>" % ("rn " if l["who"] == "Yui" else "", cls, t)
+
+
+def est_h(l, notes):
+    """rough pixel height of a line bubble + n notes (to decide what still fits on the screen)."""
+    jl = -(-len(plain(l["jp"])) // 13)
+    ml = -(-len(l.get("mm", "")) // 26)
+    return 120 + jl * 78 + 40 + ml * 56 + 24 + notes * 200
+
+
+def chat_beats(c):
+    """One beat per line, then one per note. Returns list of (html_body, tag, voice_key or None, hold, sfx)."""
+    out, lines = [], c["chat"]
+    for i, l in enumerate(lines):
+        # older lines that still fit stay above (dimmed); the current one is full
+        keep, hsum = [], est_h(l, len(l["notes"]))
+        for k in range(i - 1, -1, -1):
+            h = est_h(lines[k], len(lines[k]["notes"]) if k == i - 1 else 0)
+            if hsum + h > 1250:
+                break
+            keep.insert(0, k); hsum += h
+        def old():
+            s = ""
+            for k in keep:
+                s += bubble(lines[k], "dim" if k < i - 1 or not lines[k]["notes"] else "")
+                if k == i - 1 and lines[k]["notes"]:
+                    s += "".join(note(t, lines[k]) for t in lines[k]["notes"])
+            return s
+        base = old()
+        out.append((base + bubble(l, "new"), l["tag"], "c%d" % i, 0.35, [(0.0, "pop" if l["who"] == "Yui" else "whoosh")]))
+        for j in range(len(l["notes"])):
+            body = base + bubble(l) + "".join(note(t, l, "new" if q == j else "") for q, t in enumerate(l["notes"][:j + 1]))
+            out.append((body, l["tag"], None, 2.4, [(0.0, "swish")]))
+    return out
+
+
+def compare_beats(c):
+    cp, out = c["compare"], []
+    def cards(n, new):
+        s = "<div class='vs%s' style='margin-top:30px'>" % (" v4" if len(cp["items"]) > 3 else "")
+        for k, it in enumerate(cp["items"][:n]):
+            s += ("<div class='card%s'><div class='big'>%s</div><div class='tt'>%s</div><div class='my'>%s</div>"
+                  "<div class='jp' style='font-size:38px;margin-top:10px'>%s</div></div>" % (" new" if k == new else "", it["icon"], it["g"], it["mm"], hl(it["ex"])))
+        return s + "</div>"
+    for k in range(len(cp["items"])):
+        out.append((cards(k + 1, k), cp["tag"], "v%d" % k, 1.2, [(0.0, "pop")]))
+    return out
+
+
+def caution_beats(c):
+    out, tag = [], c["compare"]["tag"] if c.get("compare") else "⚠️ 注意"
+    cv = ""
+    if c.get("compare"):
+        cv = "".join("<div class='card' style='padding:16px 30px;margin-bottom:16px'><span class='tt' style='font-size:36px'>%s %s</span> "
+                     "<span class='my' style='font-size:28px'>%s</span></div>" % (it["icon"], it["g"], re.sub("<br>", " ", it["mm"])) for it in c["compare"]["items"])
+    for k, w in enumerate(c["cautions"]):
+        body = cv
+        for q, x in enumerate(c["cautions"][:k + 1]):
+            body += ("<div class='card warn%s'><div class='tt'>⚠️ သတိ! %s</div><div class='jp' style='font-size:42px'>%s ❌</div>"
+                     "<div class='jp' style='font-size:42px'>%s ✅</div><div class='my'>%s</div></div>"
+                     % (" new" if q == k else "", x["g"], hl(x["bad"]), hl(x["good"]), x["mm"]))
+        out.append((body, tag, "w%d" % k, 2.2, [(0.0, "whoosh")]))
+    return out
+
+
+def word_card(w, cls=""):
+    if w.get("grid"):
+        inner = "<div class='grid'>%s</div>" % "".join("<div>%s<small>%s</small></div>" % (a, b) for a, b in w["grid"])
+    else:
+        inner = "<div class='flow'>%s</div>" % "".join("<span class='pill'>%s</span><span class='a'>→</span><span class='pill'>%s</span>" % (a, b) for a, b in w["pairs"])
+    return ("<div class='card %s'><div class='tt'>%s <span class='kana'>%s</span></div><div class='en'>%s</div><div class='my'>%s</div>%s</div>"
+            % (cls, w["term"], w["kana"], w["en"], w["mm"], inner))
+
+
+def word_beats(c):
+    out, head = [], "<div class='tt' style='font-size:54px;margin:10px 0 24px'>📖 ဒါတွေ ဘာလဲ?</div>"
+    ws = c.get("words", [])
+    for pg in range(0, len(ws), 2):
+        chunk = ws[pg:pg + 2]
+        for k in range(len(chunk)):
+            body = head + "".join(word_card(w, "new" if q == k else "") for q, w in enumerate(chunk[:k + 1]))
+            out.append((body, "📖 Word note", "d%d" % (pg + k), 2.6, [(0.0, "pop")]))
+    return out
+
+
+def q_card(m, mark=None, blank=True):
+    s = "<div class='card'><div class='jp' style='font-size:46px'>%s</div>" % (
+        m["q"].replace("（　）", "<span style='color:#e8590c'>（　）</span>") if blank else hl(m["full"]))
+    s += "<div class='kana'>%s</div>" % m["kana"] if blank else "<div class='my'>%s</div>" % m["full_mm"]
+    for i, o in enumerate(m["opts"], 1):
+        if mark is None:
+            s += "<div class='opt'>%d. %s</div>" % (i, o)
+        else:
+            s += "<div class='opt %s'>%s %s</div>" % ("ok" if i == m["ans"] else "ng", "✓" if i == m["ans"] else "✕", o)
+    return s + "</div>"
+
+
+def hook_beat(c):
+    hk = c.get("hook")
+    if hk:
+        tag = "N3文法 · %s" % hk.get("g", c["title"])
+        t = "<div class='t'>%s<br>%s</div>" % (hl(hk["jp1"]), hl(hk["jp2"]))
+        sc = hk.get("scenes", [])
+        def scene(n):
+            parts = []
+            for i, (e, lab) in enumerate(sc[:n]):
+                if i:
+                    parts.append("<div class='dl'></div>")
+                parts.append("<div class='sc%s'>%s<small>%s</small></div>" % (" new" if i == n - 1 else "", e, lab))
+            return "<div class='scene'>%s</div>" % "".join(parts)
+        out = [("<div class='hk'><div class='new'>%s</div>%s</div>" % (t, scene(0)), tag, "h0", 0.15, [(0.0, "pop"), (0.1, "whoosh")])]
+        for n in range(1, len(sc) + 1):
+            out.append(("<div class='hk'>%s%s</div>" % (t, scene(n)), tag, None, 0.45, [(0.0, "pop" if n < len(sc) else "ding")]))
+        base = "<div class='hk'>%s%s<div class='mmh'>%s</div>" % (t, scene(len(sc)), hk["mm"])
+        out.append((base.replace("class='mmh'", "class='mmh new'") + "</div>", tag, None, 0.8, [(0.0, "swish")]))
+        if hk.get("twist"):
+            base += "<div class='tw'>%s</div>" % hk["twist"]
+            out.append((base.replace("class='tw'", "class='tw new'") + "</div>", tag, None, 1.4, [(0.0, "whoosh")]))
+        q = "<div class='q new'><img class='av' src='file://%s/rio.png'><div class='bub'>これ、日本語で どう言う？🤔</div></div>" % AV
+        out.append((base + q + "</div>", tag, "h1", 0.4, [(0.0, "pop")]))
+        return out
+    m = c["mondai"]
+    body = "<div class='hook'>JLPT N3 に出る！<br>わかる？👇</div>" + q_card(m) + "<div style='text-align:center'><span class='badge'>答えは最後！</span></div>"
+    return [(body, "N3文法 No.%d" % c["no"], "h0", 0.6, [(0.0, "ding")])]
+
+
+def mondai_beats(c):
+    m, out = c["mondai"], []
+    head = "<div class='tt' style='text-align:center;font-size:56px;margin:10px 0 20px'>JLPT 問題 ✍️</div>"
+    out.append((head + q_card(m), "JLPT 問題", "q0", 0.2, [(0.0, "whoosh")]))
+    for n in (3, 2, 1):
+        out.append((head + q_card(m) + "<div class='cnt'>%d</div>" % n, "JLPT 問題", None, 1.0, [(0.0, "tick")]))
+    out.append((q_card(m, mark=True, blank=False), "JLPT 答え", "q1", 0.5, [(0.0, "ding")]))
+    out.append((q_card(m, mark=True, blank=False) + "<div class='note new' style='margin-left:0'>💭 <div>%s</div></div>" % m["think"],
+                "JLPT 答え", None, 3.0, [(0.0, "swish")]))
+    head2 = "<div class='tt' style='font-size:48px;margin:0 0 20px'>ဒီ %d ခု ဘာလို့ မှားလဲ?</div>" % len(m["wrong"])
+    out.append((head2, "JLPT 答え", "q2", 0.2, [(0.0, "whoosh")]))
+    for k in range(len(m["wrong"])):
+        body = head2
+        for q, w in enumerate(m["wrong"][:k + 1]):
+            body += ("<div class='card%s' style='padding:24px 34px;margin-bottom:20px'><div class='tt' style='font-size:40px;color:#c92a2a'>✕ %s</div>"
+                     "<div class='my'>%s</div><div class='ok2'><div class='jp' style='font-size:38px'>✅ %s</div><div class='kana'>%s</div>"
+                     "<div class='my' style='font-size:30px'>%s</div></div></div>" % (" new" if q == k else "", w["g"], w["mm"], hl(w["ex"]), w["kana"], w["exmm"]))
+        out.append((body, "JLPT 答え", "x%d" % k, 1.8, [(0.0, "pop")]))
+    return out
+
+
+def outro_beats(c):
+    body = ("<div class='outro'><img class='av' src='file://%s/rio.png'><img class='av' src='file://%s/yui.png'>"
+            "<div class='tt'>Follow <span class='pink'>Rio</span> ♡</div><div class='my' style='font-size:38px;margin-top:20px'>"
+            "JLPT N3 まで、いっしょにがんばろう！</div></div>" % (AV, AV))
+    return [(body, "Learn with Rio ♡", "o0", 0.2, [(0.0, "pop"), (0.2, "ding")]), (body, "Learn with Rio ♡", "o1", 0.8, [])]
+
+
+def beats(c):
+    b = hook_beat(c) + chat_beats(c)
+    if c.get("compare"):
+        b += compare_beats(c)
+    if c.get("cautions"):
+        b += caution_beats(c)
+    if c.get("words"):
+        b += word_beats(c)
+    return b + mondai_beats(c) + outro_beats(c)
+
+
+def lines(c):
+    """Every spoken line: key -> (who, jp). Grouped into 3 TTS requests."""
+    m = c["mondai"]
+    g1 = [("c%d" % i, l["who"], plain(l["jp"])) for i, l in enumerate(c["chat"])]
+    g1 += [("o0", "Rio", "リアルな日本語を話したいなら、Rioをフォローしてね！"), ("o1", "Yui", "バイバーイ！")]
+    if c.get("hook"):
+        g2 = [("h0", "Rio", plain(c["hook"]["jp1"] + c["hook"]["jp2"])), ("h1", "Rio", "これ、日本語でどう言う？")]
+    else:
+        g2 = [("h0", "Rio", "この問題、わかる？答えは最後！")]
+    g2 += [("v%d" % k, "Rio", it["say"]) for k, it in enumerate(c.get("compare", {}).get("items", []))]
+    g2 += [("w%d" % k, "Rio", w["say"]) for k, w in enumerate(c.get("cautions", []))]
+    g2 += [("d%d" % k, "Rio", w["say"]) for k, w in enumerate(c.get("words", []))]
+    g3 = [("q0", "Rio", "じゃあ、問題！どれが入ると思う？"), ("q1", "Rio", m["full_say"]), ("q2", "Rio", "ほかの%sは、こう使うよ。" % ["一つ", "二つ", "三つ"][max(1, min(3, len(m["wrong"]))) - 1])]
+    g3 += [("x%d" % k, "Rio", plain(w["ex"])) for k, w in enumerate(m["wrong"])]
+    return [g1, g2, g3]
+
+
+# ---------------------------------------------------------------- render
+def motion(p):
+    """back-eased pop: the newest element rises, grows a little past full size and settles."""
+    x = max(0.0, min(1.0, p)); k = 1.6
+    e = 1 + (k + 1) * (x - 1) ** 3 + k * (x - 1) ** 2
+    return "--o:%.2f;--y:%.0fpx;--s:%.3f" % (min(1.0, x * 2.2), (1 - e) * 70, 0.86 + 0.14 * e)
+
+
+async def _shots(pages, tmp):
+    from playwright.async_api import async_playwright
+    exe = next((p for p in ("/usr/bin/google-chrome", "/usr/bin/google-chrome-stable", "/usr/bin/chromium") if os.path.exists(p)), None)
+    async with async_playwright() as p:
+        b = await p.chromium.launch(executable_path=exe, args=["--allow-file-access-from-files"]) if exe else await p.chromium.launch()
+        pg = await b.new_page(viewport={"width": W, "height": H})
+        out = []
+        for i, (html, prog) in enumerate(pages):
+            f = os.path.join(tmp, "p%04d.html" % i)
+            open(f, "w", encoding="utf-8").write(html.replace("<body>", "<body style='%s'>" % motion(prog), 1))
+            await pg.goto("file://" + f)
+            await pg.evaluate("document.fonts.ready")
+            j = os.path.join(tmp, "p%04d.jpg" % i)
+            await pg.screenshot(path=j, type="jpeg", quality=92)
+            out.append(j)
+        await b.close()
+    return out
+
+
+def trim(x, thr=0.015, tail=0.18):
+    """cut the silence at the end of a voice clip (keeps a short natural tail)."""
+    idx = np.where(np.abs(x) > thr)[0]
+    if not len(idx):
+        return x
+    a = max(0, idx[0] - int(0.03 * SR))
+    return x[a:min(len(x), idx[-1] + int(tail * SR))]
+
+
+def render(c, clips, out_path, tmp):
+    """clips: key -> float32 mono 24 kHz voice. Returns seconds."""
+    sys.path.insert(0, os.path.join(ROOT, "steps"))
+    import render_steps as RS
+    bt = beats(c)
+    n = len(bt)
+    pages, plan = [], []   # plan: (page index, seconds)
+    audio, sfx_at, t = [], [], 0.0
+    for i, (body, tag, key, hold, sfx) in enumerate(bt):
+        html = page(body, tag, (i + 1) / n)
+        v = trim(clips[key]) if key else np.zeros(0, np.float32)
+        dur = max(len(v) / SR + hold, 0.5)
+        nf = int(round(dur * FPS))
+        dur = nf / FPS
+        seg = np.zeros(int(round(dur * SR)), np.float32)
+        isnew = bool(re.search(r"class='[^']*\bnew\b", body))
+        lead = 0.12 if isnew else 0.0     # the voice starts as the card lands
+        a0 = int(lead * SR)
+        seg[a0:a0 + len(v)] = v[:len(seg) - a0]
+        audio.append(seg)
+        for w, name in sfx:
+            sfx_at.append((t + w, name))
+        if isnew:
+            for p in ANIM:
+                pages.append((html, p)); plan.append((len(pages) - 1, 1 / FPS))
+            nf -= len(ANIM)
+        pages.append((html, 1)); plan.append((len(pages) - 1, nf / FPS))
+        t += dur
+    shots = asyncio.run(_shots(pages, tmp))
+    lst = os.path.join(tmp, "list.txt")
+    with open(lst, "w") as f:
+        for pi, d in plan:
+            f.write("file '%s'\nduration %.5f\n" % (shots[pi], d))
+        f.write("file '%s'\n" % shots[plan[-1][0]])
+    y = np.concatenate(audio)
+    for at, name in sfx_at:
+        e = RS.sfx(name)
+        a = int(at * SR)
+        m = min(len(e), len(y) - a)
+        if m > 0:
+            y[a:a + m] += e[:m] * SFX_GAIN
+    wav = os.path.join(tmp, "mix.wav")
+    import wave
+    with wave.open(wav, "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
+        w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
+    part = out_path[:-4] + ".part.mp4"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst, "-i", wav,
+                    "-vf", "fps=%d,format=yuv420p" % FPS, "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
+                    "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", part], check=True)
+    os.replace(part, out_path)
+    return len(y) / SR

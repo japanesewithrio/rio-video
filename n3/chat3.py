@@ -8,6 +8,8 @@ sys.path.insert(0, os.path.join(ROOT, "steps"))
 sys.path.insert(0, HERE)
 import steps as ST  # noqa: E402  (patches: patient TTS retries, silence squeeze)
 import render_chat3 as R  # noqa: E402
+import render_chat3 as R3  # noqa: E402
+import render_chat4 as R4  # noqa: E402  (Ye 11/11: clean mint design + motion, used when the content has a 'hook')
 
 D, S = ST.D, ST.S
 P_MULTI = ("TTS the following lines. Rio: a young Japanese man around 20. Yui: a young Japanese woman around 20. They are close friends "
@@ -99,9 +101,11 @@ def cached(c, no):
 
 
 def make(no, out):
+    global R
     c = decrypt("chat_enc", no)
     if not c:
         raise RuntimeError("chat content %03d is not in n3/chat_enc yet" % no)
+    R = R4 if c.get("hook") else R3
     setup_voices()
     work = os.path.join(ROOT, "work", "n3")
     os.makedirs(work, exist_ok=True)
