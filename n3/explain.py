@@ -15,6 +15,17 @@ def voice(x, wav):
     groups = [[{"key": k, "who": "Rio", "jp": t, "kana": ""} for k, t in g] for g in RX.lines(x)]
     keys = [t["key"] for g in groups for t in g]
     texts = [t["jp"] for g in groups for t in g]
+    import hashlib
+    h = hashlib.sha1(json.dumps(texts, ensure_ascii=False).encode()).hexdigest()
+    cw = os.path.join(HERE, "out", os.path.basename(wav).replace("ex_", "explain_test_"))
+    cm = cw[:-4] + ".meta.json"
+    if os.path.exists(cw) and os.path.exists(cm):
+        m = json.load(open(cm))
+        if m.get("hash") == h:
+            shutil.copy(cw, wav)
+            y = S.RS.R.pcm(wav, 24000)
+            D.log("voice cache hit")
+            return {k: y[int(m["bounds"][i] * 24000):int(m["bounds"][i + 1] * 24000)] for i, k in enumerate(keys)}
     bad = []
     for attempt in (1, 2):
         bounds = S.build_audio(groups, C3.P_MULTI, C3.P_ONE, wav)
@@ -25,6 +36,9 @@ def voice(x, wav):
             break
     if bad:
         D.WARN.append("voice/text may not match: " + " | ".join(bad)[:300])
+    else:
+        os.makedirs(os.path.dirname(cm), exist_ok=True)
+        json.dump({"hash": h, "bounds": list(map(float, bounds))}, open(cm, "w"))
     return {k: y[int(bounds[i] * 24000):int(bounds[i + 1] * 24000)] for i, k in enumerate(keys)}
 
 
