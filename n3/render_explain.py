@@ -82,7 +82,7 @@ def scene_title(x, L):
     def f(t):
         s = "<div style='position:absolute;top:290px;left:60px;right:60px;text-align:center'>"
         s += "<div style='display:inline-block;background:#fff;border-radius:30px;padding:8px 30px;font-family:Round;font-size:34px;color:%s;%s'>今日の N3 文法 📘</div>" % (G, pop(t, 0.0))
-        s += "<div style='font-family:Round;font-size:150px;margin-top:50px;%s'><span class='pill' style='padding:0 34px'>%s</span></div>" % (pop(t, 0.3), hl(ti["g"]))
+        s += "<div style='font-family:Round;font-size:%dpx;margin-top:50px;%s'><span class='pill' style='padding:0 34px'>%s</span></div>" % (min(150, int(880 / max(1, len(plain(ti["g"]))))), pop(t, 0.3), hl(ti["g"]))
         s += "<div class='my' style='font-size:46px;margin-top:50px;%s'>%s</div>" % (pop(t, 0.6), hl(ti["mm"]))
         if ti.get("meaning"):
             s += ("<div class='card my' style='margin:34px 20px 0;padding:24px 34px;text-align:left;font-size:44px;line-height:1.6;border-left:10px solid %s;%s'>"
@@ -99,10 +99,11 @@ def scene_title(x, L):
 
 
 def form_chip(t, a, fm, name):
-    """📌 立ち上がる → 立ち上がった + とたん  /  た形（たけい）· Ta-form"""
+    """📌 立ち上がる → 立ち上がった  /  た形（たけい）· Ta-form.  Same word twice (nouns etc.) -> just the word."""
+    arrow = hl(fm[1]) if plain(fm[0]) == plain(fm[1]) else "%s <span style='color:#e8a33d'>→</span> %s" % (fm[0], hl(fm[1]))
     return ("<div style='text-align:center;%s'><div style='display:inline-block;background:#eef5f1;border-radius:24px;padding:12px 26px'>"
-            "<span style='font-size:40px;font-weight:700'>📌 %s <span style='color:#e8a33d'>→</span> %s</span>"
-            "<div class='my' style='font-size:28px;color:#4a6a5c'>%s</div></div></div>" % (pop(t, a), fm[0], hl(fm[1]), hl(name)))
+            "<span style='font-size:40px;font-weight:700'>📌 %s</span>"
+            "<div class='my' style='font-size:28px;color:#4a6a5c'>%s</div></div></div>" % (pop(t, a), arrow, hl(name)))
 
 
 def why_card(t, a, txt):
@@ -156,7 +157,7 @@ def scene_timeline(x, L):
               % (pop(t, 3.8), tl["mm"], tl["sub"]))
         s += "<div style='display:flex;justify-content:center;gap:30px;margin-top:40px'>"
         s += "<div class='my' style='font-size:36px;background:#eaf7f0;border-radius:24px;padding:16px 28px;%s'>%s</div>" % (pop(t, 5.4), tl["ok"])
-        s += "<div class='my' style='font-size:36px;background:#fdecec;border-radius:24px;padding:16px 28px;%s'>%s</div>" % (pop(t, 6.2), tl["ng"])
+        s += "<div class='my' style='font-size:36px;background:%s;border-radius:24px;padding:16px 28px;%s'>%s</div>" % ("#eaf7f0" if tl.get("both_ok") else "#fdecec", pop(t, 6.2), tl["ng"])
         return s + "</div></div>"
     return f, dur, ([(a_say, "tl_say")] if "tl_say" in L else []), [(0.1, "whoosh"), (1.4, "pop"), (2.2, "pop"), (2.9, "ding"), (3.8, "swish"), (5.4, "tick"), (6.2, "tick")]
 
@@ -171,7 +172,7 @@ def scene_example(x, L, k):
     def f(t):
         s = "<div style='position:absolute;top:300px;left:40px;right:40px'><div class='lab' style='%s'>ဥပမာ %d</div>" % (pop(t, 0.1), k + 1)
         s += "<div style='text-align:center;font-size:120px;margin-top:16px;%s'>%s</div>" % (pop(t, 0.4), e["emoji"])
-        s += "<div style='margin-top:16px'>%s</div>" % form_chip(t, 0.9, e["form"], x["form_name"])
+        s += "<div style='margin-top:16px'>%s</div>" % form_chip(t, 0.9, e["form"], e.get("form_name", x["form_name"]))
         s += "<div class='card' style='margin:26px 40px 0;padding:30px 30px;%s'>%s" % (pop(t, a_jp - 0.2), words(e["jp"].split(" "), t, a_jp, 64, "Noto Sans CJK JP", 0.28))
         s += "<div class='my' style='text-align:center;font-size:40px;color:#4a5a52;margin-top:16px;%s'>%s</div></div>" % (pop(t, t_mm), e["mm"])
         s += why_card(t, t_why, e["why"])
@@ -231,7 +232,7 @@ def scene_quiz(x, L):
             n = 3 - int(t - a_cd)
             s += "<div style='text-align:center;font-family:Round;font-size:170px;color:%s;%s'>%d</div>" % (G, pop(t, a_cd + (3 - n)), n)
         if t >= a_ans + 0.6 and q.get("form"):
-            s += "<div style='margin-top:20px'>%s</div>" % form_chip(t, a_ans + 0.6, q["form"], x["form_name"])
+            s += "<div style='margin-top:20px'>%s</div>" % form_chip(t, a_ans + 0.6, q["form"], q.get("form_name", x["form_name"]))
         if t >= t_th:
             s += "<div class='card my' style='margin:30px 40px 0;padding:22px 30px;font-size:36px;border-left:10px solid %s;%s'>💭 %s</div>" % (G, pop(t, t_th), q["think"])
         return s + "</div>"

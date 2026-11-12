@@ -102,6 +102,17 @@ def cached(c, no):
 
 def make(no, out):
     global R
+    if os.path.exists(os.path.join(HERE, "explain_enc", "%03d.enc" % no)):   # Ye 11/12: explainer style when its content exists
+        import explain as EX
+        x = decrypt("explain_enc", no)
+        if x:
+            setup_voices()
+            work = os.path.join(ROOT, "work", "n3")
+            os.makedirs(work, exist_ok=True)
+            wav = os.path.join(work, "ex_%03d.wav" % no)
+            clips = EX.voice(x, wav)
+            secs = EX.RX.render(x, clips, out, tempfile.mkdtemp())
+            return x, secs, wav
     c = decrypt("chat_enc", no)
     if not c:
         raise RuntimeError("chat content %03d is not in n3/chat_enc yet" % no)
@@ -162,6 +173,8 @@ def strip_html(s):
 
 
 def title_caption(c):
+    if c.get("title_card"):
+        return ex_title_caption(c)
     title = "N3文法 No.%d｜%s" % (c["no"], c["title"])
     cap = ["📘 N3 文法 No.%d  %s" % (c["no"], c["title"]), ""]
     cap += ["・%s = %s" % (g, mm) for g, mm in c.get("points", [])]
@@ -174,7 +187,33 @@ def plain_jp(s):
     return re.sub(r"[\[\]{}]", "", s)
 
 
+def ex_title_caption(x):
+    tc = x["title_card"]
+    title = "N3文法 No.%d｜%s" % (x["no"], x["title"])
+    cap = ["📘 N3 文法 No.%d  %s" % (x["no"], x["title"]), "",
+           "📖 " + strip_html(tc["meaning"]), "💡 " + strip_html(tc["use"]), ""]
+    for e in x["examples"]:
+        cap += ["・" + plain_jp(e["jp"]).replace(" ", ""), "  " + strip_html(e["mm"])]
+    cap += ["", "⚠️ ❌ " + plain_jp(x["trap"]["bad"]), "   ✅ " + plain_jp(x["trap"]["good"])]
+    cap += ["", "✍️ ဒီ grammar နဲ့ ကိုယ်ပိုင်ဝါကျ တစ်ကြောင်း comment မှာ ရေးကြည့်နော်!", "", "#ဂျပန်စာ #日本語 #JLPT #N3 #N3文法 #LearnWithRio"]
+    return title, "\n".join(cap)
+
+
+def ex_transcript(x):
+    q = x["quiz"]
+    out = ["📘 N3 No.%d %s" % (x["no"], x["title"]), "", "📖 " + strip_html(x["title_card"]["meaning"]),
+           "💡 " + strip_html(x["title_card"]["use"]), "🧩 " + plain_jp(x["form_name"]), ""]
+    for e in x["examples"]:
+        out += [plain_jp(e["jp"]).replace(" ", ""), "   🇲🇲 " + strip_html(e["mm"]), "   💡 " + strip_html(e["why"])]
+    out += ["", "⚠️ ❌ " + plain_jp(x["trap"]["bad"]), "✅ " + plain_jp(x["trap"]["good"]), "   " + strip_html(x["trap"]["why"])]
+    out += ["", "✍️ " + q["q"]] + ["%d %s" % (i + 1, o) for i, o in enumerate(q["opts"])]
+    out += ["အဖြေ: %d %s" % (q["ans"], q["opts"][q["ans"] - 1]), "💭 " + strip_html(q["think"])]
+    return "\n".join(out)[:4000]
+
+
 def transcript(c):
+    if c.get("title_card"):
+        return ex_transcript(c)
     m = c["mondai"]
     out = ["📘 N3 No.%d %s" % (c["no"], c["title"]), ""]
     for l in c["chat"]:
