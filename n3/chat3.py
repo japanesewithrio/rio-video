@@ -192,7 +192,7 @@ def ex_title_caption(x):
     tc = x["title_card"]
     title = "N3文法 No.%d｜%s" % (x["no"], x["title"])
     cap = ["📘 N3 文法 No.%d  %s" % (x["no"], x["title"]), "",
-           "📖 " + strip_html(tc["meaning"]), "💡 " + strip_html(tc["use"]), ""]
+           "📖 " + strip_html(tc["meaning"].replace("<br>", " ・ ")), "💡 " + strip_html(tc["use"]), ""]
     for e in x["examples"]:
         cap += ["・" + plain_jp(e["jp"]).replace(" ", ""), "  " + strip_html(e["mm"])]
     cap += ["", "⚠️ ❌ " + plain_jp(x["trap"]["bad"]), "   ✅ " + plain_jp(x["trap"]["good"])]
@@ -202,7 +202,7 @@ def ex_title_caption(x):
 
 def ex_transcript(x):
     q = x["quiz"]
-    out = ["📘 N3 No.%d %s" % (x["no"], x["title"]), "", "📖 " + strip_html(x["title_card"]["meaning"]),
+    out = ["📘 N3 No.%d %s" % (x["no"], x["title"]), "", "📖 " + strip_html(x["title_card"]["meaning"].replace("<br>", " ・ ")),
            "💡 " + strip_html(x["title_card"]["use"]), "🧩 " + plain_jp(x["form_name"]), ""]
     for e in x["examples"]:
         out += [plain_jp(e["jp"]).replace(" ", ""), "   🇲🇲 " + strip_html(e["mm"]), "   💡 " + strip_html(e["why"])]
