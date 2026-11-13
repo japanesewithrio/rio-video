@@ -20,7 +20,7 @@ font-family:'Noto Sans CJK JP','Noto Sans JP',My,sans-serif;color:#173b2e}
 .w{display:inline-block;margin:0 4px}.pill{background:%(G)s;color:#fff;border-radius:18px;padding:0 16px}.ta{color:#e0453a;font-weight:800;border-bottom:6px solid #e0453a}.pill .ta{background:#fff;border-radius:14px;padding:0 8px;border:0}
 .card{background:#f8fbfa;border:3px solid #fff;border-radius:34px;box-shadow:0 22px 44px rgba(20,60,45,.10),0 2px 6px rgba(20,60,45,.05)}.ring{position:absolute;border-radius:50%%;border-style:solid;border-color:rgba(70,200,155,.24);filter:blur(8px)}
 .lab{text-align:center;font-family:My;font-size:42px;color:%(G)s;font-weight:700}
-.my{font-family:My}.g{color:%(G)s}"""
+.my{font-family:My}rt{font-size:.5em;color:#2f6a55;font-weight:500}.g{color:%(G)s}"""
 
 
 # ---------------------------------------------------------------- easing helpers
@@ -49,11 +49,13 @@ def P(t, a, d=0.45):
 
 
 def hl(s):
+    s = re.sub(r"([一-龯々〆ヶ]+)《(.+?)》", r"<ruby>\1<rt>\2</rt></ruby>", s)   # 漢字《かんじ》 = furigana (Ye 11/14)
     s = re.sub(r"\{(.+?)\}", r"<span class='ta'>\1</span>", s)   # {た} = red: shows the ta-form
     return re.sub(r"\[(.+?)\]", r"<span class='pill'>\1</span>", s)
 
 
 def plain(s):
+    s = re.sub(r"《.+?》", "", s)
     return re.sub(r"[\[\]{}]", "", s)
 
 
@@ -210,17 +212,17 @@ def scene_quiz(x, L):
 
     def card(t, mark):
         s = "<div class='card' style='margin:0 40px;padding:30px 36px;%s'>" % pop(t, 0.5)
-        s += "<div style='font-size:50px;font-weight:700;line-height:1.5'>%s</div>" % (
-            hl(q["full"]) if mark else q["q"].replace("（　）", "<span style='color:%s'>（　）</span>" % G))
+        s += "<div style='font-size:50px;font-weight:700;line-height:1.95'>%s</div>" % (
+            hl(q["full"]) if mark else hl(q["q"]).replace("（　）", "<span style='color:%s'>（　）</span>" % G))
         if mark:
             s += "<div class='my' style='font-size:34px;color:#4a5a52'>%s</div>" % q["full_mm"]
         for i, o in enumerate(q["opts"], 1):
             ok = i == q["ans"]
             if mark:
                 sty = "border-color:%s;background:#eaf7f0;color:%s" % (G, G) if ok else "opacity:.3"
-                lab = ("✓ " if ok else "✕ ") + o
+                lab = ("✓ " if ok else "✕ ") + hl(o)
             else:
-                sty, lab = "", "%d. %s" % (i, o)
+                sty, lab = "", "%d. %s" % (i, hl(o))
             s += "<div style='border:4px solid #d6e8df;border-radius:24px;padding:12px 26px;font-size:46px;font-weight:700;margin:14px 0;%s'>%s</div>" % (sty, lab)
         return s + "</div>"
 

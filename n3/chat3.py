@@ -184,6 +184,7 @@ def title_caption(c):
 
 
 def plain_jp(s):
+    s = re.sub(r"《.+?》", "", s)   # drop furigana
     return re.sub(r"[\[\]{}]", "", s)
 
 
@@ -206,8 +207,8 @@ def ex_transcript(x):
     for e in x["examples"]:
         out += [plain_jp(e["jp"]).replace(" ", ""), "   🇲🇲 " + strip_html(e["mm"]), "   💡 " + strip_html(e["why"])]
     out += ["", "⚠️ ❌ " + plain_jp(x["trap"]["bad"]), "✅ " + plain_jp(x["trap"]["good"]), "   " + strip_html(x["trap"]["why"])]
-    out += ["", "✍️ " + q["q"]] + ["%d %s" % (i + 1, o) for i, o in enumerate(q["opts"])]
-    out += ["အဖြေ: %d %s" % (q["ans"], q["opts"][q["ans"] - 1]), "💭 " + strip_html(q["think"])]
+    out += ["", "✍️ " + plain_jp(q["q"])] + ["%d %s" % (i + 1, plain_jp(o)) for i, o in enumerate(q["opts"])]
+    out += ["အဖြေ: %d %s" % (q["ans"], plain_jp(q["opts"][q["ans"] - 1])), "💭 " + strip_html(q["think"])]
     return "\n".join(out)[:4000]
 
 

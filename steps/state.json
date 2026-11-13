@@ -233,7 +233,6 @@
   44,
   45,
   46,
-  52,
   53,
   54,
   55,
@@ -272,6 +271,7 @@
   4
  ],
  "chat_skipped": {
-  "1": "already posted 11/07 (old style) - Ye 11/09: do not repost"
+  "1": "already posted 11/07 (old style) - Ye 11/09: do not repost",
+  "52": "Ye posts it himself on TikTok 11/14 - do not repost"
  }
 }
