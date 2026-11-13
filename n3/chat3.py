@@ -233,7 +233,13 @@ def transcript(c):
 def daily(st, key, dry):
     """Make today's 2 videos. Returns a list of (vid, title, caption, secs, transcript, no). Updates st (unless dry)."""
     queue = st.get("chat_queue") or list(ORDER)
-    picks = [no for no in queue if os.path.exists(os.path.join(HERE, "chat_enc", "%03d.enc" % no))][:2]
+    # Ye 11/13: explainer style only. Use queue items that have explainer content; chat style only if none are ready.
+    exq = [no for no in queue if os.path.exists(os.path.join(HERE, "explain_enc", "%03d.enc" % no))]
+    picks = exq[:2]
+    if len(picks) < 2:
+        D.WARN.append("⚠️ explainer content running out (ready: %s) - Claude needs to write more" % exq)
+    if not picks:
+        picks = [no for no in queue if os.path.exists(os.path.join(HERE, "chat_enc", "%03d.enc" % no))][:2]
     if not picks:
         raise RuntimeError("no N3 chat content left in n3/chat_enc for the queue %s" % queue[:5])
     if len(picks) < 2:
