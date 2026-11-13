@@ -14,11 +14,11 @@ G = "#1f8a5b"
 PARTS = 6
 
 CSS = """@font-face{font-family:My;src:url('file://%(F)s/NotoSansMyanmar.ttf')}@font-face{font-family:Round;src:url('file://%(F)s/MPLUSRounded1c-Bold.ttf')}
-*{box-sizing:border-box}body{margin:0;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(180deg,#f3faf7,#e3f1ea);
+*{box-sizing:border-box}body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#eef3f1;
 font-family:'Noto Sans CJK JP','Noto Sans JP',My,sans-serif;color:#173b2e}
 .brand{position:absolute;top:150px;left:0;right:0;text-align:center;font-family:Round;font-size:30px;color:%(G)s;opacity:.85}
 .w{display:inline-block;margin:0 4px}.pill{background:%(G)s;color:#fff;border-radius:18px;padding:0 16px}.ta{color:#e0453a;font-weight:800;border-bottom:6px solid #e0453a}.pill .ta{background:#fff;border-radius:14px;padding:0 8px;border:0}
-.card{background:#fff;border-radius:34px;box-shadow:0 16px 36px rgba(31,90,70,.13)}
+.card{background:#f8fbfa;border:3px solid #fff;border-radius:34px;box-shadow:0 22px 44px rgba(20,60,45,.10),0 2px 6px rgba(20,60,45,.05)}.ring{position:absolute;border-radius:50%%;border-style:solid;border-color:rgba(70,200,155,.24);filter:blur(8px)}
 .lab{text-align:center;font-family:My;font-size:42px;color:%(G)s;font-weight:700}
 .my{font-family:My}.g{color:%(G)s}"""
 
@@ -271,12 +271,56 @@ def timeline(x, L):
     return out, t
 
 
-def page(inner, part, fade):
+def decor(gt):
+    """soft mint rings that drift slowly (like the reference), behind everything."""
+    rs = [(-260, -120, 620, 95, 0.0), (700, 560, 560, 80, 2.1), (-180, 1380, 640, 100, 4.2)]
+    out = ""
+    for x0, y0, size, bw, ph in rs:
+        dx = 26 * math.sin(gt * 0.35 + ph)
+        dy = 20 * math.cos(gt * 0.3 + ph)
+        out += ("<div class='ring' style='left:%dpx;top:%dpx;width:%dpx;height:%dpx;border-width:%dpx;transform:translate(%.0fpx,%.0fpx) rotate(%.0fdeg)'></div>"
+                % (x0, y0, size, size, bw, dx, dy, gt * 6 + ph * 40))
+    return out
+
+
+def ribbon(lt, gt):
+    """green wave line that draws itself in at the start of a scene, then keeps flowing."""
+    pts = []
+    for k in range(0, 41):
+        xx = -60 + k * 30
+        yy = 1600 + 70 * math.sin(k * 0.33 + gt * 1.2) + 30 * math.sin(k * 0.11 - gt * 0.7)
+        pts.append("%.0f,%.0f" % (xx, yy))
+    draw = ease(lt / 0.8)
+    return ("<svg width='1080' height='1920' style='position:absolute;left:0;top:0'><polyline points='%s' fill='none' stroke='#2bb582' "
+            "stroke-width='30' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='1400' stroke-dashoffset='%.0f' opacity='.85'/></svg>"
+            % (" ".join(pts), 1400 * (1 - draw)))
+
+
+def wipe(x):
+    """full-screen green panel; x = 0 covers the screen, +-1080 is off screen."""
+    if abs(x) >= 1079:
+        return ""
+    return "<div style='position:absolute;left:0;top:0;width:1080px;height:1920px;background:#1d7a57;transform:translateX(%.0fpx)'></div>" % x
+
+
+def page(inner, part, fade, lt=9.0, gt=0.0, wx=1080):
     dots = "".join("<i style='width:%dpx;height:12px;border-radius:6px;background:%s;display:inline-block'></i>"
                    % (60 if i == part else 18, G if i <= part else "#cfe3d9") for i in range(PARTS))
-    return ("<html><head><meta charset='utf-8'><style>%s</style></head><body><div class='brand'>Learn with Rio ♡</div>"
+    return ("<html><head><meta charset='utf-8'><style>%s</style></head><body>%s%s<div class='brand'>Learn with Rio ♡</div>"
             "<div style='position:absolute;top:205px;left:0;right:0;display:flex;justify-content:center;gap:14px'>%s</div>"
-            "<div style='opacity:%.2f'>%s</div></body></html>" % (CSS % {"F": FONTS, "G": G}, dots, fade, inner))
+            "<div style='opacity:%.2f'>%s</div>%s</body></html>" % (CSS % {"F": FONTS, "G": G}, decor(gt), ribbon(lt, gt), dots, fade, inner, wipe(wx)))
+
+
+WIPE = {1, 5, 6}   # green wipe INTO these scenes (timeline, trap, quiz)
+WD_IN, WD_OUT = 0.35, 0.55
+
+
+def wipe_x(tl, idx, lt, d):
+    if idx in WIPE and lt < WD_OUT:
+        return -1080 * ease(lt / WD_OUT)
+    if idx + 1 in WIPE and lt > d - WD_IN:
+        return 1080 * (1 - inout((lt - (d - WD_IN)) / WD_IN))
+    return 1080
 
 
 async def _film(tl, total, tmp):
@@ -289,16 +333,53 @@ async def _film(tl, total, tmp):
         n = int(round(total * FPS))
         for i in range(n):
             t = i / FPS
-            st, d, fn, au, fx, pt = next(s for s in reversed(tl) if s[0] <= t + 1e-9)
+            idx = max(k for k, s in enumerate(tl) if s[0] <= t + 1e-9)
+            st, d, fn, au, fx, pt = tl[idx]
             lt = t - st
             fade = min(c01(lt / 0.25), c01((d - lt) / 0.25)) if st > 0 else c01((d - lt) / 0.25)
-            open(f, "w", encoding="utf-8").write(page(fn(lt), pt, fade))
+            open(f, "w", encoding="utf-8").write(page(fn(lt), pt, fade, lt, t, wipe_x(tl, idx, lt, d)))
             await pg.goto("file://" + f)
             if i == 0:
                 await pg.evaluate("document.fonts.ready")
             await pg.screenshot(path=os.path.join(tmp, "%05d.jpg" % i), type="jpeg", quality=90)
         await b.close()
     return n
+
+
+def usfx(nm):
+    """soft UI sounds in the style of Ye's 11/14 reference: mouse clicks, bubble pops, soft blips, airy swooshes. All synthesized."""
+    rng = np.random.default_rng(7)
+    def T(sec):
+        return np.arange(int(sec * SR)) / SR
+    if nm == "tick":        # mouse click: tiny noise burst + low knock
+        t = T(0.035)
+        n = rng.standard_normal(len(t)) * np.exp(-t * 260)
+        n = np.convolve(n, [1, -0.85], "same")
+        e = 0.35 * n + 0.25 * np.sin(2 * np.pi * 180 * t) * np.exp(-t * 160)
+    elif nm == "pop":       # bubble pop: fast downward sine
+        t = T(0.09)
+        f = 900 * np.exp(-t * 18) + 260
+        e = 0.42 * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 45)
+    elif nm == "ding":      # soft blip: two quick marimba notes
+        e = np.zeros(int(0.32 * SR))
+        for st, fr in ((0, 1318.5), (0.075, 1975.5)):
+            t = T(0.24)
+            v = (np.sin(2 * np.pi * fr * t) + 0.3 * np.sin(2 * np.pi * fr * 4 * t) * np.exp(-t * 60)) * np.exp(-t * 22)
+            i = int(st * SR)
+            e[i:i + len(v)] += 0.22 * v
+    else:                   # whoosh / swish / wipe: band-passed noise swell
+        sec = 0.5 if nm == "wipe" else 0.32
+        t = T(sec)
+        n = rng.standard_normal(len(t))
+        a = 0.0
+        out = np.zeros_like(n)
+        for i in range(len(n)):   # one-pole low-pass, cutoff sweeping up then down
+            c = 0.04 + 0.22 * math.sin(math.pi * i / len(n))
+            a += c * (n[i] - a)
+            out[i] = a
+        out -= np.convolve(out, np.ones(40) / 40, "same")
+        e = (0.5 if nm == "wipe" else 0.35) * out * np.sin(np.pi * t / sec) ** 2
+    return e.astype(np.float32)
 
 
 def trim(v, thr=0.015, tail=0.18):
@@ -322,11 +403,16 @@ def render(x, clips, out_path, tmp):
             v = clips[k][:len(y) - i]
             y[i:i + len(v)] += v
         for a, nm in fx:
-            e = RS.sfx(nm) * 0.5
+            e = usfx(nm)
             i = int((st + a) * SR)
             m = min(len(e), len(y) - i)
             if m > 0:
                 y[i:i + m] += e[:m]
+    for k, (st, d, fn, au, fx, pt) in enumerate(tl):
+        if k in WIPE:   # swoosh for the green wipe
+            e = usfx("wipe")
+            i = max(0, int((st - WD_IN) * SR))
+            y[i:i + len(e)] += e[:len(y) - i]
     y = y[:int(total * SR)]
     asyncio.run(_film(tl, total, tmp))
     wav = os.path.join(tmp, "mix.wav")
