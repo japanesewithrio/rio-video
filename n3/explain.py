@@ -42,9 +42,25 @@ def voice(x, wav):
     return {k: y[int(bounds[i] * 24000):int(bounds[i + 1] * 24000)] for i, k in enumerate(keys)}
 
 
+def send(out, cap):
+    import time
+    for k in range(4):   # Telegram sometimes answers 502/504 on video uploads
+        if D.tg("sendVideo", {"chat_id": D.OWNER, "caption": cap, "supports_streaming": "true"}, {"video": open(out, "rb")}):
+            return True
+        time.sleep(20 * (k + 1))
+    D.WARN.append("Telegram sendVideo failed")
+    return False
+
+
 def main():
-    no = int(re.search(r"\d+", open(os.path.join(HERE, "explain_trigger.txt"), encoding="utf-8").read()).group(0))
+    trig = open(os.path.join(HERE, "explain_trigger.txt"), encoding="utf-8").read()
+    no = int(re.search(r"\d+", trig).group(0))
     x = C3.decrypt("explain_enc", no)
+    out = os.path.join(HERE, "out", "explain_test_%03d.mp4" % no)
+    if trig.startswith("SEND") and os.path.exists(out):   # "SEND n": just send the finished video again
+        send(out, "🎬 N3 No.%d %s" % (no, x["title"] if x else ""))
+        D.log("resend", D.WARN)
+        return
     if not x:
         raise RuntimeError("explainer content %03d missing" % no)
     C3.setup_voices()
@@ -60,8 +76,7 @@ def main():
     cap = "🧪 N3 ရှင်းပြပုံစံ test No.%d %s (%ds)\nမတင်ရသေးဘူး၊ မင်းကြည့်ဖို့ပဲ။" % (no, x["title"], secs)
     if D.WARN:
         cap += "\n⚠️ " + " / ".join(D.WARN)[:300]
-    if not D.tg("sendVideo", {"chat_id": D.OWNER, "caption": cap, "supports_streaming": "true"}, {"video": open(out, "rb")}):
-        D.WARN.append("Telegram sendVideo failed")
+    send(out, cap)
     D.log(cap, D.WARN)
 
 
