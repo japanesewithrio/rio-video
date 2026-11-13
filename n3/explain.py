@@ -44,10 +44,13 @@ def voice(x, wav):
 
 def send(out, cap):
     import time
-    for k in range(4):   # Telegram sometimes answers 502/504 on video uploads
+    for k in range(2):   # Telegram sometimes answers 502/504 on video uploads
         if D.tg("sendVideo", {"chat_id": D.OWNER, "caption": cap, "supports_streaming": "true"}, {"video": open(out, "rb")}):
             return True
         time.sleep(20 * (k + 1))
+    if D.tg("sendDocument", {"chat_id": D.OWNER, "caption": cap}, {"document": open(out, "rb")}):
+        return True
+    D.tg("sendMessage", {"chat_id": D.OWNER, "text": cap + "\n⚠️ Telegram video upload failed (504)"})
     D.WARN.append("Telegram sendVideo failed")
     return False
 
