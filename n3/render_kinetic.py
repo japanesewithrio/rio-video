@@ -119,7 +119,7 @@ def icon(ic, lt, d, k):
     elif ty == "chain":
         pats = k["chain"]
         act = ic.get("active", -1)
-        s += "<div style='display:flex;flex-direction:column;align-items:center;gap:6px'>"
+        s += "<div style='display:flex;flex-direction:column;align-items:center;gap:4px;transform:scale(.84)'>"
         for j, ptn in enumerate(pats):
             a = 0.15 + (j * 0.35 if act < 0 else 0)
             if j:
@@ -132,7 +132,9 @@ def icon(ic, lt, d, k):
             else:
                 sty, sc = "background:#fff;color:#9aa9a2", 0.92
             num = "✓" if 0 <= j < act else str(j + 1)
-            s += chip(lt, a, "<div class='pc' style='%s;transform:scale(%.3f)'><span class='pn'>%s</span>%s</div>" % (sty, sc, num, hl(ptn)), "ic2")
+            mmc = k.get("chain_mm", [""] * len(pats))[j]
+            s += chip(lt, a, "<div class='pc' style='%s;transform:scale(%.3f)'><span class='pn'>%s</span><div><div>%s</div>%s</div></div>"
+                      % (sty, sc, num, hl(ptn), "<div class='pcm'>%s</div>" % mmc if mmc else ""), "ic2")
         s += "</div>"
     elif ty == "grow":
         cols = ic.get("labels", ["A", "B"])
@@ -212,7 +214,8 @@ CSS = """
 .tag{display:inline-block;background:#fff;border-radius:30px;padding:10px 32px;font-family:Round;font-size:38px;color:%(G)s;box-shadow:0 8px 20px rgba(0,0,0,.06)}
 .bigpill{background:%(G)s;color:#fff;border-radius:28px;padding:10px 40px;font-size:120px;font-weight:800;font-family:Round,My;min-height:150px}
 .lab2{font-family:Round,My;font-size:44px;font-weight:700;color:#24493b}
-.pc{display:flex;align-items:center;gap:18px;min-width:600px;border-radius:26px;padding:14px 34px;font-size:46px;font-weight:800;font-family:Round,My}
+.pc{display:flex;align-items:center;gap:20px;min-width:640px;border-radius:26px;padding:10px 34px;font-size:44px;text-align:left;font-weight:800;font-family:Round,My}
+.pcm{font-family:My,Round;font-size:28px;font-weight:500;opacity:.9;margin-top:2px}
 .pn{display:inline-flex;width:58px;height:58px;border-radius:50%%;background:rgba(255,255,255,.35);align-items:center;justify-content:center;font-size:34px}
 .fl{font-size:40px;font-weight:700;color:#3a4a43;line-height:1.8;text-align:left;padding:10px 18px;border-radius:18px}
 .fm{font-family:My,Round;font-size:28px;color:#5b6b64;line-height:1.6;text-align:left;padding:0 18px 6px}
