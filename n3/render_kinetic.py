@@ -217,8 +217,8 @@ CSS = """
 .pc{display:flex;align-items:center;gap:20px;min-width:640px;border-radius:26px;padding:10px 34px;font-size:44px;text-align:left;font-weight:800;font-family:Round,My}
 .pcm{font-family:My,Round;font-size:28px;font-weight:500;opacity:.9;margin-top:2px}
 .pn{display:inline-flex;width:58px;height:58px;border-radius:50%%;background:rgba(255,255,255,.35);align-items:center;justify-content:center;font-size:34px}
-.fl{font-size:40px;font-weight:700;color:#3a4a43;line-height:1.8;text-align:left;padding:10px 18px;border-radius:18px}
-.fm{font-family:My,Round;font-size:28px;color:#5b6b64;line-height:1.6;text-align:left;padding:0 18px 6px}
+.fl{font-size:50px;font-weight:700;color:#3a4a43;line-height:1.8;text-align:left;padding:10px 18px;border-radius:18px}
+.fm{font-family:My,Round;font-size:34px;color:#5b6b64;line-height:1.6;text-align:left;padding:0 18px 6px}
 .plus{font-size:70px;color:#e8a33d;font-weight:700}
 .blk{background:#fff;border-radius:30px;padding:22px 0;width:250px;text-align:center;box-shadow:0 16px 34px rgba(20,60,45,.10);color:#173b2e}
 .blk.on{background:%(G)s;color:#fff}
@@ -255,7 +255,7 @@ def full_html(b, lt, L):
         o = 0.45 + 0.55 * c01((lt - a + 0.3) / 0.3) if lt < e else 0.75
         out += ("<div style='opacity:%.2f;transform:translateX(%.0fpx)'><div class='fl' style='background:%s'>%s</div><div class='fm'>%s</div></div>"
                 % (o, 0 if lt > a else 20, "rgba(43,181,130,.14)" if on else "transparent", hl(re.sub(r"\[(.+?)\]", r"<b style='color:%s'>\1</b>" % G, j)), m))
-    return "<div class='card' style='position:absolute;top:300px;left:50px;right:50px;padding:26px 24px'>%s</div>" % out
+    return "<div class='card' style='position:absolute;top:270px;left:40px;right:40px;padding:22px 18px'>%s</div>" % out
 
 
 def beat_fn(b, L, d, k):
