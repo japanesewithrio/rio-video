@@ -423,7 +423,7 @@ def render(x, clips, out_path, tmp):
         w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
     part = out_path[:-4] + ".part.mp4"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wav,
-                    "-c:v", "libx264", "-crf", "20", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
+                    "-c:v", "libx264", "-crf", "20", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "48000", "-c:a", "aac", "-b:a", "160k",
                     "-shortest", "-movflags", "+faststart", part], check=True)
     os.replace(part, out_path)
     return total
