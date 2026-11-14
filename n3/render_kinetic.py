@@ -17,7 +17,7 @@ TOP_TXT = 1030
 
 
 def tokens(s):
-    return re.findall(r"\[[^\]]*\]|\S+", s)
+    return re.findall(r"\[[^\]]*\][^\s\[]*|\S+", s)   # "[key]！" stays one token (no lonely punctuation)
 
 
 def mm_tokens(s):
@@ -39,7 +39,8 @@ def spoken(jp):
 
 
 def lines(k):
-    keys = [("b%02d" % i, b.get("say") or spoken(b["jp"])) for i, b in enumerate(k["beats"]) if b.get("jp")]
+    keys = [("b%02d" % i, b.get("say") or spoken(b.get("jp") or "".join(plain(j) for j, m in b["lines"])))
+            for i, b in enumerate(k["beats"]) if b.get("jp") or b.get("lines")]
     groups, g = [], []
     for kv in keys:          # at most 6 lines per TTS request
         g.append(kv)
@@ -62,15 +63,22 @@ def jp_html(b, lt, L):
         acc += w
         e = c01((lt - ti) / 0.22)
         if e <= 0:
-            out.append("<span style='opacity:0'>%s</span>" % hl(tok.strip("[]")) if not tok.startswith("[") else
-                       "<span class='kk' style='opacity:0'>%s</span>" % hl(tok[1:-1]))
+            if tok.startswith("["):
+                key, suf = re.match(r"\[(.*?)\](.*)", tok).groups()
+                out.append("<span style='white-space:nowrap;opacity:0'><span class='kk' style='font-size:%dpx'>%s</span>%s</span>"
+                           % (92 if len(plain(key)) <= 6 else 76, hl(key), hl(suf)))
+            else:
+                out.append("<span style='opacity:0'>%s</span>" % hl(tok))
             continue
         ee = ease(e)
         if tok.startswith("["):
+            key, suf = re.match(r"\[(.*?)\](.*)", tok).groups()
             bb = back(c01((lt - ti) / 0.4))
             sw = ease(c01((lt - ti - 0.1) / 0.35))
-            out.append("<span class='kk' style='opacity:%.2f;transform:scale(%.3f);filter:blur(%.1fpx);"
-                       "background-size:%.0f%% 100%%'>%s</span>" % (ee, 1.35 - 0.35 * bb, (1 - ee) * 8, sw * 100, hl(tok[1:-1])))
+            fs = 92 if len(plain(key)) <= 6 else 76
+            out.append("<span style='white-space:nowrap'><span class='kk' style='font-size:%dpx;opacity:%.2f;transform:scale(%.3f);filter:blur(%.1fpx);"
+                       "background-size:%.0f%% 100%%'>%s</span>%s</span>" % (fs, ee, 1.35 - 0.35 * bb, (1 - ee) * 8, sw * 100, hl(key),
+                                                                         "<span class='tk' style='opacity:%.2f'>%s</span>" % (ee, hl(suf)) if suf else ""))
         else:
             out.append("<span class='tk' style='opacity:%.2f;transform:translateY(%.0fpx);filter:blur(%.1fpx)'>%s</span>"
                        % (ee, (1 - ee) * 34, (1 - ee) * 8, hl(tok)))
@@ -106,8 +114,26 @@ def icon(ic, lt, d, k):
         shown = int(c01((lt - 0.5) / 0.9) * n + 0.999) if lt > 0.5 else 0
         txt = plain(g)[:shown]
         cur = "<span style='opacity:%d'>|</span>" % (1 if int(lt * 2.5) % 2 == 0 else 0)
-        s += chip(lt, 0.1, "<div class='tag'>今日の N3 文法 📘</div>")
-        s += ("<div class='bigpill' style='opacity:%.2f'>%s%s</div>" % (c01((lt - 0.4) / 0.2), txt, cur if shown < n or lt < 2.5 else ""))
+        s += chip(lt, 0.1, "<div class='tag'>%s</div>" % ic.get("tag", "今日の N3 文法 📘"))
+        s += ("<div class='bigpill' style='font-size:%dpx;opacity:%.2f'>%s%s</div>" % (min(120, int(1500 / max(1, n))), c01((lt - 0.4) / 0.2), txt, cur if shown < n or lt < 2.5 else ""))
+    elif ty == "chain":
+        pats = k["chain"]
+        act = ic.get("active", -1)
+        s += "<div style='display:flex;flex-direction:column;align-items:center;gap:6px'>"
+        for j, ptn in enumerate(pats):
+            a = 0.15 + (j * 0.35 if act < 0 else 0)
+            if j:
+                s += "<div style='font-size:34px;color:#9bbfb0;opacity:%.2f;line-height:1'>↓</div>" % c01((lt - a) / 0.2)
+            if act < 0 or j == act:
+                sty = "background:%s;color:#fff;box-shadow:0 12px 26px rgba(31,138,91,.30)" % G
+                sc = 1.0 + (0.06 * back(c01((lt - 0.2) / 0.4)) if j == act else 0)
+            elif j < act:
+                sty, sc = "background:#e3f5ec;color:%s" % G, 0.92
+            else:
+                sty, sc = "background:#fff;color:#9aa9a2", 0.92
+            num = "✓" if 0 <= j < act else str(j + 1)
+            s += chip(lt, a, "<div class='pc' style='%s;transform:scale(%.3f)'><span class='pn'>%s</span>%s</div>" % (sty, sc, num, hl(ptn)), "ic2")
+        s += "</div>"
     elif ty == "grow":
         cols = ic.get("labels", ["A", "B"])
         s += "<div style='display:flex;gap:120px;align-items:flex-end;height:360px'>"
@@ -186,6 +212,10 @@ CSS = """
 .tag{display:inline-block;background:#fff;border-radius:30px;padding:10px 32px;font-family:Round;font-size:38px;color:%(G)s;box-shadow:0 8px 20px rgba(0,0,0,.06)}
 .bigpill{background:%(G)s;color:#fff;border-radius:28px;padding:10px 40px;font-size:120px;font-weight:800;font-family:Round,My;min-height:150px}
 .lab2{font-family:Round,My;font-size:44px;font-weight:700;color:#24493b}
+.pc{display:flex;align-items:center;gap:18px;min-width:600px;border-radius:26px;padding:14px 34px;font-size:46px;font-weight:800;font-family:Round,My}
+.pn{display:inline-flex;width:58px;height:58px;border-radius:50%%;background:rgba(255,255,255,.35);align-items:center;justify-content:center;font-size:34px}
+.fl{font-size:40px;font-weight:700;color:#3a4a43;line-height:1.8;text-align:left;padding:10px 18px;border-radius:18px}
+.fm{font-family:My,Round;font-size:28px;color:#5b6b64;line-height:1.6;text-align:left;padding:0 18px 6px}
 .plus{font-size:70px;color:#e8a33d;font-weight:700}
 .blk{background:#fff;border-radius:30px;padding:22px 0;width:250px;text-align:center;box-shadow:0 16px 34px rgba(20,60,45,.10);color:#173b2e}
 .blk.on{background:%(G)s;color:#fff}
@@ -208,8 +238,30 @@ CSS = """
 """
 
 
+def full_html(b, lt, L):
+    """whole passage: every sentence fades in, the one Rio is reading now is highlighted"""
+    ls = b["lines"]
+    ws = [weight(plain(j)) for j, m in ls]
+    tot = sum(ws)
+    out, acc = "", 0.0
+    for (j, m), w in zip(ls, ws):
+        a = 0.12 + L * acc / tot
+        e = L * (acc + w) / tot + 0.12
+        acc += w
+        on = a <= lt < e
+        o = 0.45 + 0.55 * c01((lt - a + 0.3) / 0.3) if lt < e else 0.75
+        out += ("<div style='opacity:%.2f;transform:translateX(%.0fpx)'><div class='fl' style='background:%s'>%s</div><div class='fm'>%s</div></div>"
+                % (o, 0 if lt > a else 20, "rgba(43,181,130,.14)" if on else "transparent", hl(re.sub(r"\[(.+?)\]", r"<b style='color:%s'>\1</b>" % G, j)), m))
+    return "<div class='card' style='position:absolute;top:300px;left:50px;right:50px;padding:26px 24px'>%s</div>" % out
+
+
 def beat_fn(b, L, d, k):
     hasjp = bool(b.get("jp"))
+    if b.get("lines"):
+        def ff(lt):
+            out_e = c01((lt - (d - 0.35)) / 0.35)
+            return "<style>%s</style><div style='opacity:%.2f'>%s</div>" % (CSS % {"G": G, "T": TOP_TXT, "T2": 0}, 1 - out_e, full_html(b, lt, L))
+        return ff
     def f(lt):
         out_e = c01((lt - (d - 0.35)) / 0.35)
         s = icon(b.get("icon", {}), lt, d, k)
@@ -233,7 +285,7 @@ def timeline(k, L):
         key = "b%02d" % i
         Lb = L.get(key, 0.0)
         n_mm = len(mm_tokens(b.get("mm", "")))
-        d = max(Lb + 0.7, 0.6 + n_mm * 0.3, 1.6) + b.get("hold", 0.0)
+        d = max(Lb + 0.7, 0.6 + n_mm * 0.3, 1.6) + b.get("hold", k.get("hold", 0.0))
         ic = b.get("icon", {})
         if ic.get("countdown"):
             ic["cd0"] = Lb + 0.4
