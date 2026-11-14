@@ -30,13 +30,13 @@ def review(frames, title=""):
     body = {"contents": [{"parts": parts}], "generationConfig": {"temperature": 0, "response_mime_type": "application/json"}}
     try:
         ms = D.list_models()
-        model = D.pick(ms, "gemini-2.5-flash", r"gemini-[\d.]+-flash")
-        j = D.gemini([model, "gemini-2.5-flash"], body, tries=2)
+        model = D.pick(ms, "", r"^gemini-[\d.]+-flash$")   # newest plain flash model
+        j = D.gemini([m for m in (model, "gemini-flash-latest") if m], body, tries=2)
         txt = j["candidates"][0]["content"]["parts"][0]["text"]
         res = json.loads(re.search(r"\{.*\}", txt, re.S).group(0))
     except Exception as e:
         D.log("qa: picture check skipped", type(e).__name__, str(e)[:200])
-        return []
+        return None
     issues = [i for i in res.get("issues", []) if isinstance(i, dict)]
     D.log("qa:", "ok" if not issues else issues)
     return issues
@@ -48,9 +48,12 @@ def report(no, title, dom, frames):
     if dom:
         probs.append("text still too wide at %s" % ", ".join("%.1fs %s" % (t, b[0]) for t, b in dom[:3]))
     issues = review(frames, "No.%d %s" % (no, title))
+    if issues is None:
+        D.WARN.append("🔍 picture check No.%d could not run" % no)
+        issues = []
     for i in issues[:4]:
         probs.append("frame %s: %s" % (i.get("frame"), str(i.get("problem"))[:80]))
-    if not probs:
+    if not probs and not any("could not run" in w for w in D.WARN):
         D.log("qa: No.%d looks fine" % no)
         return True
     D.WARN.append("🔍 picture check No.%d: " % no + " | ".join(probs))
