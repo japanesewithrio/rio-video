@@ -11,13 +11,13 @@ import render_explain as RX  # noqa: E402
 D, S = C3.D, C3.S
 
 
-def voice(x, wav):
-    groups = [[{"key": k, "who": "Rio", "jp": t, "kana": ""} for k, t in g] for g in RX.lines(x)]
+def voice(x, wav, linesfn=None):
+    groups = [[{"key": k, "who": "Rio", "jp": t, "kana": ""} for k, t in g] for g in (linesfn or RX.lines)(x)]
     keys = [t["key"] for g in groups for t in g]
     texts = [t["jp"] for g in groups for t in g]
     import hashlib
     h = hashlib.sha1(json.dumps(texts, ensure_ascii=False).encode()).hexdigest()
-    cw = os.path.join(HERE, "out", os.path.basename(wav).replace("ex_", "explain_test_"))
+    cw = os.path.join(HERE, "out", os.path.basename(wav).replace("ex_", "explain_test_").replace("kx_", "kinetic_test_"))
     cm = cw[:-4] + ".meta.json"
     if os.path.exists(cw) and os.path.exists(cm):
         m = json.load(open(cm))
@@ -55,11 +55,37 @@ def send(out, cap):
     return False
 
 
+def kinetic(no):
+    import render_kinetic as K
+    k = C3.decrypt("kinetic_enc", no)
+    if not k:
+        raise RuntimeError("kinetic content %03d missing" % no)
+    C3.setup_voices()
+    work = os.path.join(ROOT, "work", "n3"); os.makedirs(work, exist_ok=True)
+    wav = os.path.join(work, "kx_%03d.wav" % no)
+    clips = voice(k, wav, K.lines)
+    os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
+    out = os.path.join(HERE, "out", "kinetic_test_%03d.mp4" % no)
+    secs = K.render(k, clips, out, tempfile.mkdtemp())
+    import qa
+    qa.report(no, k["title"], RX.QA["dom"], RX.QA["frames"])
+    shutil.copy(wav, os.path.join(HERE, "out", "kinetic_test_%03d.wav" % no))
+    os.chdir(ROOT)
+    D.push("n3 kinetic test %03d" % no, ["n3/out"])
+    cap = "🧪 N3 kinetic test No.%d %s (%ds)" % (no, k["title"], secs)
+    if D.WARN:
+        cap += "\n⚠️ " + " / ".join(D.WARN)[:300]
+    send(out, cap)
+    D.log(cap, D.WARN)
+
+
 def main():
     trig = open(os.path.join(HERE, "explain_trigger.txt"), encoding="utf-8").read()
     no = int(re.search(r"\d+", trig).group(0))
     x = C3.decrypt("explain_enc", no)
     out = os.path.join(HERE, "out", "explain_test_%03d.mp4" % no)
+    if trig.startswith("KX"):   # Ye 11/14: kinetic-typography version
+        return kinetic(no)
     if trig.startswith("SEND") and os.path.exists(out):   # "SEND n": just send the finished video again
         send(out, "🎬 N3 No.%d %s" % (no, x["title"] if x else ""))
         D.log("resend", D.WARN)
