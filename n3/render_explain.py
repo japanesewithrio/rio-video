@@ -116,7 +116,7 @@ def why_card(t, a, txt):
 def blk(t, a, txt, sub, on=False, w=300):
     p = back(P(t, a, 0.45))
     return ("<div class='card' style='width:%dpx;padding:26px 0;text-align:center;background:%s;color:%s;opacity:%.2f;transform:translateY(%.0fpx) scale(%.2f)'>"
-            "<div style='font-size:64px;font-weight:700'>%s</div><div class='my' style='font-size:28px;opacity:.85'>%s</div></div>"
+            "<div class='one' style='font-size:64px;font-weight:700;white-space:nowrap;padding:0 14px'>%s</div><div class='my' style='font-size:28px;opacity:.85;padding:0 10px'>%s</div></div>"
             % (w, G if on else "#fff", "#fff" if on else "#173b2e", c01(P(t, a, 0.15)), (1 - p) * -120, 0.7 + 0.3 * p, hl(txt), plain(sub)))
 
 
@@ -310,7 +310,7 @@ def page(inner, part, fade, lt=9.0, gt=0.0, wx=1080):
                    % (60 if i == part else 18, G if i <= part else "#cfe3d9") for i in range(PARTS))
     return ("<html><head><meta charset='utf-8'><style>%s</style></head><body>%s%s<div class='brand'>Learn with Rio ♡</div>"
             "<div style='position:absolute;top:205px;left:0;right:0;display:flex;justify-content:center;gap:14px'>%s</div>"
-            "<div style='opacity:%.2f'>%s</div>%s</body></html>" % (CSS % {"F": FONTS, "G": G}, decor(gt), ribbon(lt, gt), dots, fade, inner, wipe(wx)))
+            "<div id='c' style='opacity:%.2f'>%s</div>%s</body></html>" % (CSS % {"F": FONTS, "G": G}, decor(gt), ribbon(lt, gt), dots, fade, inner, wipe(wx)))
 
 
 WIPE = {1, 5, 6}   # green wipe INTO these scenes (timeline, trap, quiz)
@@ -325,6 +325,34 @@ def wipe_x(tl, idx, lt, d):
     return 1080
 
 
+QA = {"frames": [], "dom": []}
+
+# Runs on every frame. Text that would run past the screen edge gets its font made smaller (up to 6 steps).
+# Uses layout positions (offsetLeft), so pop-in animations do not trigger it. Returns texts still too wide.
+FIT_JS = """() => {
+  const W = 1080, bad = [];
+  const absL = e => { let x = 0; while (e) { x += e.offsetLeft; e = e.offsetParent; } return x; };
+  for (const el of document.querySelectorAll('#c *')) {
+    if (!el.offsetWidth || el.closest('svg') || getComputedStyle(el).display === 'inline') continue;
+    let k = 0;
+    const out = () => { const l = absL(el); return l < -1 || l + el.offsetWidth > W + 1; };
+    while (out() && k < 6) {
+      const fs = parseFloat(getComputedStyle(el).fontSize);
+      el.style.fontSize = (fs * 0.9) + 'px'; k++;
+    }
+    if (out() && el.children.length === 0) bad.push((el.textContent || '').trim().slice(0, 30));
+  }
+  for (const el of document.querySelectorAll('#c .one')) {   // one-line labels: shrink to fit their card
+    let k = 0;
+    while (el.scrollWidth > el.clientWidth + 1 && k < 10) {
+      el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * 0.9) + 'px'; k++;
+    }
+    if (el.scrollWidth > el.clientWidth + 1) bad.push((el.textContent || '').trim().slice(0, 30));
+  }
+  return bad.slice(0, 3);
+}"""
+
+
 async def _film(tl, total, tmp):
     from playwright.async_api import async_playwright
     exe = next((p for p in ("/usr/bin/google-chrome", "/usr/bin/google-chrome-stable") if os.path.exists(p)), None)
@@ -333,6 +361,9 @@ async def _film(tl, total, tmp):
         pg = await b.new_page(viewport={"width": 1080, "height": 1920})
         f = os.path.join(tmp, "f.html")
         n = int(round(total * FPS))
+        # one settled frame near the end of every scene, for the AI picture check (qa.py)
+        shots = {min(n - 1, int((st + d - 0.45) * FPS)) for st, d, fn, au, fx, pt in tl}
+        QA["frames"].clear(); QA["dom"].clear()
         for i in range(n):
             t = i / FPS
             idx = max(k for k, s in enumerate(tl) if s[0] <= t + 1e-9)
@@ -343,6 +374,11 @@ async def _film(tl, total, tmp):
             await pg.goto("file://" + f)
             if i == 0:
                 await pg.evaluate("document.fonts.ready")
+            bad = await pg.evaluate(FIT_JS)          # auto-fix: shrink any text that runs off the screen
+            if bad:
+                QA["dom"].append((round(t, 1), bad))
+            if i in shots:
+                QA["frames"].append(os.path.join(tmp, "%05d.jpg" % i))
             await pg.screenshot(path=os.path.join(tmp, "%05d.jpg" % i), type="jpeg", quality=90)
         await b.close()
     return n

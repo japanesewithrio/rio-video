@@ -73,6 +73,8 @@ def main():
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
     out = os.path.join(HERE, "out", "explain_test_%03d.mp4" % no)
     secs = RX.render(x, clips, out, tempfile.mkdtemp())
+    import qa
+    qa.report(no, x["title"], RX.QA["dom"], RX.QA["frames"])
     shutil.copy(wav, os.path.join(HERE, "out", "explain_test_%03d.wav" % no))
     os.chdir(ROOT)
     D.push("n3 explain test %03d" % no, ["n3/out"])

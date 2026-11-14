@@ -112,6 +112,11 @@ def make(no, out):
             wav = os.path.join(work, "ex_%03d.wav" % no)
             clips = EX.voice(x, wav)
             secs = EX.RX.render(x, clips, out, tempfile.mkdtemp())
+            try:
+                import qa
+                qa.report(no, x["title"], EX.RX.QA["dom"], EX.RX.QA["frames"])
+            except Exception as e:
+                D.log("qa failed", type(e).__name__, e)
             return x, secs, wav
     c = decrypt("chat_enc", no)
     if not c:
