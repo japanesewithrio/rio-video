@@ -60,14 +60,16 @@ def report(no, title, dom, frames):
     if dom:
         probs.append("text still too wide at %s" % ", ".join("%.1fs %s" % (t, b[0]) for t, b in dom[:3]))
     issues = review(frames, "No.%d %s" % (no, title))
+    issues_ok = issues is not None
     if issues is None:
         D.WARN.append("🔍 picture check No.%d could not run" % no)
         issues = []
     for i in issues[:4]:
         probs.append("frame %s: %s" % (i.get("frame"), str(i.get("problem"))[:80]))
-    if not probs and not any("could not run" in w for w in D.WARN):
-        D.log("qa: No.%d looks fine" % no)
-        return True
+    if not probs:
+        if issues_ok:
+            D.log("qa: No.%d looks fine" % no)
+        return issues_ok
     D.WARN.append("🔍 picture check No.%d: " % no + " | ".join(probs))
     if D.OWNER and D.TG:
         sent = set()
