@@ -202,13 +202,18 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .mm{font-family:My,Round;font-size:40px;color:#46574f;line-height:1.6;margin-top:6px}
 .note{display:inline-block;margin-top:14px;background:#fff6df;border-radius:18px;padding:8px 22px;font-family:My,Round;font-size:32px;color:#7a5a12}
 rt{font-size:.45em;color:#3d6e5b;font-weight:500}
-.pill{background:%(G)s;color:#fff;border-radius:16px;padding:0 12px}
+.pill{background:%(G)s;color:#fff;border-radius:16px;padding:0 12px;white-space:nowrap}
 .ta{color:#e0453a}
 .bub{position:absolute;font-size:110px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.2))}
 .card{position:absolute;left:60px;right:60px;top:380px;background:rgba(255,255,255,.96);border-radius:40px;padding:40px 44px;box-shadow:0 20px 44px rgba(0,0,0,.2)}
 .ttl{font-size:110px;font-weight:900;color:#fff;text-shadow:0 6px 0 %(G)s,0 10px 24px rgba(0,0,0,.35);line-height:1.2}
 """
 COL = {"Rio": "#2d7bd6", "Yui": "#e0607e"}
+
+
+def jp_size(jp):
+    n = len(plain(jp).replace(" ", ""))
+    return 62 if n <= 11 else 54 if n <= 14 else 46
 
 
 def frame(c, ev, t, total):
@@ -245,8 +250,8 @@ def frame(c, ev, t, total):
         if ev.get("note"):
             note = "<div class='note' style='opacity:%.2f'>💡 %s</div>" % (c01((lt - ev["L"] * 0.6 - 0.3) / 0.3), ev["note"])
         s += ("<div class='sub' style='opacity:%.2f;transform:translateY(%.0fpx)'><div class='who' style='background:%s'>%s</div>"
-              "<div class='jp'>%s</div><div class='mm' style='opacity:%.2f'>%s</div>%s</div>"
-              % (e, (1 - e) * 40, COL[ev["who"]], ev["who"], hl(ev["jp"]), c01((lt - 0.35) / 0.3), ev["mm"], note))
+              "<div class='jp' style='font-size:%dpx'>%s</div><div class='mm' style='opacity:%.2f'>%s</div>%s</div>"
+              % (e, (1 - e) * 40, COL[ev["who"]], ev["who"], jp_size(ev["jp"]), hl(ev["jp"]), c01((lt - 0.35) / 0.3), ev["mm"], note))
     elif kind == "recap":
         r = c["recap"]
         s += "<div style='position:absolute;inset:0;background:rgba(20,40,32,.35)'></div>"
