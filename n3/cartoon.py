@@ -78,11 +78,11 @@ def hf_image(prompt, ref=None, aspect="9:16"):
     for attempt in range(3):
         try:
             if ref:
-                cl = Client("mcp-tools/FLUX.1-Kontext-Dev", hf_token=tok)
+                cl = Client("mcp-tools/FLUX.1-Kontext-Dev", **({"token": tok} if tok else {}))
                 res = cl.predict(input_image=handle_file(REFS[ref]), prompt=prompt[:600], guidance_scale=2.5, steps=24,
                                  randomize_seed=True, api_name="/infer")
             else:
-                cl = Client("mcp-tools/Qwen-Image-Fast", hf_token=tok)
+                cl = Client("mcp-tools/Qwen-Image-Fast", **({"token": tok} if tok else {}))
                 if attempt == 0:
                     D.log("qwen api:", str(cl.view_api(print_info=False, return_format="dict"))[:600])
                 res = cl.predict(prompt=STYLE + prompt, aspect_ratio=aspect, randomize_seed=True, api_name="/generate_image")
@@ -101,7 +101,7 @@ def hf_cutout(png_bytes):
     from PIL import Image
     tmp = tempfile.mktemp(suffix=".png")
     open(tmp, "wb").write(png_bytes)
-    cl = Client("not-lain/background-removal", hf_token=os.environ.get("HF_TOKEN") or None)
+    cl = Client("not-lain/background-removal")
     res = cl.predict(handle_file(tmp), api_name="/png")
     im = Image.open(io.BytesIO(_read(res))).convert("RGBA")
     bb = im.getbbox()
