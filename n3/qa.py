@@ -33,7 +33,7 @@ def review(frames, title=""):
     import requests, time
     t0 = time.time()
     res = None
-    for model in ("gemini-2.5-flash", "gemini-flash-latest", "gemini-3.5-flash"):
+    for model in ("gemini-flash-latest", "gemini-3.6-flash", "gemini-3.5-flash"):
         if time.time() - t0 > 150:
             break
         try:
