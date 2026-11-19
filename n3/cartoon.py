@@ -54,7 +54,61 @@ def gen_image(prompt, ref=None, aspect="9:16"):
                     return base64.b64decode(d["data"])
             D.log("image", model, "no picture in answer")
             break
-    raise RuntimeError("no image model could draw: " + prompt[:60])
+    return hf_image(prompt, ref, aspect)
+
+
+def _read(res):
+    """gradio_client results: a path, a dict with 'path'/'url', or a (image, seed) tuple"""
+    if isinstance(res, (list, tuple)):
+        res = res[0]
+    if isinstance(res, dict):
+        res = res.get("path") or res.get("url") or res.get("value")
+        if isinstance(res, dict):
+            res = res.get("path") or res.get("url")
+    if isinstance(res, str) and res.startswith("http"):
+        return requests.get(res, timeout=120).content
+    return open(res, "rb").read()
+
+
+def hf_image(prompt, ref=None, aspect="9:16"):
+    """Gemini image models have no free quota (429), so draw with free Hugging Face Spaces (ZeroGPU)."""
+    from gradio_client import Client, handle_file
+    tok = os.environ.get("HF_TOKEN") or None
+    last = None
+    for attempt in range(3):
+        try:
+            if ref:
+                cl = Client("mcp-tools/FLUX.1-Kontext-Dev", hf_token=tok)
+                res = cl.predict(input_image=handle_file(REFS[ref]), prompt=prompt[:600], guidance_scale=2.5, steps=24,
+                                 randomize_seed=True, api_name="/infer")
+            else:
+                cl = Client("mcp-tools/Qwen-Image-Fast", hf_token=tok)
+                if attempt == 0:
+                    D.log("qwen api:", str(cl.view_api(print_info=False, return_format="dict"))[:600])
+                res = cl.predict(prompt=STYLE + prompt, aspect_ratio=aspect, randomize_seed=True, api_name="/generate_image")
+            D.log("hf image ok", "kontext" if ref else "qwen")
+            return _read(res)
+        except Exception as e:
+            last = e
+            D.log("hf image", attempt, type(e).__name__, str(e)[:300])
+            time.sleep(20)
+    raise RuntimeError("no image service could draw (%s): %s" % (last, prompt[:60]))
+
+
+def hf_cutout(png_bytes):
+    """remove the background of a character picture (free Space), cropped to the character"""
+    from gradio_client import Client, handle_file
+    from PIL import Image
+    tmp = tempfile.mktemp(suffix=".png")
+    open(tmp, "wb").write(png_bytes)
+    cl = Client("not-lain/background-removal", hf_token=os.environ.get("HF_TOKEN") or None)
+    res = cl.predict(handle_file(tmp), api_name="/png")
+    im = Image.open(io.BytesIO(_read(res))).convert("RGBA")
+    bb = im.getbbox()
+    if bb:
+        im = im.crop(bb)
+    buf = io.BytesIO(); im.save(buf, "PNG")
+    return buf.getvalue()
 
 
 def key_green(png_bytes):
@@ -85,7 +139,11 @@ def ensure_assets(c):
             continue
         data = gen_image(a["prompt"], a.get("ref"), a.get("aspect", "9:16"))
         if a.get("key"):
-            data = key_green(data)
+            try:
+                data = hf_cutout(data)
+            except Exception as e:
+                D.log("cutout service failed, using green key", type(e).__name__, str(e)[:200])
+                data = key_green(data)
         open(p, "wb").write(data)
         made.append(name)
         time.sleep(4)
