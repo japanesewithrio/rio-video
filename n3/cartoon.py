@@ -201,7 +201,8 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .jp{font-size:62px;font-weight:800;color:#1f2d27;line-height:1.75}
 .mm{font-family:My,Round;font-size:40px;color:#46574f;line-height:1.6;margin-top:6px}
 .note{display:inline-block;margin-top:14px;background:#fff6df;border-radius:18px;padding:8px 22px;font-family:My,Round;font-size:32px;color:#7a5a12}
-rt{font-size:.45em;color:#3d6e5b;font-weight:500}
+rt{font-size:.58em;color:#0f5a3e;font-weight:800;letter-spacing:.02em}
+.jp{line-height:1.95 !important}
 .pill{background:%(G)s;color:#fff;border-radius:16px;padding:0 12px;white-space:nowrap}
 .ta{color:#e0453a}
 .bub{position:absolute;font-size:110px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.2))}
