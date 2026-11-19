@@ -370,6 +370,8 @@ async def _film(tl, total, tmp):
             st, d, fn, au, fx, pt = tl[idx]
             lt = t - st
             fade = min(c01(lt / 0.25), c01((d - lt) / 0.25)) if st > 0 else c01((d - lt) / 0.25)
+            if i == 0:   # cover: TikTok/YouTube show the first frame as the thumbnail, so frame 0 is the finished title card
+                lt, fade = min(d - 0.6, 5.0), 1.0
             open(f, "w", encoding="utf-8").write(page(fn(lt), pt, fade, lt, t, wipe_x(tl, idx, lt, d)))
             await pg.goto("file://" + f)
             if i == 0:

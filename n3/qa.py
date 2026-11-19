@@ -28,14 +28,26 @@ def review(frames, title=""):
     for f in frames[:10]:
         parts.append({"inline_data": {"mime_type": "image/jpeg", "data": base64.b64encode(open(f, "rb").read()).decode()}})
     body = {"contents": [{"parts": parts}], "generationConfig": {"temperature": 0, "response_mime_type": "application/json"}}
-    try:
-        ms = D.list_models()
-        model = D.pick(ms, "", r"^gemini-[\d.]+-flash$")   # newest plain flash model
-        j = D.gemini([m for m in (model, "gemini-flash-latest") if m], body, tries=2)
-        txt = j["candidates"][0]["content"]["parts"][0]["text"]
-        res = json.loads(re.search(r"\{.*\}", txt, re.S).group(0))
-    except Exception as e:
-        D.log("qa: picture check skipped", type(e).__name__, str(e)[:200])
+    # 11/16: long retries here (10-min read timeouts) pushed the daily run past its 45-min limit and the day's post was lost.
+    # So: short timeout, one try per model, at most ~3 minutes in total. The check is optional; posting is not.
+    import requests, time
+    t0 = time.time()
+    res = None
+    for model in ("gemini-2.5-flash", "gemini-flash-latest", "gemini-3.5-flash"):
+        if time.time() - t0 > 150:
+            break
+        try:
+            r = requests.post(D.API % model, params={"key": D.GKEY}, json=body, timeout=70)
+            if r.status_code != 200:
+                D.log("qa:", model, r.status_code)
+                continue
+            txt = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+            res = json.loads(re.search(r"\{.*\}", txt, re.S).group(0))
+            break
+        except Exception as e:
+            D.log("qa:", model, type(e).__name__)
+    if res is None:
+        D.log("qa: picture check skipped")
         return None
     issues = [i for i in res.get("issues", []) if isinstance(i, dict)]
     D.log("qa:", "ok" if not issues else issues)
