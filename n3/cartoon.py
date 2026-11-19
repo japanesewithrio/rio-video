@@ -157,7 +157,7 @@ def ensure_assets(c):
 def voice(c, wav):
     lines = c["lines"] + ([{"who": "Rio", "jp": c["recap"]["say"]}] if c.get("recap", {}).get("say") else [])
     items = [{"key": "l%02d" % i, "who": l["who"], "jp": plain(l["jp"]).replace(" ", ""), "kana": ""} for i, l in enumerate(lines)]
-    groups = [items[i:i + 6] for i in range(0, len(items), 6)]
+    groups = [items[i:i + 7] for i in range(0, len(items), 7)]
     keys = [t["key"] for t in items]
     texts = [t["jp"] for t in items]
     h = hashlib.sha1(json.dumps([[t["who"], t["jp"]] for t in items], ensure_ascii=False).encode()).hexdigest()
