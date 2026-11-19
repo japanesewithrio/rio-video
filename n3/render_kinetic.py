@@ -205,6 +205,8 @@ def icon(ic, lt, d, k):
         for j in range(5):
             y = (lt * 120 + j * 90) % 420
             s += "<div style='position:absolute;left:%dpx;top:%.0fpx;font-size:54px;opacity:%.2f;color:#e0607e'>♡</div>" % (380 + j * 70 - 140, 520 - y, 0.8 * (1 - y / 420) * c01(lt - 0.4))
+    if ic.get("tag") and ty != "title":   # small series label above the icon (hook beat)
+        s = chip(lt, 0.05, "<div class='tag'>%s</div>" % ic["tag"]) + s
     return "<div class='iz'>%s</div>" % s
 
 
@@ -312,6 +314,10 @@ def timeline(k, L):
     return tl, t + 0.3
 
 
+def k_hold(tl):
+    return 0.0
+
+
 async def _film(tl, total, tmp):
     from playwright.async_api import async_playwright
     exe = next((p for p in ("/usr/bin/google-chrome", "/usr/bin/google-chrome-stable") if os.path.exists(p)), None)
@@ -327,6 +333,8 @@ async def _film(tl, total, tmp):
             idx = max(j for j, s in enumerate(tl) if s[0] <= t + 1e-9)
             st, d, fn, au, fx, pt = tl[idx]
             lt = min(t - st, d)
+            if i == 0:   # cover frame = the hook fully shown (TikTok/YouTube thumbnail)
+                lt = max(0.0, d - 0.6 - k_hold(tl))
             open(f, "w", encoding="utf-8").write(RX.page(fn(lt), pt, 1.0, lt, t, 1080))
             await pg.goto("file://" + f)
             if i == 0:
