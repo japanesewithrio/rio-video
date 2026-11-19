@@ -146,6 +146,9 @@ def ensure_assets(c):
                 data = key_green(data)
         open(p, "wb").write(data)
         made.append(name)
+        cwd = os.getcwd(); os.chdir(ROOT)
+        D.push("cartoon asset %s" % name, ["n3/cartoon"])   # keep each picture even if a later one fails
+        os.chdir(cwd)
         time.sleep(4)
     return made
 
@@ -334,8 +337,6 @@ def main():
     c = C3.decrypt("cartoon_enc", no)
     made = ensure_assets(c)
     os.chdir(ROOT)
-    if made:
-        D.push("cartoon assets %03d: %s" % (no, ", ".join(made)), ["n3/cartoon"])
     if trig.startswith("ASSETS"):
         D.log("assets only", made)
         return
