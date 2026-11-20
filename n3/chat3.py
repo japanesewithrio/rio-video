@@ -236,34 +236,97 @@ def transcript(c):
     return "\n".join(out)[:4000]
 
 
+def prac_queue(st):
+    """practical-Japanese (kinetic) videos not posted yet, oldest number first (Ye 11/19: B post = practical Japanese)"""
+    d = os.path.join(HERE, "kinetic_enc")
+    nos = sorted(int(f[:3]) for f in os.listdir(d) if f.endswith(".enc") and f[:3].isdigit()) if os.path.isdir(d) else []
+    done = set(st.get("prac_done", []))
+    return [n for n in nos if n >= 102 and n not in done]
+
+
+def make_prac(no, out):
+    import explain as EX
+    import render_kinetic as K
+    k = decrypt("kinetic_enc", no)
+    if not k:
+        raise RuntimeError("practical content %03d missing" % no)
+    setup_voices()
+    work = os.path.join(ROOT, "work", "n3")
+    os.makedirs(work, exist_ok=True)
+    wav = os.path.join(work, "kx_%03d.wav" % no)
+    clips = EX.voice(k, wav, K.lines)
+    secs = K.render(k, clips, out, tempfile.mkdtemp())
+    try:
+        import qa
+        qa.report(no, k["title"], EX.RX.QA["dom"], EX.RX.QA["frames"])
+    except Exception as e:
+        D.log("qa failed", type(e).__name__, e)
+    return k, secs, wav
+
+
+def prac_title_caption(k):
+    title = k["title"]
+    b = k["beats"]
+    cap = ["🏪 " + title, "", "❌ " + plain_jp(b[0]["icon"]["text"]), "   " + strip_html(b[0]["mm"].replace("**", "")), ""]
+    full = next((x for x in b if x.get("lines")), None)
+    if full:
+        cap += ["✅ " + "".join(plain_jp(j) for j, m in full["lines"]), "   " + " ".join(m for j, m in full["lines"]), ""]
+    tip = b[-2]
+    cap += ["💡 " + plain_jp(tip["jp"]).replace(" ", ""), "   " + strip_html(tip["mm"].replace("**", "")), ""]
+    cap += ["✍️ မင်းရဲ့ အလုပ်မှာ ဘယ်လို ပြောလဲ comment မှာ ပြောပြနော်!", "",
+            "#バイト日本語 #ဂျပန်စာ #日本語 #ဂျပန်မှာအလုပ် #JapanLife #LearnWithRio"]
+    return title, "\n".join(cap)
+
+
+def prac_transcript(k):
+    out = ["🏪 " + k["title"], ""]
+    for b in k["beats"]:
+        if b.get("lines"):
+            out += [""] + ["%s\n   🇲🇲 %s" % (plain_jp(j), m) for j, m in b["lines"]] + [""]
+        elif b.get("jp"):
+            out.append("%s\n   🇲🇲 %s" % (plain_jp(b["jp"]).replace(" ", ""), strip_html(b.get("mm", "").replace("**", ""))))
+    return "\n".join(out)[:4000]
+
+
 def daily(st, key, dry):
-    """Make today's 2 videos. Returns a list of (vid, title, caption, secs, transcript, no). Updates st (unless dry)."""
+    """Make today's 2 videos. Returns a list of (vid, title, caption, secs, transcript, no, k). Updates st (unless dry).
+    A (posted at 19:00) = N3 grammar explainer. B (TikTok/YouTube at 12:00 next day) = practical Japanese if ready, else a 2nd N3 video."""
     queue = st.get("chat_queue") or list(ORDER)
     # Ye 11/13: explainer style only. Use queue items that have explainer content; chat style only if none are ready.
     exq = [no for no in queue if os.path.exists(os.path.join(HERE, "explain_enc", "%03d.enc" % no))]
-    picks = exq[:2]
-    if len(picks) < 2:
+    pq = prac_queue(st)
+    picks = [("n3", n) for n in exq[:1]] + ([("prac", pq[0])] if pq else [("n3", n) for n in exq[1:2]])
+    if not pq:
+        D.WARN.append("⚠️ practical-Japanese content used up - Claude needs to write more (2nd N3 video used instead)")
+    if len(exq) < 3:
         D.WARN.append("⚠️ explainer content running out (ready: %s) - Claude needs to write more" % exq)
     if not picks:
-        picks = [no for no in queue if os.path.exists(os.path.join(HERE, "chat_enc", "%03d.enc" % no))][:2]
+        picks = [("n3", no) for no in queue if os.path.exists(os.path.join(HERE, "chat_enc", "%03d.enc" % no))][:2]
     if not picks:
-        raise RuntimeError("no N3 chat content left in n3/chat_enc for the queue %s" % queue[:5])
-    if len(picks) < 2:
-        D.WARN.append("only one N3 chat video today (next content missing: %s)" % [q for q in queue if q not in picks][:3])
+        raise RuntimeError("no N3 content left for the queue %s" % queue[:5])
     os.makedirs(os.path.join(ROOT, "videos"), exist_ok=True)
     os.makedirs(os.path.join(ROOT, "text"), exist_ok=True)
     out = []
-    for i, no in enumerate(picks):
+    for i, (kind, no) in enumerate(picks):
         k = key if i == 0 else key + "b"
         vid = os.path.join(ROOT, "videos", k + ".mp4")
-        c, secs, wav = make(no, vid)
-        title, cap = title_caption(c)
+        if kind == "prac":
+            c, secs, wav = make_prac(no, vid)
+            title, cap = prac_title_caption(c)
+            tr = prac_transcript(c)
+        else:
+            c, secs, wav = make(no, vid)
+            title, cap = title_caption(c)
+            tr = transcript(c)
         json.dump({"title": title, "caption": cap, "n3": no}, open(os.path.join(ROOT, "text", k + ".json"), "w", encoding="utf-8"),
                   ensure_ascii=False, indent=1)
         with open(os.path.join(ROOT, "text", k + ".txt"), "w", encoding="utf-8") as f:
             f.write("===TITLE===\n%s\n===CAPTION===\n%s\n===END===\n" % (title, cap))
-        out.append((vid, title, cap, secs, transcript(c), no, k))
+        out.append((vid, title, cap, secs, tr, no, k))
+    n3p = [n for kind, n in picks if kind == "n3"]
     if not dry:
-        st["chat_queue"] = [q for q in queue if q not in picks]
-        st["n3_last"] = picks[-1]
+        st["chat_queue"] = [q for q in queue if q not in n3p]
+        st["prac_done"] = st.get("prac_done", []) + [n for kind, n in picks if kind == "prac"]
+        if n3p:
+            st["n3_last"] = n3p[-1]
     return out
