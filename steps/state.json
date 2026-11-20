@@ -235,6 +235,18 @@
    "title": "N3文法 No.34｜〜にしては / 〜わりに(は)",
    "n3chat": 34,
    "date": "2026-11-19"
+  },
+  {
+   "key": "F261120",
+   "title": "N3文法 No.35｜〜さえ / 〜まで / 〜こそ〈強調〉",
+   "n3chat": 35,
+   "date": "2026-11-20"
+  },
+  {
+   "key": "F261120b",
+   "title": "バイト日本語 #1｜休みたい時の言い方",
+   "n3chat": 102,
+   "date": "2026-11-20"
   }
  ],
  "themes": [
@@ -273,9 +285,8 @@
  ],
  "format": "n3chat",
  "n3_next": 2,
- "n3_last": 34,
+ "n3_last": 35,
  "chat_queue": [
-  35,
   36,
   37,
   42,
@@ -323,5 +334,8 @@
  "chat_skipped": {
   "1": "already posted 11/07 (old style) - Ye 11/09: do not repost",
   "52": "Ye posts it himself on TikTok 11/14 - do not repost"
- }
+ },
+ "prac_done": [
+  102
+ ]
 }
