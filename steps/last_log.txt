@@ -1,3 +1,35 @@
 models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-omni-1.2-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, gemini-4-carbon, gemini-4-hydrogen, gemini-4-neon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026
 using ['gemini-3.1-pro-preview', 'gemini-pro-latest', 'gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'] ['gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts', 'gemini-3.1-flash-tts-preview', 'gemini-3.8-flash-tts'] {'multiSpeakerVoiceConfig': {'speakerVoiceConfigs': [{'speaker': 'Rio', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Achird'}}}, {'speaker': 'Yui', 'voiceConfig': {'prebuiltVoiceConfig': {'voiceName': 'Laomedeia'}}}]}}
-backup cron started at 03:03 JST - too late/early to post, skipping
+models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-omni-1.2-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, gemini-4-carbon, gemini-4-hydrogen, gemini-4-neon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026
+tts group ex_042_g00.wav 5 lines 18.4 s speed 6.4 tempo 1.00
+squeezed 1.4 s of silence out of ex_042_g00.wav
+tts group ex_042_g01.wav 4 lines 7.3 s speed 14.5 tempo 0.85
+squeezed 1.3 s of silence out of ex_042_g01.wav
+sync check 1 ['trap 15.6/s 私にとって、この本はおもしろい', 'q1 25.0/s 明日の会議では、新しい計画について話し合います。']
+tts group ex_042_g00.wav 5 lines 23.3 s speed 6.2 tempo 1.00
+squeezed 7.6 s of silence out of ex_042_g00.wav
+tts group ex_042_g01.wav 4 lines 22.6 s speed 6.7 tempo 1.00
+squeezed 9.5 s of silence out of ex_042_g01.wav
+sync check 2 ok
+qa: gemini-flash-latest 503
+qa: [{'frame': 2, 'problem': 'The pushpin icon on the right side of the card is cut off by the edge of the card.'}]
+telegram sendPhoto ok
+models available: gemini-2.5-flash, gemini-2.5-pro, gemini-2.5-flash-preview-tts, gemini-2.5-pro-preview-tts, gemma-4-26b-a4b-it, gemma-4-31b-it, gemini-flash-latest, gemini-flash-lite-latest, gemini-pro-latest, gemini-2.5-flash-lite, gemini-2.5-flash-image, gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-3.1-pro-preview-customtools, gemini-3.1-flash-lite-preview, gemini-3.1-flash-lite, gemini-3-pro-image-preview, gemini-3-pro-image, nano-banana-pro-preview, gemini-3.1-flash-image-preview, gemini-3.1-flash-image, gemini-3.1-flash-lite-image, gemini-nano-banana-2.1, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-omni-flash-preview, gemini-omni-1.1-flash, gemini-omni-1.2-flash, gemini-3.5-transcribe, gemini-3.6-flash, gemini-3.7-flash, gemini-3.8-flash, gemini-4-argon, gemini-4-carbon, gemini-4-hydrogen, gemini-4-neon, lyria-3-clip-preview, lyria-3-pro-preview, lyria-3.5, gemini-3.1-flash-tts-preview, gemini-3.8-flash-tts, gemini-3.8-flash-lite-tts, gemini-robotics-er-2-preview, gemini-2.5-computer-use-preview-10-2025, antigravity-preview-05-2026, antigravity-preview-09-2026, antigravity-preview-latest, deep-research-max-preview-04-2026, deep-research-preview-04-2026
+tts group kx_105_g00.wav 6 lines 17.7 s speed 7.5 tempo 0.96
+squeezed 2.9 s of silence out of kx_105_g00.wav
+tts group kx_105_g01.wav 3 lines 13.3 s speed 7.4 tempo 0.98
+squeezed 5.7 s of silence out of kx_105_g01.wav
+sync check 1 ok
+qa: gemini-flash-latest 503
+qa: [{'frame': 6, 'problem': "The text 'みんなは' overlaps with the furigana above 'お疲れ様でした'."}]
+telegram sendPhoto ok
+telegram sendVideo ok
+telegram sendMessage ok
+telegram sendVideo ok
+telegram sendMessage ok
+telegram sendMessage ok
+✅ N3 chat videos posted to Telegram
+F261123 No.42 N3文法 No.42｜〜について / 〜に関して (73s)
+F261123b No.105 バイト日本語 #4｜先に帰る時のあいさつ (36s)
+Make 19:00: A -> FB/TikTok/YouTube, B -> FB now, TikTok/YouTube 12:00 tomorrow
+(small problems: 🔍 picture check No.42: frame 2: The pushpin icon on the right side of the card is cut off by the edge of the car; 🔍 picture check No.105: frame 6: The text 'みんなは' overlaps with the furigana above 'お疲れ様でした'.)
