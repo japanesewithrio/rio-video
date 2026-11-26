@@ -31,7 +31,7 @@ STYLE = ("Clean modern 2D anime illustration style, soft pastel colors, simple f
 
 # ---------- pictures ----------
 def gen_image(prompt, ref=None, aspect="9:16"):
-    parts = [{"text": STYLE + prompt}]
+    parts = [{"text": STYLE + prompt}]   # STYLE can be replaced per episode ("style" in the episode JSON)
     if ref:
         parts.append({"inline_data": {"mime_type": "image/png", "data": base64.b64encode(open(REFS[ref], "rb").read()).decode()}})
     for model in IMG_MODELS:
@@ -131,6 +131,9 @@ def key_green(png_bytes):
 
 
 def ensure_assets(c):
+    global STYLE
+    if c.get("style"):
+        STYLE = c["style"]
     os.makedirs(ASSETS, exist_ok=True)
     made = []
     for name, a in c["assets"].items():
