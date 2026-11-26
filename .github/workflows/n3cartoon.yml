@@ -16,7 +16,7 @@ jobs:
       - name: Install
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libraqm0 fonts-noto-cjk > /dev/null
-          pip install --quiet pillow requests numpy pykakasi playwright gradio_client
+          pip install --quiet pillow requests numpy pykakasi playwright gradio_client "rembg[cpu]"
           gunzip -kf render.py.gz
       - name: Fonts
         run: |

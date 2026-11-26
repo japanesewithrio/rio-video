@@ -30,10 +30,27 @@ STYLE = ("Clean modern 2D anime illustration style, soft pastel colors, simple f
 
 
 # ---------- pictures ----------
+def ref_path(ref):
+    """a reference picture: Rio / Yui, or an asset already drawn for an episode (keeps one look across pictures)"""
+    return REFS.get(ref) or os.path.join(ASSETS, ref + ".png")
+
+
+def local_cutout(png_bytes):
+    """remove the background on the runner itself (rembg, CPU) - uses no image-service quota"""
+    from rembg import remove
+    from PIL import Image
+    im = Image.open(io.BytesIO(remove(png_bytes))).convert("RGBA")
+    bb = im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox()
+    if bb:
+        im = im.crop(bb)
+    buf = io.BytesIO(); im.save(buf, "PNG")
+    return buf.getvalue()
+
+
 def gen_image(prompt, ref=None, aspect="9:16"):
     parts = [{"text": STYLE + prompt}]   # STYLE can be replaced per episode ("style" in the episode JSON)
     if ref:
-        parts.append({"inline_data": {"mime_type": "image/png", "data": base64.b64encode(open(REFS[ref], "rb").read()).decode()}})
+        parts.append({"inline_data": {"mime_type": "image/png", "data": base64.b64encode(open(ref_path(ref), "rb").read()).decode()}})
     for model in IMG_MODELS:
         for cfg in ({"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": aspect}}, {"responseModalities": ["TEXT", "IMAGE"]}):
             try:
@@ -79,7 +96,7 @@ def hf_image(prompt, ref=None, aspect="9:16"):
         try:
             if ref:
                 cl = Client("mcp-tools/FLUX.1-Kontext-Dev", **({"token": tok} if tok else {}))
-                res = cl.predict(input_image=handle_file(REFS[ref]), prompt=prompt[:600], guidance_scale=2.5, steps=24,
+                res = cl.predict(input_image=handle_file(ref_path(ref)), prompt=prompt[:600], guidance_scale=2.5, steps=24,
                                  randomize_seed=True, api_name="/infer")
             else:
                 cl = Client("mcp-tools/Qwen-Image-Fast", **({"token": tok} if tok else {}))
@@ -140,13 +157,20 @@ def ensure_assets(c):
         p = os.path.join(ASSETS, name + ".png")
         if os.path.exists(p):
             continue
-        data = gen_image(a["prompt"], a.get("ref"), a.get("aspect", "9:16"))
+        if a.get("src"):           # cut out a picture that was already drawn
+            data = open(ref_path(a["src"]), "rb").read()
+        else:
+            data = gen_image(a["prompt"], a.get("ref"), a.get("aspect", "9:16"))
         if a.get("key"):
             try:
-                data = hf_cutout(data)
+                data = local_cutout(data)
             except Exception as e:
-                D.log("cutout service failed, using green key", type(e).__name__, str(e)[:200])
-                data = key_green(data)
+                D.log("local cutout failed", type(e).__name__, str(e)[:200])
+                try:
+                    data = hf_cutout(data)
+                except Exception as e:
+                    D.log("cutout service failed, using green key", type(e).__name__, str(e)[:200])
+                    data = key_green(data)
         open(p, "wb").write(data)
         made.append(name)
         cwd = os.getcwd(); os.chdir(ROOT)
@@ -255,7 +279,7 @@ def frame(c, ev, t, total):
             note = "<div class='note' style='opacity:%.2f'>💡 %s</div>" % (c01((lt - ev["L"] * 0.6 - 0.3) / 0.3), ev["note"])
         s += ("<div class='sub' style='opacity:%.2f;transform:translateY(%.0fpx)'><div class='who' style='background:%s'>%s</div>"
               "<div class='jp' style='font-size:%dpx'>%s</div><div class='mm' style='opacity:%.2f'>%s</div>%s</div>"
-              % (e, (1 - e) * 40, COL[ev["who"]], ev["who"], jp_size(ev["jp"]), hl(ev["jp"]), c01((lt - 0.35) / 0.3), ev["mm"], note))
+              % (e, (1 - e) * 40, COL[ev["who"]], c["cast"].get(ev["who"], {}).get("name", ev["who"]), jp_size(ev["jp"]), hl(ev["jp"]), c01((lt - 0.35) / 0.3), ev["mm"], note))
     elif kind == "recap":
         r = c["recap"]
         s += "<div style='position:absolute;inset:0;background:rgba(20,40,32,.35)'></div>"
