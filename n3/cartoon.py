@@ -286,8 +286,11 @@ def frame(c, ev, t, total):
     s = "<img class='bg' src='file://%s/%s.png'>" % (ASSETS, c["bg"])
     kind = ev["kind"]
     lt = t - ev["st"]
+    cf = ev.get("_cf") if kind == "line" else None
+    if cf:   # an AI-animated shot (image-to-video clip) for this line: the clip is the whole picture
+        s = "<img class='bg' src='file://%s'>" % cf[min(int(lt * FPS), len(cf) - 1)]
     # characters
-    for who, cfg in c["cast"].items():
+    for who, cfg in ([] if cf else c["cast"].items()):
         talk = kind == "line" and ev["who"] == who and lt < ev["L"] + 0.1
         bob = abs(np.sin(lt * 9)) * 14 if talk else 3 * np.sin(t * 2 + (0 if who == "Rio" else 1.5))
         et = cfg.get("_et", 0.2)            # a character can walk in later (cast "enter": line index)
@@ -309,7 +312,7 @@ def frame(c, ev, t, total):
     elif kind == "line":
         s += "<div class='top'><div class='tag'>%s</div></div>" % c["tag"]
         cfg = c["cast"][ev["who"]]
-        if ev.get("emoji"):
+        if ev.get("emoji") and not cf:
             p = back(c01((lt - 0.3) / 0.4))
             bx = cfg["x"] + (cfg.get("bw", 300)) - 60
             s += "<div class='bub' style='left:%dpx;top:%dpx;transform:scale(%.2f);opacity:%.2f'>%s</div>" % (
@@ -396,6 +399,12 @@ def render(c, clips, out, tmp):
             for i in range(len(c["recap"]["items"])):
                 put(e["st"] + 0.4 + i * 0.45, usfx("pop") * 0.8)
     y = y[:int(total * SR)]
+    for e in evs:
+        if e.get("clip"):
+            d = os.path.join(tmp, "clip_" + e["key"]); os.makedirs(d, exist_ok=True)
+            subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(HERE, "i2v", "out", e["clip"]), "-vf",
+                            "fps=%d,scale=1080:1920:flags=lanczos,unsharp=5:5:0.6" % FPS, "-q:v", "2", os.path.join(d, "%04d.jpg")], check=True)
+            e["_cf"] = sorted(os.path.join(d, f) for f in os.listdir(d))
     asyncio.run(film(c, evs, total, tmp))
     wv = os.path.join(tmp, "mix.wav")
     with wave.open(wv, "wb") as w:

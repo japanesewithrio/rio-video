@@ -1,4 +1,8 @@
-[{"in": "crayon.jpg", "out": "crayon.mp4", "dur": 4,
-  "prompt": "Hand-drawn crayon storybook animation. The boy in the green longyi bows his head quickly and apologizes, scratching the back of his head, embarrassed. The woman in the red apron puts her hands on her hips and sighs, then smiles a little. Gentle small movements, the camera does not move, the crayon drawing style stays the same."},
- {"in": "thiri.jpg", "out": "thiri.mp4", "dur": 4,
-  "prompt": "Webtoon style animation. The young woman holds the folder to her chest, looks up shyly, smiles and tucks her hair behind her ear, her ponytail sways softly. Slow gentle camera push in, the art style stays the same."}]
+[{"in": "d203.jpg", "out": "d203_l03.mp4", "dur": 4,
+  "prompt": "Hand-drawn crayon storybook animation. The boy in the green longyi is out of breath from running, panting, then bows deeply and quickly to the woman to apologize, sweat drops on his face. The woman in the red apron looks at him, surprised. The camera does not move, the crayon drawing style stays the same."},
+ {"in": "d203.jpg", "out": "d203_l07.mp4", "dur": 3.5,
+  "prompt": "Hand-drawn crayon storybook animation. The woman in the red apron is shocked: she leans back, her eyes and mouth open wide, both hands go up in surprise. The boy smiles awkwardly. The camera does not move, the crayon drawing style stays the same."},
+ {"in": "d203.jpg", "out": "d203_l08.mp4", "dur": 4,
+  "prompt": "Hand-drawn crayon storybook animation. The boy in the green longyi takes a smartphone out, looks at the screen, freezes, then his face turns embarrassed and he scratches his head. The woman watches him. The camera does not move, the crayon drawing style stays the same."},
+ {"in": "d203.jpg", "out": "d203_l09.mp4", "dur": 4,
+  "prompt": "Hand-drawn crayon storybook animation. The woman in the red apron sighs deeply, her shoulders drop and she puts a hand on her forehead, then gives a small tired smile. The boy laughs awkwardly and bows a little. Slow gentle camera push in, the crayon drawing style stays the same."}]
