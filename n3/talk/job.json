@@ -1,5 +1,21 @@
-{"image_prompt": "Korean web animation (webtoon) style character art, clean bold black line art, flat cel colors with soft shading, high detail, sharp. Medium shot (head to waist) of an original pretty Burmese woman about 22, facing the viewer, long black hair in a low ponytail with a small white flower clip, light thanaka on her cheeks, gentle smile with her mouth closed, white shirt and dark green cafe apron, standing behind a wooden cafe counter, cozy cafe in the soft blurred background. No text, no watermark.",
- "fallback_img": "wt_thiri", "voice": "雨晴はう",
+{
+ "image_prompt": "Korean web animation (webtoon) style character art, clean bold black line art, flat cel colors with soft shading, high detail, sharp. Medium shot (head to waist) of an original pretty Burmese woman about 22, facing the viewer, long black hair in a low ponytail with a small white flower clip, light thanaka on her cheeks, gentle smile with her mouth closed, white shirt and dark green cafe apron, standing behind a wooden cafe counter, cozy cafe in the soft blurred background. No text, no watermark.",
+ "fallback_img": "wt_thiri",
+ "voice": "雨晴はう",
  "text": "いらっしゃいませ！ご注文は何になさいますか？砂糖とミルクは、いりますか？",
  "motion_prompt": "A young woman cafe worker talking cheerfully to a customer, natural head movement, smiling, small hand gestures, webtoon animation style",
- "spaces": ["Wan-AI/Wan2.2-S2V", "crackuser/infinite-talk-ai-video", "rahul7star/infinitetalk", "KlingTeam/LivePortrait"]}
+ "spaces": [
+  "crackuser/infinite-talk-ai-video",
+  "rahul7star/infinitetalk",
+  "FarmerlineML/infinitetalk",
+  "Wan-AI/Wan2.2-S2V",
+  "immango/Wan2.2-S2V-14B"
+ ],
+ "crop": [
+  90,
+  0,
+  550,
+  520
+ ],
+ "timeout": 900
+}

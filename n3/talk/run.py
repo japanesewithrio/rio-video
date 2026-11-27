@@ -32,7 +32,12 @@ if not os.path.exists(img):
         except Exception as e:
             print("picture fail", "token" if t else "anon", type(e).__name__, str(e)[:200])
     if not os.path.exists(img):
-        shutil.copy(os.path.join(H, "..", "cartoon", "assets", J["fallback_img"] + ".png"), img); print("picture: fallback")
+        from PIL import Image
+        im = Image.open(os.path.join(H, "..", "cartoon", "assets", J["fallback_img"] + ".png")).convert("RGB")
+        if J.get("crop"):
+            im = im.crop(J["crop"])
+        im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)
+        im.save(img); print("picture: fallback", im.size)
 # 2) voice ---------------------------------------------------------------------------------------
 VV = "http://localhost:50021"
 for _ in range(90):
@@ -68,7 +73,8 @@ for space in J["spaces"]:
                 elif c == "audio": kw[n] = handle_file(wav)
                 elif c in ("textbox", "text") and ("prompt" in n.lower()) and "neg" not in n.lower(): kw[n] = J["motion_prompt"]
             t0 = time.time()
-            r = cl.predict(api_name=name, **kw)
+            print("submit", tag, name, list(kw), flush=True)
+            r = cl.submit(api_name=name, **kw).result(timeout=J.get("timeout", 900))
             vids = []
             def walk(x):
                 if isinstance(x, str) and x.endswith((".mp4", ".webm", ".mov")): vids.append(x)
