@@ -82,8 +82,8 @@ seq, t = [], q["prePhonemeLength"]
 for ap in q["accent_phrases"]:
     for mo in ap["moras"]:
         c = mo.get("consonant_length") or 0
-        if c:
-            seq.append((t, t + c, "x")); t += c          # consonant: mouth nearly closed
+        if c:   # lips close only for m/b/p; other consonants keep a small opening
+            seq.append((t, t + c, "x" if mo.get("consonant") in ("m", "b", "p", "my", "by", "py") else "i")); t += c
         seq.append((t, t + mo["vowel_length"], mo["vowel"].lower())); t += mo["vowel_length"]
     if ap.get("pause_mora"):
         seq.append((t, t + ap["pause_mora"]["vowel_length"], "x")); t += ap["pause_mora"]["vowel_length"]
