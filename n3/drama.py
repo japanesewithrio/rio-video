@@ -17,7 +17,7 @@ import requests
 import cartoon as CT
 from cartoon import ASSETS, HERE, ROOT, D, S, C3, c01, ease, back, hl, plain, SR, FPS, usfx, trim
 
-W, BH, BT = 1080, 608, 430          # picture band: width, height, top
+W, BH, BT = 1080, 608, 470          # picture band: width, height, top
 COL = ["#e0607e", "#2d7bd6", "#c07a2a", "#5a9e4b"]
 
 
@@ -88,7 +88,7 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .ta{color:#ff6b6b}
 .mm{font-family:My;font-size:40px;color:#d9d9d9;margin-top:14px;line-height:1.6}
 .note{display:inline-block;margin-top:18px;background:#fff6df;border-radius:18px;padding:8px 22px;font-family:My,Round;font-size:32px;color:#7a5a12}
-.recap{position:absolute;left:50px;right:50px;top:330px;background:#fff;border-radius:40px;padding:40px 46px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.recap{position:absolute;left:50px;right:50px;top:440px;background:#fff;border-radius:40px;padding:40px 46px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .recap h2{margin:0 0 26px;font-size:54px;color:#2a9d5f}
 .ri{border-bottom:2px dashed #e5e5e5;padding:16px 0}
 .ri .j{font-size:50px;color:#222}.ri .j rt{font-size:.5em;color:#888}
