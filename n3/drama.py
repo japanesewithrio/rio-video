@@ -210,7 +210,7 @@ def render(c, V, out, tmp):
                 put(e["st"] + 0.5 + k * 0.6, usfx("pop") * 0.8)
             continue
         if e["i"] in V:
-            put(e["st"] + 0.15, V[e["i"]])
+            put(e["st"] + e.get("vlead", 0.15), V[e["i"]])   # talking clips (lip-synced) start with the voice: vlead 0
         fx = e.get("fx", [])
         if "lines" in fx or "shake" in fx:
             put(e["st"], usfx("whoosh") * 0.9)
@@ -220,7 +220,7 @@ def render(c, V, out, tmp):
             put(e["st"], usfx("wipe") * 0.5)
         if e.get("clip"):
             d = os.path.join(tmp, "clip_%02d" % e["i"]); os.makedirs(d, exist_ok=True)
-            subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(HERE, "i2v", "out", e["clip"]), "-vf",
+            subprocess.run(["ffmpeg", "-v", "error", "-i", next(p for p in (os.path.join(HERE, "ws", "out", e["clip"]), os.path.join(HERE, "i2v", "out", e["clip"])) if os.path.exists(p)), "-vf",
                             "minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,scale=%d:%d:force_original_aspect_ratio=increase:flags=lanczos,crop=%d:%d,unsharp=5:5:0.7" % (FPS, W, BH, W, BH),
                             "-q:v", "2", os.path.join(d, "%04d.jpg")], check=True)
             e["_cf"] = sorted(os.path.join(d, f) for f in os.listdir(d))

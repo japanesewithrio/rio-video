@@ -1,23 +1,79 @@
 [
  {
-  "in": "d205_07.jpg",
-  "out": "s207_07.mp4",
-  "dur": 3.5,
-  "neg": "extra person, new character, another person appears, crowd, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry, static, frozen",
-  "prompt": "Korean web animation, two characters at a cafe counter. The young man on the right speaks to the woman, his mouth opening and closing clearly as he talks for two seconds, then he stops talking, closes his mouth and smiles gently, small natural head movement and blinking. The woman on the left listens, blinks and nods once. Camera still. Only these two people. Smooth fluid animation, consistent art style."
+  "in": "d208_00.jpg",
+  "out": "d208_00.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man packs his bag happily, checks the clock, ready to go home, a little happy dance. Camera slowly pushes in. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
  },
  {
-  "in": "d205_13.jpg",
-  "out": "s207_13.mp4",
-  "dur": 3.0,
-  "neg": "extra person, new character, another person appears, crowd, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry, static, frozen",
-  "prompt": "Korean web animation close-up of the same young man. He takes a sip and instantly reacts to the extreme sweetness: eyes squeeze shut, he shouts briefly with his mouth wide open, shoulders jump up, then he shakes his head. Comic exaggerated reaction. Only this one person, same face and clothes. Smooth fluid animation, consistent art style."
+  "in": "d208_01.jpg",
+  "out": "d208_01.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man smiles dreamily with sparkling eyes, swaying happily, imagining his free weekend night. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
  },
  {
-  "in": "d205_15.jpg",
-  "out": "s207_15.mp4",
-  "dur": 3.5,
-  "neg": "extra person, new character, another person appears, crowd, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry, static, frozen",
-  "prompt": "Korean web animation close-up of the same young woman. She gasps with her hands on her cheeks, says sorry quickly with her mouth moving, then bows her head twice in apology, blushing and sweating. Only this one person, same face, same hair and clothes. Smooth fluid animation, consistent art style."
+  "in": "d208_04.jpg",
+  "out": "d208_04.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man trembles in panic, sweat drops flying, eyes shaking. Comic anime reaction. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_06.jpg",
+  "out": "d208_06.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. In a dark office at night the exhausted young man sways like a zombie at his desk, typing slowly, the lamp flickers. Gloomy comic mood. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_08.jpg",
+  "out": "d208_08.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man lets out a huge sigh of relief, shoulders drop, hand on chest, eyes closed, he almost melts. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_10.jpg",
+  "out": "d208_10.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man freezes completely like a statue, turning pale blue, a cold wind blows his hair. Comic anime reaction. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_12.jpg",
+  "out": "d208_12.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The young man keeps smiling while big comic tears stream down his face, his soul leaving his body. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_14.jpg",
+  "out": "d208_14.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. In a karaoke room the manager sings passionately into the microphone with eyes closed, swaying dramatically, colorful lights spin. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_16.jpg",
+  "out": "d208_16.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The exhausted young man covers his ears secretly, soul leaving his body, colorful karaoke lights flash. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_17.jpg",
+  "out": "d208_17.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. Monday morning, the young man walks into the office slowly with his bag, tired but calm. Slow push in. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
+ },
+ {
+  "in": "d208_19.jpg",
+  "out": "d208_19.mp4",
+  "dur": 4,
+  "neg": "extra person, new character, another person appears, text, letters, watermark, subtitles, deformed face, changing face, realistic photo, 3d render, blurry",
+  "prompt": "Korean web animation. The panicked young man turns around and runs away out of the frame at full speed, leaving a cloud of dust. Comic anime chase. Keep the same character, same face, same clothes and the same flat 2D art style. Smooth fluid animation."
  }
 ]

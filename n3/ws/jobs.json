@@ -1,0 +1,74 @@
+[
+ {
+  "img": "n3/i2v/in/d208_02.jpg",
+  "wav": "n3/ws/voice/d208_02.wav",
+  "say": "リオくん、ちょっといい？",
+  "voice": "玄野武宏",
+  "prompt": "A cheerful Japanese manager with glasses calls out to his staff with a friendly smile, raising one hand, natural head movement. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_02.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_03.jpg",
+  "wav": "n3/ws/voice/d208_03.wav",
+  "say": "は、はい…",
+  "voice": "青山龍星",
+  "prompt": "A young office worker answers nervously, frozen and sweating, stiff awkward smile. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_03.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_05.jpg",
+  "wav": "n3/ws/voice/d208_05.wav",
+  "say": "来週の会議の資料なんだけど…",
+  "voice": "玄野武宏",
+  "prompt": "The manager talks seriously while holding up a document, tapping it, adjusting his glasses. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_05.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_07.jpg",
+  "wav": "n3/ws/voice/d208_07.wav",
+  "say": "…すごく良かったよ！ありがとう！",
+  "voice": "玄野武宏",
+  "prompt": "The manager gives a big happy smile and a thumbs up while praising, nodding warmly. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_07.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_09.jpg",
+  "wav": "n3/ws/voice/d208_09.wav",
+  "say": "じゃ、お疲れ様！あ、それから…",
+  "voice": "玄野武宏",
+  "prompt": "The manager waves goodbye with a smile, then suddenly remembers something and raises a finger. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_09.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_11.jpg",
+  "wav": "n3/ws/voice/d208_11.wav",
+  "say": "今夜、飲みに行かない？",
+  "voice": "玄野武宏",
+  "prompt": "The manager invites happily with a big grin, miming drinking a beer mug with his hand, eyebrows raised. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_11.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_13.jpg",
+  "wav": "n3/ws/voice/d208_13.wav",
+  "say": "よ、喜んで！",
+  "voice": "青山龍星",
+  "prompt": "The young man says yes with a forced big smile and tears in his eyes, giving a shaky thumbs up. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_13.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_15.jpg",
+  "wav": "n3/ws/voice/d208_15.wav",
+  "say": "さ、最高です！",
+  "voice": "青山龍星",
+  "prompt": "The young man claps and cheers with a stiff forced smile in a karaoke room, eye twitching. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_15.mp4"
+ },
+ {
+  "img": "n3/i2v/in/d208_18.jpg",
+  "wav": "n3/ws/voice/d208_18.wav",
+  "say": "リオくん、ちょっといい？",
+  "voice": "玄野武宏",
+  "prompt": "The manager calls out again with the same friendly smile, raising one hand. Korean web animation style, keep the same flat 2D art style, same face and clothes, only this one person. Camera still.",
+  "out": "d208_18.mp4"
+ }
+]

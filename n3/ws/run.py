@@ -7,10 +7,34 @@ KEY = os.environ.get("WAVESPEED_API_KEY")
 if not KEY:
     print("NO WAVESPEED_API_KEY secret"); sys.exit(0)
 RAW = "https://raw.githubusercontent.com/%s/%s/" % (os.environ.get("GITHUB_REPOSITORY", "japanesewithrio/rio-video"), os.environ.get("GITHUB_SHA", "main"))
+ROOT = os.path.abspath(os.path.join(H, "..", ".."))
 HD = {"Authorization": "Bearer " + KEY, "Content-Type": "application/json"}
 EP = "https://api.wavespeed.ai/api/v3/wavespeed-ai/wan-2.2/speech-to-video"
+VV = "http://localhost:50021"
+def make_voices(jobs):
+    need = [j for j in jobs if j.get("say") and not os.path.exists(os.path.join(ROOT, j["wav"]))]
+    if not need:
+        return False
+    for _ in range(90):
+        try:
+            if requests.get(VV + "/version", timeout=5).ok: break
+        except Exception: pass
+        time.sleep(5)
+    sp = {s["name"]: {st["name"]: st["id"] for st in s["styles"]} for s in requests.get(VV + "/speakers").json()}
+    for j in need:
+        sid = sp[j["voice"]].get("ノーマル") or list(sp[j["voice"]].values())[0]
+        q = requests.post(VV + "/audio_query", params={"text": j["say"], "speaker": sid}).json()
+        q["speedScale"] = j.get("speed", 1.0); q["prePhonemeLength"] = 0.05; q["postPhonemeLength"] = 0.1
+        f = os.path.join(ROOT, j["wav"]); os.makedirs(os.path.dirname(f), exist_ok=True)
+        open(f, "wb").write(requests.post(VV + "/synthesis", params={"speaker": sid}, json=q).content)
+    return True
+JOBS = json.load(open(os.path.join(H, "jobs.json")))
+if make_voices(JOBS):
+    os.system('git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com; git add n3/ws n3/i2v/in; '
+              'git commit -qm "talk voices [skip ci]"; git pull -q --rebase; git push -q')
+    RAW = RAW.rsplit("/", 2)[0] + "/" + os.popen("git rev-parse HEAD").read().strip() + "/"
 todo = []
-for j in json.load(open(os.path.join(H, "jobs.json"))):
+for j in JOBS:
     dst = os.path.join(OUT, j["out"])
     if os.path.exists(dst):
         continue
