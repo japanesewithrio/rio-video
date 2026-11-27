@@ -221,7 +221,7 @@ def render(c, V, out, tmp):
         if e.get("clip"):
             d = os.path.join(tmp, "clip_%02d" % e["i"]); os.makedirs(d, exist_ok=True)
             subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(HERE, "i2v", "out", e["clip"]), "-vf",
-                            "fps=%d,scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d,unsharp=5:5:0.6" % (FPS, W, BH, W, BH),
+                            "minterpolate=fps=%d:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,scale=%d:%d:force_original_aspect_ratio=increase:flags=lanczos,crop=%d:%d,unsharp=5:5:0.7" % (FPS, W, BH, W, BH),
                             "-q:v", "2", os.path.join(d, "%04d.jpg")], check=True)
             e["_cf"] = sorted(os.path.join(d, f) for f in os.listdir(d))
     y = y[:int(total * SR)]

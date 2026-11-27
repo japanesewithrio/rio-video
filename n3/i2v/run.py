@@ -16,7 +16,8 @@ for j in json.load(open(os.path.join(H, "jobs.json"))):
             name = [k for k in api if "video" in k] or list(api)
             t0 = time.time()
             res = cl.predict(input_image=handle_file(os.path.join(H, "in", j["in"])), prompt=j["prompt"],
-                             duration_seconds=j.get("dur", 3.5), steps=j.get("steps", 6), api_name=name[0])
+                             duration_seconds=j.get("dur", 3.5), steps=j.get("steps", 6), api_name=name[0],
+                             **({"negative_prompt": j["neg"]} if j.get("neg") else {}))
             v = res[0] if isinstance(res, (list, tuple)) else res
             v = v.get("video", v) if isinstance(v, dict) else v
             shutil.copy(v, dst)
