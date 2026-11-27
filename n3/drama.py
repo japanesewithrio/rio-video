@@ -142,17 +142,17 @@ def frame(c, ev, t, total):
                   "transform:translateX(-50%%) translateY(%.0fpx) scale(%s%.4f,%.4f);opacity:%.2f'>"
                   % (ASSETS, img, hp, top * BH, cx * W, (1 - ent) * 40, "-" if flip else "", breathe, breathe, ent))
         s += "</div>"
-        for f in ev.get("fx", []):
-            if f == "lines":
-                s += "<div class='lines' style='opacity:%.2f'></div>" % (0.9 * c01(lt / 0.15) * (1 - c01((lt - 1.2) / 0.4)))
-            elif f in ("sparkle", "heart", "sweat"):
-                em = {"sparkle": "✨", "heart": "💗", "sweat": "💦"}[f]
-                pts = [(0.18, 0.22), (0.8, 0.18), (0.72, 0.62), (0.28, 0.66)] if f != "sweat" else [(0.64, 0.2)]
-                for q, (px, py) in enumerate(pts):
-                    a = c01((lt - 0.15 * q) / 0.3)
-                    dy = -20 * lt if f == "heart" else 0
-                    sc = 0.8 + 0.25 * np.sin(lt * 6 + q)
-                    s += "<div class='fx' style='left:%.0fpx;top:%.0fpx;opacity:%.2f;transform:scale(%.2f)'>%s</div>" % (px * W, py * BH + dy, a, sc, em)
+    for f in ev.get("fx", []):
+        if f == "lines":
+            s += "<div class='lines' style='opacity:%.2f'></div>" % (0.9 * c01(lt / 0.15) * (1 - c01((lt - 1.2) / 0.4)))
+        elif f in ("sparkle", "heart", "sweat"):
+            em = {"sparkle": "✨", "heart": "💗", "sweat": "💦"}[f]
+            pts = [(0.18, 0.22), (0.8, 0.18), (0.72, 0.62), (0.28, 0.66)] if f != "sweat" else [(0.64, 0.2)]
+            for q, (px, py) in enumerate(pts):
+                a = c01((lt - 0.15 * q) / 0.3)
+                dy = -20 * lt if f == "heart" else 0
+                sc = 0.8 + 0.25 * np.sin(lt * 6 + q)
+                s += "<div class='fx' style='left:%.0fpx;top:%.0fpx;opacity:%.2f;transform:scale(%.2f)'>%s</div>" % (px * W, py * BH + dy, a, sc, em)
     if ev.get("narr"):
         s += "<div class='cap' style='opacity:%.2f'>%s</div>" % (c01(lt / 0.25), ev["mm"])
     if ev.get("think"):

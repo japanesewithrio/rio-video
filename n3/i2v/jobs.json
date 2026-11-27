@@ -1,8 +1,128 @@
-[{"in": "d203.jpg", "out": "d203_l03.mp4", "dur": 4,
-  "prompt": "Hand-drawn crayon storybook animation. The boy in the green longyi is out of breath from running, panting, then bows deeply and quickly to the woman to apologize, sweat drops on his face. The woman in the red apron looks at him, surprised. The camera does not move, the crayon drawing style stays the same."},
- {"in": "d203.jpg", "out": "d203_l07.mp4", "dur": 3.5,
-  "prompt": "Hand-drawn crayon storybook animation. The woman in the red apron is shocked: she leans back, her eyes and mouth open wide, both hands go up in surprise. The boy smiles awkwardly. The camera does not move, the crayon drawing style stays the same."},
- {"in": "d203.jpg", "out": "d203_l08.mp4", "dur": 4,
-  "prompt": "Hand-drawn crayon storybook animation. The boy in the green longyi takes a smartphone out, looks at the screen, freezes, then his face turns embarrassed and he scratches his head. The woman watches him. The camera does not move, the crayon drawing style stays the same."},
- {"in": "d203.jpg", "out": "d203_l09.mp4", "dur": 4,
-  "prompt": "Hand-drawn crayon storybook animation. The woman in the red apron sighs deeply, her shoulders drop and she puts a hand on her forehead, then gives a small tired smile. The boy laughs awkwardly and bows a little. Slow gentle camera push in, the crayon drawing style stays the same."}]
+[
+ {
+  "in": "d205_00.jpg",
+  "out": "d205_00.mp4",
+  "dur": 4.5,
+  "prompt": "Hand-drawn Korean web animation. The young woman walks forward along the street toward the camera with a hopeful smile, her ponytail and skirt sway, cherry petals fall. Gentle camera push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_01.jpg",
+  "out": "d205_01.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The older woman on the right talks warmly and nods while smiling, her mouth moving as she speaks. The young woman on the left listens and nods. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_02.jpg",
+  "out": "d205_02.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The young woman on the left bows politely and says hello with a bright smile, her mouth moving as she talks. The older woman smiles back. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_03.jpg",
+  "out": "d205_03.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation close-up. The young woman makes a small determined fist and nods to herself with a confident smile, eyes sparkling. Slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_04.jpg",
+  "out": "d205_04.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. The handsome young man walks toward the camera on the street, his coat and hair moving softly in the wind, cherry petals falling. Slow dramatic push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_05.jpg",
+  "out": "d205_05.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation close-up. The young woman blushes deeply and stares with dreamy sparkling eyes, hands clasped, slowly swaying. Hearts feeling. Slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_06.jpg",
+  "out": "d205_06.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. The young woman on the left greets the customer nervously, talking with her mouth moving and a stiff smile, a little sweat. The man on the right looks at her calmly. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_07.jpg",
+  "out": "d205_07.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. The young man on the right talks calmly while ordering, his mouth moving, a small gentle smile. The young woman on the left nods. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_08.jpg",
+  "out": "d205_08.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The young woman on the left asks a question while talking, her mouth moving, tilting her head. The man on the right listens. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_09.jpg",
+  "out": "d205_09.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation close-up. The young man raises a hand slightly and says no thanks politely, his mouth moving, calm face. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_10.jpg",
+  "out": "d205_10.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation close-up. The young woman understands wrongly and smiles brightly with confidence, nods happily, eyes sparkling. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_11.jpg",
+  "out": "d205_11.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. At the cafe counter, a spoon puts lots of sugar into a white coffee cup and milk is poured in. Slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_12.jpg",
+  "out": "d205_12.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The young woman on the left proudly hands over a coffee cup and talks happily, her mouth moving. The man on the right takes it. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_13.jpg",
+  "out": "d205_13.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation close-up. The young man sips the coffee and his face twists from the extreme sweetness, eyes squeezed shut, shoulders jump. Camera shake. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_14.jpg",
+  "out": "d205_14.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The man on the right explains gently while talking, his mouth moving, a slightly troubled smile. The young woman on the left looks nervous and sweats. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_15.jpg",
+  "out": "d205_15.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation close-up. The young woman is shocked and embarrassed, hands on her cheeks, then bows quickly again and again to apologize, talking. Camera shake. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_16.jpg",
+  "out": "d205_16.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation close-up. The young man laughs softly with closed eyes and a warm blush, says something kind with his mouth moving. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_17.jpg",
+  "out": "d205_17.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation close-up. The young woman blushes very deeply, holds her hands to her chest, heart pounding, dreamy happy face. Slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_18.jpg",
+  "out": "d205_18.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. Next morning, the young man walks along the street toward the cafe with a small smile, coat moving in the breeze. Slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_19.jpg",
+  "out": "d205_19.mp4",
+  "dur": 4.5,
+  "prompt": "Korean web animation. The man on the right smiles warmly and talks while ordering again, his mouth moving. The young woman on the left blushes happily. Camera still. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ },
+ {
+  "in": "d205_20.jpg",
+  "out": "d205_20.mp4",
+  "dur": 4,
+  "prompt": "Korean web animation. The young woman and the man smile at each other, she blushes, soft warm light, gentle slow push in. Keep the same characters, same faces, same clothes and the same flat Korean web animation art style."
+ }
+]
