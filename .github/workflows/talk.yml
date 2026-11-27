@@ -14,7 +14,7 @@ jobs:
         ports: ["50021:50021"]
     steps:
       - uses: actions/checkout@v4
-      - run: pip install -q gradio_client requests
+      - run: pip install -q gradio_client requests pillow
       - env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python -u n3/talk/run.py
