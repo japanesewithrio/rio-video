@@ -160,7 +160,12 @@ def ensure_assets(c):
         if a.get("src"):           # cut out a picture that was already drawn
             data = open(ref_path(a["src"]), "rb").read()
         else:
-            data = gen_image(a["prompt"], a.get("ref"), a.get("aspect", "9:16"))
+            base = STYLE
+            STYLE = a.get("style", STYLE)     # e.g. a background must not get the "cute characters" part of the style
+            try:
+                data = gen_image(a["prompt"], a.get("ref"), a.get("aspect", "9:16"))
+            finally:
+                STYLE = base
         if a.get("key"):
             try:
                 data = local_cutout(data)
