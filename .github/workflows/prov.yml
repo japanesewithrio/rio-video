@@ -1,0 +1,19 @@
+name: prov
+on:
+  push:
+    paths: ["n3/prov_jobs.json"]
+permissions:
+  contents: write
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q -U huggingface_hub pillow
+      - env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python n3/prov.py
+      - run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/cartoon/assets && git commit -qm "provider pictures [skip ci]" && git pull -q --rebase && git push -q || echo nothing
