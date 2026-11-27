@@ -1,0 +1,19 @@
+name: i2v
+on:
+  push:
+    paths: ["n3/i2v/jobs.json"]
+permissions:
+  contents: write
+jobs:
+  v:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q gradio_client
+      - env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python n3/i2v/run.py
+      - run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/i2v/out 2>/dev/null; git commit -qm "i2v clips [skip ci]" && git pull -q --rebase && git push -q || echo nothing
