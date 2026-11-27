@@ -1,1 +1,1 @@
-ASSETS 203
+ASSETS 203 token test
