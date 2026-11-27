@@ -1,0 +1,30 @@
+name: face
+on:
+  push:
+    paths: ["n3/face/job.json"]
+permissions:
+  contents: write
+jobs:
+  f:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      vv:
+        image: voicevox/voicevox_engine:cpu-latest
+        ports: ["50021:50021"]
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -q diffusers transformers accelerate pillow requests "numpy<2" opencv-python-headless
+          pip install -q basicsr realesrgan || echo "no realesrgan"
+          python - <<'P'
+          import site, glob, re
+          for f in glob.glob(site.getsitepackages()[0] + "/basicsr/data/degradations.py"):
+              s = open(f).read().replace("torchvision.transforms.functional_tensor", "torchvision.transforms.functional"); open(f, "w").write(s)
+          P
+      - run: python n3/face/make.py
+      - run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/face/out && git commit -qm "face test [skip ci]" && git pull -q --rebase && git push -q || echo nothing
