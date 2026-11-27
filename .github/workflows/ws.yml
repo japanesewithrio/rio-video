@@ -1,0 +1,21 @@
+name: ws
+on:
+  push:
+    paths: ["n3/ws/jobs.json"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  w:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - env:
+          WAVESPEED_API_KEY: ${{ secrets.WAVESPEED_API_KEY }}
+        run: python -u n3/ws/run.py
+      - if: always()
+        run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/ws/out 2>/dev/null; git commit -qm "wavespeed clips [skip ci]" && git pull -q --rebase && git push -q || echo nothing
