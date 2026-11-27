@@ -109,17 +109,6 @@ def hf_image(prompt, ref=None, aspect="9:16"):
             last = e
             D.log("hf image", attempt, type(e).__name__, str(e)[:300])
             time.sleep(20)
-    if not ref:          # last resort for plain pictures (no reference): Pollinations (free, no key)
-        try:
-            w, h = {"16:9": (1344, 768), "9:16": (768, 1344)}.get(aspect, (1024, 1024))
-            r = requests.get("https://image.pollinations.ai/prompt/" + requests.utils.quote((STYLE + prompt)[:1500]),
-                             params={"width": w, "height": h, "model": "flux", "nologo": "true", "seed": int(time.time()) % 100000}, timeout=240)
-            if r.ok and r.headers.get("content-type", "").startswith("image"):
-                D.log("pollinations image ok")
-                return r.content
-            D.log("pollinations", r.status_code, r.text[:200])
-        except Exception as e:
-            D.log("pollinations", type(e).__name__, str(e)[:200])
     raise RuntimeError("no image service could draw (%s): %s" % (last, prompt[:60]))
 
 
