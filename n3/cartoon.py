@@ -186,7 +186,38 @@ def ensure_assets(c):
 
 
 # ---------- voice ----------
+VV = "http://localhost:50021"
+
+
+def vv_voice(c, wav):
+    """VOICEVOX (free, no daily limit; engine runs as a service container). c["voicevox"] = {who: speaker name}"""
+    for _ in range(90):
+        try:
+            if requests.get(VV + "/version", timeout=5).ok:
+                break
+        except Exception:
+            pass
+        time.sleep(5)
+    sp = {s["name"]: {st["name"]: st["id"] for st in s["styles"]} for s in requests.get(VV + "/speakers", timeout=30).json()}
+    lines = c["lines"] + ([{"who": "Rio", "jp": c["recap"]["say"]}] if c.get("recap", {}).get("say") else [])
+    out = {}
+    for i, l in enumerate(lines):
+        name = c["voicevox"][l["who"]]
+        style = l.get("style") or "ノーマル"
+        sid = sp[name].get(style) or list(sp[name].values())[0]
+        q = requests.post(VV + "/audio_query", params={"text": l.get("say") or plain(l["jp"]).replace(" ", ""), "speaker": sid}, timeout=120).json()
+        q["speedScale"] = c.get("vv_speed", 1.0)
+        q["prePhonemeLength"] = 0.05; q["postPhonemeLength"] = 0.1
+        f = wav + ".%02d.wav" % i
+        open(f, "wb").write(requests.post(VV + "/synthesis", params={"speaker": sid}, json=q, timeout=300).content)
+        out["l%02d" % i] = S.RS.R.pcm(f, 24000)
+    D.log("voicevox ok", len(out))
+    return out
+
+
 def voice(c, wav):
+    if c.get("voicevox"):
+        return vv_voice(c, wav)
     lines = c["lines"] + ([{"who": "Rio", "jp": c["recap"]["say"]}] if c.get("recap", {}).get("say") else [])
     items = [{"key": "l%02d" % i, "who": l["who"], "jp": plain(l["jp"]).replace(" ", ""), "kana": ""} for i, l in enumerate(lines)]
     groups = [items[i:i + 7] for i in range(0, len(items), 7)]
@@ -378,7 +409,8 @@ def main():
     if trig.startswith("ASSETS"):
         D.log("assets only", made)
         return
-    C3.setup_voices()
+    if not c.get("voicevox"):
+        C3.setup_voices()
     work = os.path.join(ROOT, "work", "n3"); os.makedirs(work, exist_ok=True)
     clips = voice(c, os.path.join(work, "ct_%03d.wav" % no))
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
@@ -387,6 +419,8 @@ def main():
     D.push("n3 cartoon test %03d" % no, ["n3/out", "n3/cartoon"])
     import explain as EX
     cap = "🧪 cartoon test No.%d %s (%ds)" % (no, c["title"], secs)
+    if c.get("voicevox"):
+        cap += "\n" + " / ".join("VOICEVOX:" + v for v in dict.fromkeys(c["voicevox"].values()))
     if D.WARN:
         cap += "\n⚠️ " + " / ".join(D.WARN)[:300]
     EX.send(out, cap)

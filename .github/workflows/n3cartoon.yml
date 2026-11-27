@@ -11,6 +11,10 @@ jobs:
   n3:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    services:
+      vv:
+        image: voicevox/voicevox_engine:cpu-latest
+        ports: ["50021:50021"]
     steps:
       - uses: actions/checkout@v4
       - name: Install
