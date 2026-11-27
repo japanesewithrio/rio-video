@@ -290,7 +290,12 @@ def frame(c, ev, t, total):
     for who, cfg in c["cast"].items():
         talk = kind == "line" and ev["who"] == who and lt < ev["L"] + 0.1
         bob = abs(np.sin(lt * 9)) * 14 if talk else 3 * np.sin(t * 2 + (0 if who == "Rio" else 1.5))
-        enter = ease(c01((t - 0.2) / 0.6))
+        et = cfg.get("_et", 0.2)            # a character can walk in later (cast "enter": line index)
+        if t < et:
+            continue
+        enter = ease(c01((t - et) / 0.6))
+        if t < et + 0.6:
+            bob += abs(np.sin((t - et) * 16)) * 22   # running in
         dx = (1 - enter) * (-500 if cfg["x"] < 540 else 500)
         sc = 1.0 + (0.025 if talk else 0)
         s += ("<img class='ch' src='file://%s/%s.png' style='left:%dpx;top:%dpx;height:%dpx;transform:translate(%.0fpx,%.0fpx) scale(%s%.3f,%.3f);"
@@ -337,6 +342,9 @@ def plan(c, L):
         d = max(Li + 1.1, 2.4) + (1.2 if l.get("note") else 0)
         evs.append(dict(l, kind="line", st=t, d=d, L=Li, key="l%02d" % i))
         t += d
+    for who, cfg in c["cast"].items():
+        if cfg.get("enter") is not None:
+            cfg["_et"] = evs[cfg["enter"] + 1]["st"]
     if c.get("recap"):
         n = len(c["lines"])
         Lr = L.get("l%02d" % n, 0)
