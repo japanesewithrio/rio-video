@@ -5,11 +5,9 @@
  "text": "いらっしゃいませ！ご注文は何になさいますか？砂糖とミルクは、いりますか？",
  "motion_prompt": "A young woman cafe worker talking cheerfully to a customer, natural head movement, smiling, small hand gestures, webtoon animation style",
  "spaces": [
-  "crackuser/infinite-talk-ai-video",
-  "rahul7star/infinitetalk",
-  "FarmerlineML/infinitetalk",
   "Wan-AI/Wan2.2-S2V",
-  "immango/Wan2.2-S2V-14B"
+  "crackuser/infinite-talk-ai-video",
+  "rahul7star/infinitetalk"
  ],
  "crop": [
   90,
@@ -17,6 +15,6 @@
   550,
   520
  ],
- "timeout": 900,
- "rev": 2
+ "timeout": 1200,
+ "rev": 3
 }
