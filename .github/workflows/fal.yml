@@ -1,0 +1,25 @@
+name: fal
+on:
+  push:
+    paths: ["n3/fal/jobs.json"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  f:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      vv:
+        image: voicevox/voicevox_engine:cpu-latest
+        ports: ["50021:50021"]
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q fal-client requests
+      - env:
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+        run: python -u n3/fal/run.py
+      - if: always()
+        run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/fal/out 2>/dev/null; git commit -qm "fal test [skip ci]" && git pull -q --rebase && git push -q || echo nothing

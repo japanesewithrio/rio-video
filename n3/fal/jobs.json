@@ -1,0 +1,34 @@
+[
+ {
+  "kind": "s2v",
+  "model": "fal-ai/bytedance/omnihuman/v1.5",
+  "img": "fal/thiri_talk.jpg",
+  "voice": "雨晴はう",
+  "say": "いらっしゃいませ！ご注文は何になさいますか？",
+  "out": "omni_thiri.mp4",
+  "prompt": "Korean web animation style cafe worker greeting a customer cheerfully, natural head and hand gestures"
+ },
+ {
+  "kind": "s2v",
+  "model": "fal-ai/wan/v2.2-14b/speech-to-video",
+  "img": "fal/thiri_talk.jpg",
+  "voice": "雨晴はう",
+  "say": "いらっしゃいませ！ご注文は何になさいますか？",
+  "out": "wans2v_thiri.mp4",
+  "prompt": "A young woman cafe worker in Korean web animation style greets a customer cheerfully, natural head movement, small hand gestures, the art style stays the same",
+  "args": {
+   "resolution": "480p"
+  }
+ },
+ {
+  "kind": "i2v",
+  "model": "fal-ai/bytedance/seedance/v1/lite/image-to-video",
+  "img": "i2v/in/d205_13.jpg",
+  "out": "seedance_sweet.mp4",
+  "prompt": "Korean web animation. The young man sips the coffee and reacts to the extreme sweetness: eyes squeeze shut, mouth wide open in a short shout, shoulders jump, then he shakes his head. Same character, same art style, camera still.",
+  "args": {
+   "duration": "5",
+   "resolution": "720p"
+  }
+ }
+]
