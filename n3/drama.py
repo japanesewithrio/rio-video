@@ -177,7 +177,8 @@ def frame(c, ev, t, total):
 async def film(c, evs, total, tmp):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
-        b = await p.chromium.launch(args=["--allow-file-access-from-files"])
+        exe = next((x for x in ("/usr/bin/google-chrome", "/usr/bin/google-chrome-stable") if os.path.exists(x)), None)
+        b = await p.chromium.launch(**({"executable_path": exe} if exe else {}), args=["--allow-file-access-from-files"])
         pg = await b.new_page(viewport={"width": 1080, "height": 1920})
         f = os.path.join(tmp, "f.html")
         n = int(round(total * FPS))
