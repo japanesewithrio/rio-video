@@ -205,7 +205,7 @@ def env_of(path, n):
 def plan():
     t, evs = 0.2, []
     for L in EP:
-        d = L.get("dur") or (wave.open(os.path.join(V, L["v"] + ".wav")).getnframes() / SR + 0.45)
+        d = L.get("dur") or (wave.open(os.path.join(V, L["v"] + ".wav")).getnframes() / SR + L.get("gap", 0.32))
         d += L.get("post", 0)
         evs.append(dict(L, st=t, d=d)); t += d
     rec = dict(shot="recap", st=t, d=5.5); evs.append(rec)
@@ -388,7 +388,7 @@ def main():
     mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
     mus = np.frombuffer(mus, np.float32).copy()[:len(y)]
-    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(SR) / SR, "same")
+    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(int(2.5 * SR)) / (2.5 * SR), "same")
     fade = np.minimum(1, np.arange(len(mus)) / SR) * np.minimum(1, (len(mus) - np.arange(len(mus))) / (1.5 * SR))
     y[:len(mus)] += mus * .06 * duck * fade
     tmp = tempfile.mkdtemp()
