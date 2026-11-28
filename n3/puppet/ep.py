@@ -4,6 +4,7 @@ import asyncio, math, os, re, subprocess, tempfile, wave
 import numpy as np
 from PIL import Image, ImageFilter
 import puppet as P
+import fullbody as FB
 
 ROOT, HERE, FPS, SR = P.ROOT, P.HERE, 30, 24000
 A = os.path.join(ROOT, "n3/cartoon/assets")
@@ -54,15 +55,20 @@ OUT = "puppet_ep1.mp4"
 MUSIC = "n3/snd/out/bgm_wholesome.mp3"
 SWAY = 0
 AMB = None
+FULL = None          # e.g. {"rio": "myanmar", "mio": "myanmar"}: full-body figures
+LEFT_ARM = {"wave", "clap"}
+RIGHT_ARM = {"scratch", "facepalm", "thumb", "point_self", "phone_ear", "shh", "phone_out", "clap", "point"}
 BG = {"two": ("pp_bg_night.png", 4), "cu": ("pp_bg_night.png", 9), "moon": "pp_moon.png"}
 LN = "stroke='#3b2a24' stroke-linejoin='round' stroke-linecap='round'"
 
+SLEEVE = {("rio", "myanmar"): "#2c3550", ("mio", "myanmar"): "#f7c6d0"}
 def arm(c, sh, el, hd, front=False, fist=None, osc=0):
     """sleeve from shoulder (sh) via elbow (el) to hand (hd); hand drawn on top."""
+    cl = SLEEVE.get((c["kind"], (FULL or {}).get(c["kind"])), c["cloth"])
     hx, hy = hd[0], hd[1] + osc
     d = "M %d %d Q %d %d %d %d" % (sh[0], sh[1], el[0], el[1], hx, hy)
     s = "<path d='%s' fill='none' %s stroke-width='60'/>" % (d, LN)
-    s += "<path d='%s' fill='none' stroke='%s' stroke-width='53' stroke-linecap='round'/>" % (d, c["cloth"])
+    s += "<path d='%s' fill='none' stroke='%s' stroke-width='53' stroke-linecap='round'/>" % (d, cl)
     s += "<circle cx='%d' cy='%d' r='27' fill='%s' %s stroke-width='3.5'/>" % (hx, hy, c["skin"], LN)
     if fist == "thumb":
         s += "<rect x='%d' y='%d' width='16' height='34' rx='8' fill='%s' %s stroke-width='3.5'/>" % (hx - 8, hy - 52, c["skin"], LN)
@@ -85,6 +91,8 @@ def arms(c, pose, t):
         return arm(c, (150, 230), (170, 380), (50, 290), fist="point")
     if pose == "wave":
         return arm(c, (-150, 230), (-240, 150), (-210, 10), fist="palm", osc=o * .6)
+    if pose == "point":        # pointing toward the viewer / the other person
+        return arm(c, (150, 230), (230, 250), (190, 140), fist="point")
     if pose == "phone_ear":    # holding a phone to the right ear
         a = arm(c, (150, 230), (215, 170), (112, 20))
         return a + "<rect x='92' y='-62' width='34' height='70' rx='8' fill='#2f3440' %s stroke-width='3'/>" % LN + \
@@ -103,7 +111,7 @@ def arms(c, pose, t):
     return ""
 
 DEF = dict(shut=0, mouth=0, wide=.5, smile=.4, eye=1, happy=0, look=0, lookup=0, brow=0, worry=0, blush=0, nod=0, tilt=0,
-           sweat=0, wavy=0, droop=0, bounce=0, shake=0, bow=0, spark=0)
+           sweat=0, wavy=0, droop=0, bounce=0, shake=0, bow=0, spark=0, spin=0, hearts=0)
 
 
 # ---- small additions to the puppet drawing: look up, wavy panic mouth, droop ----
@@ -128,6 +136,8 @@ def head(c, p):
     s = s.replace(_eye(-50, -1, c, p["eye"], p["happy"], p["look"]), eye(-50, -1, c, p["eye"], p["happy"], p["look"], p["lookup"], p.get("shut", 0)))
     s = s.replace(_eye(50, 1, c, p["eye"], p["happy"], p["look"]), eye(50, 1, c, p["eye"], p["happy"], p["look"], p["lookup"], p.get("shut", 0)))
     s = s.replace(_mouth(p["mouth"], p["wide"], p["smile"], c), mouth(p["mouth"], p["wide"], p["smile"], c, p["wavy"]))
+    if FULL and FULL.get(c["kind"]) == "myanmar" and c["kind"] == "mio":
+        s += FB.padauk(-88, -96)
     if p["droop"]:      # gloomy vertical lines on the forehead
         s += "".join("<line x1='%d' y1='-50' x2='%d' y2='-26' stroke='#5b6aa8' stroke-width='4' opacity='.7'/>" % (x, x) for x in (-70, -56, -42, 42, 56, 70))
     return s
@@ -140,9 +150,23 @@ def char(c, x, y, sc, p, t, pose=""):
     bow = p.get("bow", 0)
     s = "<g transform='translate(%.1f %.1f) scale(%.3f)'>" % (x + sx, y + bob + bow * 70, sc)
     s += "<g transform='rotate(%.2f 0 460)'>" % (bow * 8)
-    s += P.body(c)
+    if p.get("spin"):                      # twirl: squash horizontally through a half turn
+        s += "<g transform='scale(%.3f 1)'>" % (math.cos(p["spin"] * math.pi * 2))
+    if FULL:
+        st = FULL[c["kind"]]
+        walk = p.get("walk", 0)
+        s += FB.outfit(c, st, t + walk, arms=(pose not in LEFT_ARM, pose not in RIGHT_ARM))
+    else:
+        s += P.body(c)
     s += "<g transform='rotate(%.2f 0 120) translate(0 %.1f)'>%s</g>" % (rot + bow * 4, p["nod"] + bow * 45, head(c, p))
     s += arms(c, pose, t)
+    if p.get("spin"):
+        s += "</g>"
+    if p.get("hearts"):
+        for k, hx in enumerate((-150, 150, -110)):
+            hy = -150 - ((t * 60 + k * 50) % 120)
+            s += ("<path d='M %d %d c -14 -18 -40 -2 -20 18 l 20 18 l 20 -18 c 20 -20 -6 -36 -20 -18 Z' fill='#ff7d9c' opacity='.85' %s stroke-width='2'/>"
+                  % (hx, hy, LN))
     if p.get("spark"):
         for k, (sx2, sy2) in enumerate(((-170, -120), (175, -90), (-150, 40), (160, 60))):
             a2 = .5 + .5 * math.sin(t * 8 + k * 1.7)
@@ -208,7 +232,7 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
 .ep{display:inline-block;background:#e0607e;color:#fff;border-radius:14px;padding:2px 18px;font-family:Round;font-size:34px;margin-bottom:10px}
 .ej{position:absolute;left:30px;right:30px;top:1218px;text-align:center}
 .m2{font-family:My;font-size:42px;color:#fff;line-height:1.6;text-shadow:0 0 6px #000,2px 2px 0 #000}
-.j2{font-family:Round;color:#fff;line-height:1.45;margin-top:18px;-webkit-text-stroke:10px #000;paint-order:stroke fill}
+.j2{font-family:Round,My;color:#fff;line-height:1.45;margin-top:18px;-webkit-text-stroke:10px #000;paint-order:stroke fill}
 .j2 rt{font-size:.45em;color:#ffe08a;-webkit-text-stroke:5px #000}
 .pill{background:#3fbf7f;border-radius:14px;padding:0 10px;white-space:nowrap}
 .cap{position:absolute;left:26px;top:22px;background:rgba(20,20,20,.75);color:#fff;border-radius:16px;padding:10px 24px;font-family:My;font-size:36px}
@@ -236,13 +260,26 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
     else:
         if ev["shot"] in ("two", "two_up"):
             po = ev.get("pose", {})
-            chars = char(P.RIO, 330, 250, .95, params(ev, "rio", t, env, i), t, po.get("rio", "")) + char(P.MIO, 750, 262, .92, params(ev, "mio", t, env, i), t, po.get("mio", ""))
+            pr, pm = params(ev, "rio", t, env, i), params(ev, "mio", t, env, i)
+            if FULL:
+                xs = {"rio": 350, "mio": 730}; ys, sc = 112, .6
+                for who, (x0, dur0) in ev.get("enter", {}).items():     # walk in from x0
+                    k3 = min(1, lt / dur0); xs[who] = x0 + (xs[who] - x0) * (1 - (1 - k3) ** 2)
+                    if k3 < 1:
+                        (pr if who == "rio" else pm)["bounce"] = .6
+                for who, (t0, d0) in ev.get("twirl", {}).items():
+                    k4 = (lt - t0) / d0
+                    if 0 <= k4 <= 1:
+                        (pr if who == "rio" else pm)["spin"] = k4
+                chars = char(P.RIO, xs["rio"], ys, sc, pr, t, po.get("rio", "")) + char(P.MIO, xs["mio"], ys + 6, sc * .97, pm, t, po.get("mio", ""))
+            else:
+                chars = char(P.RIO, 330, 250, .95, pr, t, po.get("rio", "")) + char(P.MIO, 750, 262, .92, pm, t, po.get("mio", ""))
         elif ev["shot"] == "rio":
             chars = char(P.RIO, 540, 300, 1.3, params(ev, "rio", t, env, i), t, ev.get("pose", {}).get("rio", ""))
         else:
             chars = char(P.MIO, 540, 305, 1.27, params(ev, "mio", t, env, i), t, ev.get("pose", {}).get("mio", ""))
         svg = ("<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='608' viewBox='0 0 1080 608'>%s"
-               "<g transform='translate(%.1f 0) translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS, sway, zoom, chars))
+               "<g transform='translate(%.1f 0) translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS + FB.PAT, sway, zoom, chars))
         body += "<div class='band'><img src='file://%s' style='transform:translate(%.1fpx,0) scale(1.02)'>%s</div>" % (bgs["two" if ev["shot"] in ("two", "two_up") else "cu"], sway * .6, svg)
     if ev.get("jp") and lt <= ev["d"]:
         n = len(re.sub(r"《.+?》|[\[\]]", "", ev["jp"]))
@@ -262,6 +299,10 @@ def sfx(kind):
     elif kind == "fall":    # comic descending slide whistle
         f = 900 * np.exp(-t * 1.4)
         x += (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 1.2) * .18).astype(np.float32)
+    elif kind == "heart":    # soft "kyun" bell
+        for k, f in enumerate((1319, 1760)):
+            m = t >= k * .09; tt = t[m] - k * .09
+            x[m] += (np.sin(2 * np.pi * f * tt) * np.exp(-tt * 3) * .16).astype(np.float32)
     elif kind == "ring":     # simple phone ring (marimba-like)
         for k in range(6):
             for j2, f in enumerate((880, 1175)):
@@ -348,7 +389,7 @@ if __name__ == "__main__":
     import sys, importlib
     if len(sys.argv) > 1:          # python ep.py script_ep2  -> use EP/RECAP/HOOK/BG/OUT/MUSIC from that module
         m = importlib.import_module(sys.argv[1])
-        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC", "SWAY", "AMB"):
+        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC", "SWAY", "AMB", "FULL"):
             if hasattr(m, k):
                 globals()[k] = getattr(m, k)
     main()

@@ -37,7 +37,7 @@ def legs(c, pants, shoe, t, step=0):
     return s
 
 
-def outfit(c, style, t):
+def outfit(c, style, t, arms=(True, True)):
     k = c["kind"]; s = ""
     if style == "casual" and k == "rio":
         s += legs(c, "#3d5a80", "#f4f4f4", t)
@@ -45,7 +45,7 @@ def outfit(c, style, t):
         s += "<path d='M -70 168 C -40 210 40 210 70 168 C 50 200 -50 200 -70 168 Z' fill='%s'/>" % c["cloth2"]
         s += "<path d='M -22 196 L -26 290 M 22 196 L 26 290' stroke='#f4f4f4' stroke-width='5' stroke-linecap='round'/>"
         s += "<path d='M -90 440 L 90 440 L 82 520 L -82 520 Z' fill='%s' opacity='.4'/>" % c["cloth2"]
-        s += arm_down(c, -1, c["cloth"], t) + arm_down(c, 1, c["cloth"], t)
+        s += (arm_down(c, -1, c["cloth"], t) if arms[0] else '') + (arm_down(c, 1, c["cloth"], t) if arms[1] else '')
     elif style == "casual" and k == "mio":
         s += "<path d='M -150 520 L 150 520 L 190 980 L -190 980 Z' fill='#a9c8e8' %s/>" % LN            # long skirt
         for side in (-1, 1):
@@ -53,7 +53,7 @@ def outfit(c, style, t):
         s += "<path d='M -60 160 L 60 160 L 70 530 L -70 530 Z' fill='#fbfbfb' %s/>" % LN
         s += "<path d='M -140 540 C -140 260 -104 184 -46 162 L -8 250 L -20 540 Z' fill='%s' %s/>" % (c["cloth"], LN)
         s += "<path d='M 140 540 C 140 260 104 184 46 162 L 8 250 L 20 540 Z' fill='%s' %s/>" % (c["cloth"], LN)
-        s += arm_down(c, -1, c["cloth"], t) + arm_down(c, 1, c["cloth"], t)
+        s += (arm_down(c, -1, c["cloth"], t) if arms[0] else '') + (arm_down(c, 1, c["cloth"], t) if arms[1] else '')
     elif style == "myanmar" and k == "rio":
         # paso (longyi) with the bunched front knot, velvet slippers
         s += "<path d='M -118 455 L 118 455 L 136 1000 L -136 1000 Z' fill='url(#plaid)' %s/>" % LN
@@ -71,7 +71,7 @@ def outfit(c, style, t):
         s += "<path d='M 146 488 C 150 300 112 184 46 166 L 24 182 L 30 488 Z' fill='#2c3550' %s/>" % LN
         for yy in (230, 285, 340, 395, 450):
             s += "<path d='M 24 %d q 10 -8 18 0 q -8 8 -18 0 Z' fill='#e8e2cf' %s stroke-width='1.5'/>" % (yy, LN)
-        s += arm_down(c, -1, "#2c3550", t) + arm_down(c, 1, "#2c3550", t)
+        s += (arm_down(c, -1, "#2c3550", t) if arms[0] else '') + (arm_down(c, 1, "#2c3550", t) if arms[1] else '')
     elif style == "myanmar" and k == "mio":
         # htamein: wrap skirt with black waistband, the overlapping front edge and a short train
         s += "<path d='M -100 420 L 100 420 L 132 1012 L -150 1012 Z' fill='url(#acheik)' %s/>" % LN
@@ -84,7 +84,7 @@ def outfit(c, style, t):
         s += "<path d='M -40 165 C 0 200 50 250 66 300 L 80 424' fill='none' stroke='#c47b90' stroke-width='4'/>"
         for yy, xx in ((212, 16), (252, 44), (292, 64), (340, 72)):
             s += "<circle cx='%d' cy='%d' r='6' fill='#f2d27a' %s stroke-width='2'/>" % (xx, yy, LN)
-        s += arm_down(c, -1, "#f7c6d0", t) + arm_down(c, 1, "#f7c6d0", t)
+        s += (arm_down(c, -1, "#f7c6d0", t) if arms[0] else '') + (arm_down(c, 1, "#f7c6d0", t) if arms[1] else '')
     s += "<rect x='-34' y='110' width='68' height='60' fill='%s' %s/>" % (c["skin"], LN)    # neck
     return s
 
