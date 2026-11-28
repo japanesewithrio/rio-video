@@ -96,6 +96,10 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .ta{color:#ff6b6b}
 .mm{font-family:My;font-size:40px;color:#d9d9d9;margin-top:14px;line-height:1.6}
 .note{display:inline-block;margin-top:18px;background:#fff6df;border-radius:18px;padding:8px 22px;font-family:My,Round;font-size:32px;color:#7a5a12}
+.ej{position:absolute;left:30px;right:30px;top:%(SUBT)dpx;text-align:center}
+.ej .m2{font-family:My;font-size:42px;color:#fff;line-height:1.6;text-shadow:0 0 6px #000,0 0 3px #000,2px 2px 0 #000;text-wrap:balance}
+.ej .j2{font-family:Round;color:#fff;line-height:1.45;margin-top:18px;-webkit-text-stroke:10px #000;paint-order:stroke fill;text-wrap:balance}
+.ej .j2 rt{font-size:.45em;color:#ffe08a;-webkit-text-stroke:5px #000}
 .recap{position:absolute;left:50px;right:50px;top:440px;background:#fff;border-radius:40px;padding:40px 46px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .recap h2{margin:0 0 26px;font-size:54px;color:#2a9d5f}
 .ri{border-bottom:2px dashed #e5e5e5;padding:16px 0}
@@ -111,7 +115,8 @@ def jp_size(s):
 
 def frame(c, ev, t, total):
     F = os.path.join(ROOT, "fonts")
-    css = CSS % {"F": F, "BT": BT, "BH": BH, "SUBT": BT + BH + 70}
+    bt = 560 if c.get("look") == "ejls" else BT
+    css = CSS % {"F": F, "BT": bt, "BH": BH, "SUBT": bt + BH + 50}
     s = "<html><head><meta charset='utf-8'><style>%s</style></head><body>" % css
     s += "<div class='hook'><div class='ep'>%s</div><br>%s</div>" % (c.get("ep", ""), "<br>".join("<span class='hl'>%s</span>" % h for h in c["hook"].split("|")))
     lt = t - ev["st"]
@@ -168,7 +173,12 @@ def frame(c, ev, t, total):
         s += "<div class='think' style='opacity:%.2f;transform:translateY(%.0fpx)'><span>%s</span></div>" % (e, (1 - e) * 20, ev["mm"])
     s += "</div>"
     # ----- subtitles under the band (spoken lines) -----
-    if ev.get("who"):
+    if ev.get("who") and c.get("look") == "ejls":     # Ye 11/28: clean anime-subtitle look (Burmese above, big Japanese below)
+        n = len(plain(ev["jp"]))
+        px = 70 if n <= 14 else max(int(70 * 14 / n), 44)
+        s += ("<div class='ej'><div class='m2'>%s</div><div class='j2' style='font-size:%dpx'>%s</div></div>"
+              % (ev["mm"], px, hl(ev["jp"])))
+    elif ev.get("who"):
         who = ev["who"]
         col = COL[list(c["voicevox"]).index(who) % len(COL)]
         e = ease(c01(lt / 0.25))
