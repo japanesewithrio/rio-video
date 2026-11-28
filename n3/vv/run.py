@@ -15,6 +15,6 @@ for j in json.load(open(os.path.join(H, "lines.json"))):
     sid = ids.get((j["speaker"], j.get("style", "ノーマル"))) or ids[(j["speaker"], "ノーマル")]
     q = requests.post(VV + "/audio_query", params={"text": j["text"], "speaker": sid}, timeout=120).json()
     q["speedScale"] = j.get("speed", 1.05); q["pitchScale"] = j.get("pitch", 0); q["volumeScale"] = j.get("volume", 1)
-    q["intonationScale"] = j.get("into", 1.0); q["prePhonemeLength"] = 0.05; q["postPhonemeLength"] = 0.1
+    q["intonationScale"] = j.get("into", 1.15); q["prePhonemeLength"] = 0.05; q["postPhonemeLength"] = 0.1
     open(dst, "wb").write(requests.post(VV + "/synthesis", params={"speaker": sid}, json=q, timeout=300).content)
     print("OK", j["out"], j["speaker"], j.get("style"))
