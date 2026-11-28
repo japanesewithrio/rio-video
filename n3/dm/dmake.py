@@ -81,7 +81,12 @@ def still(l):
         im = im.resize((w, hp), Image.LANCZOS); bg.alpha_composite(im, (int(ch[1] * W - w / 2), int((ch[3] if len(ch) > 3 else 0.06) * BH)))
     return bg.convert("RGB")
 def last_frame(mp4, png):
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.15", "-i", mp4, "-frames:v", "1", "-vf", "scale=%d:%d" % (W, BH), png], check=True)
+    dur = float(sh('ffprobe -v error -show_entries format=duration -of csv=p=0 "%s"' % mp4) or 0)
+    for back in (0.12, 0.3, 0.6, 1.0):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", "%.2f" % max(0, dur - back), "-i", mp4, "-frames:v", "1", "-vf", "scale=%d:%d" % (W, BH), png])
+        if os.path.exists(png) and os.path.getsize(png) > 1000:
+            return
+    raise RuntimeError("no last frame from " + mp4)
 WSK = os.environ["WAVESPEED_API_KEY"]; WH = {"Authorization": "Bearer " + WSK, "Content-Type": "application/json"}
 def s2v(img_url, wav_url, prompt, dst):
     r = requests.post("https://api.wavespeed.ai/api/v3/wavespeed-ai/wan-2.2/speech-to-video", headers=WH,
