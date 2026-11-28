@@ -99,6 +99,7 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .ej{position:absolute;left:30px;right:30px;top:%(SUBT)dpx;text-align:center}
 .ej .m2{font-family:My;font-size:42px;color:#fff;line-height:1.6;text-shadow:0 0 6px #000,0 0 3px #000,2px 2px 0 #000;text-wrap:balance}
 .ej .j2{font-family:Round;color:#fff;line-height:1.45;margin-top:18px;-webkit-text-stroke:10px #000;paint-order:stroke fill;text-wrap:balance}
+.ej .pill{white-space:nowrap}
 .ej .j2 rt{font-size:.45em;color:#ffe08a;-webkit-text-stroke:5px #000}
 .recap{position:absolute;left:50px;right:50px;top:440px;background:#fff;border-radius:40px;padding:40px 46px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .recap h2{margin:0 0 26px;font-size:54px;color:#2a9d5f}
@@ -123,7 +124,7 @@ def frame(c, ev, t, total):
     if ev["kind"] == "recap":
         r = c["recap"]
         p = back(c01(lt / 0.5))
-        s += "<div class='recap' style='transform:scale(%.3f);opacity:%.2f'><h2>%s</h2>" % (0.7 + 0.3 * p, c01(lt / 0.25), r["title"])
+        s += "<div class='recap' style='transform:scale(%.3f);opacity:%.2f'><h2>%s</h2>" % (0.7 + 0.3 * p, c01(lt / 0.25), hl(r["title"]))
         for k, (j, m) in enumerate(r["items"]):
             e = ease(c01((lt - 0.5 - k * 0.6) / 0.35))
             s += "<div class='ri' style='opacity:%.2f;transform:translateX(%.0fpx)'><div class='j'>%s</div><div class='m'>%s</div></div>" % (e, (1 - e) * 60, hl(j), m)
