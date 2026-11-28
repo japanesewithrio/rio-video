@@ -1,7 +1,7 @@
 name: snd2
 on:
   push:
-    paths: ["n3/snd/fetch.py"]
+    paths: ["n3/snd/fetch.py", "n3/snd/ace.json"]
 permissions:
   contents: write
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - run: pip install -q gradio_client requests
       - env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python -u n3/snd/fetch.py
+        run: python -u n3/snd/fetch.py; python -u n3/snd/ace.py
       - if: always()
         run: |
           git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"

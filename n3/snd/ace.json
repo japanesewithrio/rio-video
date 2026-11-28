@@ -1,0 +1,16 @@
+[
+ {
+  "out": "karaoke_bucho_a.wav",
+  "dur": 22,
+  "seed": 7,
+  "prompt": "Japanese enka ballad, mature male singer in his fifties singing passionately with strong vibrato and kobushi, a bit off-key and over-dramatic like an office manager at karaoke, slow tempo, strings, electric piano, reverb",
+  "lyrics": "[verse]\n金曜日の夜は〜\n部下と二人で〜\nああ〜 酒よ〜\n明日も 頑張ろう〜"
+ },
+ {
+  "out": "karaoke_bucho_b.wav",
+  "dur": 22,
+  "seed": 21,
+  "prompt": "Japanese enka, middle-aged man karaoke singing, emotional vibrato, slightly out of tune, slow, strings and electric piano, reverb",
+  "lyrics": "[verse]\n金曜日の夜は〜\n部下と二人で〜\nああ〜 酒よ〜\n明日も 頑張ろう〜"
+ }
+]
