@@ -400,7 +400,9 @@ def main():
     if BG.get("moon"):
         Image.open(os.path.join(A, BG["moon"])).convert("RGB").resize((1080, 608)).save(os.path.join(tmp, "moon.jpg")); bgs["moon"] = os.path.join(tmp, "moon.jpg")
     asyncio.run(shoot(evs, total, env, bgs, tmp))
-    y = y * (0.89 / (np.max(np.abs(y)) + 1e-6))      # one fixed gain for the whole mix (no wobble)
+    act = y[np.abs(y) > .01]                          # one fixed gain (no wobble) + soft limiter for the peaks
+    y = y * (.16 / (np.sqrt(np.mean(act ** 2)) + 1e-6))
+    y = np.tanh(y * 1.1) * .92
     wv = os.path.join(tmp, "a.wav")
     with wave.open(wv, "wb") as o:
         o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
