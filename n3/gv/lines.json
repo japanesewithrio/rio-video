@@ -62,13 +62,13 @@
  {
   "out": "kb_11.wav",
   "voice": "Achird",
-  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: talking to the camera, thoughtful, with a light wry smile. Say only the line.",
+  "style": "Say this in Japanese, as a young man talking to himself with a wry smile:",
   "text": "日本語って、分かったつもりでも、実際に話すと難しいんだよな。"
  },
  {
   "out": "kb_12.wav",
   "voice": "Laomedeia",
-  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: gentle warm narration, slow and calm. Say only the line.",
+  "style": "Say this in Japanese, as a gentle warm female narrator:",
   "text": "でも、少しずつ慣れていけばいい。"
  }
 ]
