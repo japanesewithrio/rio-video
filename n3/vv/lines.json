@@ -76,5 +76,78 @@
   "text": "やった……のかな？",
   "volume": 0.8,
   "speed": 0.95
+ },
+ {
+  "out": "v3_01.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "あ、電話だ！ もしもし〜！",
+  "volume": 1.2
+ },
+ {
+  "out": "v3_02.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "ちょっと！ 電車の中で電話はダメだよ！",
+  "volume": 0.7,
+  "speed": 1.1
+ },
+ {
+  "out": "v3_03.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "え、そうなの？",
+  "volume": 0.6
+ },
+ {
+  "out": "v3_04.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "うん。マナーモードにして、あとでかけ直すの。",
+  "volume": 0.7
+ },
+ {
+  "out": "v3_05.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "……もしもし、今、電車なので、あとでかけ直します。",
+  "volume": 0.55,
+  "speed": 1.0
+ },
+ {
+  "out": "v3_06.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "どう？ 完璧でしょ？",
+  "volume": 0.75
+ },
+ {
+  "out": "v3_07.wav",
+  "speaker": "WhiteCUL",
+  "style": "たのしい",
+  "text": "うん、えらい、えらい。",
+  "volume": 0.75
+ },
+ {
+  "out": "v3_08.wav",
+  "speaker": "WhiteCUL",
+  "style": "びえーん",
+  "text": "あっ！ わ、私の……！"
+ },
+ {
+  "out": "v3_09.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "……電車の中で電話は、ダメだよ？",
+  "volume": 0.7,
+  "speed": 0.95,
+  "into": 1.3
+ },
+ {
+  "out": "v3_10.wav",
+  "speaker": "WhiteCUL",
+  "style": "かなしい",
+  "text": "……すみません。",
+  "volume": 0.7
  }
 ]
