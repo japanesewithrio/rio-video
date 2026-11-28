@@ -1,0 +1,46 @@
+name: av
+on:
+  push:
+    paths: ["n3/av/trigger.txt"]
+permissions:
+  contents: write
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: list AivisHub models
+        run: |
+          for s in download like created_at; do
+            curl -s "https://api.aivis-project.com/v1/aivm-models/search?sort=$s&limit=30" -o /tmp/s_$s.json || true
+          done
+          python3 - <<'PY'
+          import json,glob
+          out={}
+          for f in glob.glob('/tmp/s_*.json'):
+              try: d=json.load(open(f))
+              except Exception as e: print(f,e,open(f).read()[:300]); continue
+              for m in d.get('aivm_models',[]):
+                  out[m['aivm_model_uuid']]=dict(name=m.get('name'),license=m.get('license_type') or m.get('license'),
+                    category=m.get('category'),voice_timbre=m.get('voice_timbre'),downloads=m.get('total_download_count'),
+                    likes=m.get('like_count'),desc=(m.get('description') or '')[:200],
+                    styles=[[st.get('name') for st in sp.get('styles',[])] for sp in m.get('speakers',[])],
+                    tags=[t.get('name') for t in m.get('tags',[])] if m.get('tags') else None)
+          json.dump(out,open('n3/av/models.json','w'),ensure_ascii=False,indent=1)
+          print(len(out))
+          PY
+      - name: synth
+        if: hashFiles('n3/av/pick.json') != ''
+        run: |
+          mkdir -p ~/.local/share/AivisSpeech-Engine/Models && chmod -R 777 ~/.local/share/AivisSpeech-Engine
+          for u in $(python3 -c "import json;print(' '.join(json.load(open('n3/av/pick.json'))))"); do
+            curl -sL "https://api.aivis-project.com/v1/aivm-models/$u/download?model_type=AIVMX" -o ~/.local/share/AivisSpeech-Engine/Models/$u.aivmx; ls -la ~/.local/share/AivisSpeech-Engine/Models/$u.aivmx
+          done
+          chmod -R 777 ~/.local/share/AivisSpeech-Engine
+          docker run -d --name av -p 10101:10101 -v ~/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 120); do curl -s localhost:10101/version && break; sleep 5; done; echo
+          pip install -q requests && VV=http://localhost:10101 python -u n3/av/run.py || docker logs av | tail -50
+      - run: |
+          git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com
+          git add n3/av n3/gv/out && git commit -qm "av [skip ci]" && for k in 1 2 3 4 5; do git pull -q --rebase && git push -q && break; sleep 7; done || echo nothing
