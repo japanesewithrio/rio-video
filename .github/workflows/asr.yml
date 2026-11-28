@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: pip install -q faster-whisper
       - run: |
-          f=$(ls n3/dm/*/raw/all.wav | head -1); python -u n3/dm/asr.py $f ${f%.wav}.json
+          f=$(ls n3/dm/*/raw/all.wav | tail -1); python -u n3/dm/asr.py $f ${f%.wav}.json
           git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com
           git add n3/dm && git commit -qm "asr [skip ci]" && git pull -q --rebase && git push -q || true
