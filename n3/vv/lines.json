@@ -154,72 +154,77 @@
   "out": "v4_01.wav",
   "speaker": "玄野武宏",
   "style": "ノーマル",
-  "text": "ミオ、遅いなあ……。",
-  "volume": 0.85
+  "text": "ミオ、遅いなあ。",
+  "force": true
  },
  {
   "out": "v4_02.wav",
   "speaker": "WhiteCUL",
-  "style": "ノーマル",
-  "text": "リオくん、お待たせ！ ……どう、かな？"
+  "style": "たのしい",
+  "text": "リオくん、お待たせ！ どう、かな？",
+  "force": true
  },
  {
   "out": "v4_03.wav",
   "speaker": "玄野武宏",
   "style": "ノーマル",
-  "text": "……き、きれい……。",
-  "volume": 0.6,
-  "speed": 0.9
+  "text": "き、きれい……。",
+  "force": true
  },
  {
   "out": "v4_04.wav",
   "speaker": "玄野武宏",
   "style": "ノーマル",
   "text": "え、えっと、その……に、にあ……",
-  "speed": 0.95
+  "force": true
  },
  {
   "out": "v4_05.wav",
   "speaker": "WhiteCUL",
   "style": "ノーマル",
-  "text": "「にあ」？",
-  "into": 1.4
+  "text": "にあ？",
+  "force": true
  },
  {
   "out": "v4_06.wav",
   "speaker": "玄野武宏",
   "style": "喜び",
-  "text": "……に、肉！ 肉、食べに行こう！"
+  "text": "に、肉！ 肉、食べに行こう！",
+  "force": true
  },
  {
   "out": "v4_07.wav",
   "speaker": "WhiteCUL",
   "style": "かなしい",
-  "text": "もう……。"
+  "text": "もう……。",
+  "force": true
  },
  {
   "out": "v4_08.wav",
   "speaker": "WhiteCUL",
   "style": "ノーマル",
-  "text": "ねえ、ミャンマー語で「きれい」って、何て言うの？"
+  "text": "ねえ、ミャンマー語で、きれいって、何て言うの？",
+  "force": true
  },
  {
   "out": "v4_09.wav",
   "speaker": "玄野武宏",
   "style": "ノーマル",
-  "text": "「フラデー」だよ。"
+  "text": "フラデ、だよ。",
+  "force": true
  },
  {
   "out": "v4_10.wav",
   "speaker": "WhiteCUL",
   "style": "たのしい",
-  "text": "じゃあ……リオくんも、フラデー！"
+  "text": "じゃあ、リオくんも、フラデ！",
+  "force": true
  },
  {
   "out": "v4_11.wav",
   "speaker": "玄野武宏",
   "style": "ノーマル",
-  "text": "……っ！",
-  "volume": 0.8
+  "text": "えっ……！",
+  "force": true
  }
 ]
