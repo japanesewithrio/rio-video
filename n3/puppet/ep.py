@@ -55,9 +55,10 @@ OUT = "puppet_ep1.mp4"
 MUSIC = "n3/snd/out/bgm_wholesome.mp3"
 SWAY = 0
 AMB = None
+TABLE = False
 FULL = None          # e.g. {"rio": "myanmar", "mio": "myanmar"}: full-body figures
 LEFT_ARM = {"wave", "clap"}
-RIGHT_ARM = {"scratch", "facepalm", "thumb", "point_self", "phone_ear", "shh", "phone_out", "clap", "point"}
+RIGHT_ARM = {"fan", "glass", "spoon", "scratch", "facepalm", "thumb", "point_self", "phone_ear", "shh", "phone_out", "clap", "point"}
 BG = {"two": ("pp_bg_night.png", 4), "cu": ("pp_bg_night.png", 9), "moon": "pp_moon.png"}
 LN = "stroke='#3b2a24' stroke-linejoin='round' stroke-linecap='round'"
 
@@ -91,6 +92,18 @@ def arms(c, pose, t):
         return arm(c, (150, 230), (170, 380), (50, 290), fist="point")
     if pose == "wave":
         return arm(c, (-150, 230), (-240, 150), (-210, 10), fist="palm", osc=o * .6)
+    if pose == "fan":          # fanning the mouth (too spicy!)
+        o2 = math.sin(t * 26) * 22
+        return arm(c, (150, 230), (220, 230), (70 + o2, 90), fist="palm")
+    if pose == "glass":        # holding out a glass of water
+        a = arm(c, (150, 230), (230, 300), (180, 210))
+        return a + ("<rect x='150' y='120' width='54' height='80' rx='8' fill='#cfe9ff' opacity='.9' %s stroke-width='3'/>"
+                    "<rect x='154' y='150' width='46' height='46' rx='6' fill='#8fc8f5' opacity='.8'/>" % LN) + \
+            "<circle cx='180' cy='210' r='27' fill='%s' %s stroke-width='3.5'/>" % (c["skin"], LN)
+    if pose == "spoon":        # spoon up to the mouth
+        a = arm(c, (150, 230), (200, 300), (60, 150))
+        return a + "<path d='M 60 150 L 14 92' stroke='#b9bfc8' stroke-width='9' stroke-linecap='round'/><ellipse cx='10' cy='86' rx='16' ry='11' fill='#d7dce3' %s stroke-width='2'/>" % LN + \
+            "<circle cx='60' cy='150' r='27' fill='%s' %s stroke-width='3.5'/>" % (c["skin"], LN)
     if pose == "point":        # pointing toward the viewer / the other person
         return arm(c, (150, 230), (230, 250), (190, 140), fist="point")
     if pose == "phone_ear":    # holding a phone to the right ear
@@ -278,6 +291,15 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
             chars = char(P.RIO, 540, 300, 1.3, params(ev, "rio", t, env, i), t, ev.get("pose", {}).get("rio", ""))
         else:
             chars = char(P.MIO, 540, 305, 1.27, params(ev, "mio", t, env, i), t, ev.get("pose", {}).get("mio", ""))
+        if TABLE:
+            tb = ("<rect x='-60' y='520' width='1200' height='120' fill='#b9875a' stroke='#3b2a24' stroke-width='4'/>"
+                  "<rect x='-60' y='512' width='1200' height='16' fill='#d6a674' stroke='#3b2a24' stroke-width='3'/>")
+            if ev["shot"] in ("two", "two_up"):
+                for bx in (330, 750):
+                    tb += ("<ellipse cx='%d' cy='520' rx='86' ry='22' fill='#f3efe6' stroke='#3b2a24' stroke-width='3'/>"
+                           "<path d='M %d 520 q 86 70 172 0' fill='#e9e2d2' stroke='#3b2a24' stroke-width='3'/>"
+                           "<ellipse cx='%d' cy='516' rx='70' ry='14' fill='#e0a640'/>" % (bx, bx - 86, bx))
+            chars += tb
         svg = ("<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='608' viewBox='0 0 1080 608'>%s"
                "<g transform='translate(%.1f 0) translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS + FB.PAT, sway, zoom, chars))
         body += "<div class='band'><img src='file://%s' style='transform:translate(%.1fpx,0) scale(1.02)'>%s</div>" % (bgs["two" if ev["shot"] in ("two", "two_up") else "cu"], sway * .6, svg)
@@ -392,7 +414,7 @@ if __name__ == "__main__":
     import sys, importlib
     if len(sys.argv) > 1:          # python ep.py script_ep2  -> use EP/RECAP/HOOK/BG/OUT/MUSIC from that module
         m = importlib.import_module(sys.argv[1])
-        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC", "SWAY", "AMB", "FULL"):
+        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC", "SWAY", "AMB", "FULL", "TABLE"):
             if hasattr(m, k):
                 globals()[k] = getattr(m, k)
     main()
