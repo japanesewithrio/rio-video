@@ -94,5 +94,113 @@
   "voice": "Achird",
   "style": "Say this in Japanese, as a young man whispering to himself in despair:",
   "text": "……また、やっちゃった。"
+ },
+ {
+  "out": "rm_00.wav",
+  "voice": "Algenib",
+  "style": "A friendly Japanese ramen shop cook about 45; warm, energetic, a little gruff, typical ramen shop voice. Speak this Japanese line naturally, at normal native speed, in this manner: loud cheerful shop greeting. Say only the line.",
+  "text": "いらっしゃいませー！"
+ },
+ {
+  "out": "rm_01.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: calling the staff casually, a bit too relaxed. Say only the line.",
+  "text": "すみませーん、注文いいですか？"
+ },
+ {
+  "out": "rm_02.wav",
+  "voice": "Algenib",
+  "style": "A friendly Japanese ramen shop cook about 45; warm, energetic, a little gruff, typical ramen shop voice. Speak this Japanese line naturally, at normal native speed, in this manner: friendly but quick, pointing to the entrance. Say only the line.",
+  "text": "あ、先に食券をお願いします。"
+ },
+ {
+  "out": "rm_03.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: confused murmur to himself, quiet. Say only the line.",
+  "text": "しょっけん……？　なにそれ……。"
+ },
+ {
+  "out": "rm_04.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, playful voice, talking to a close friend. Speak this Japanese line naturally, at normal native speed, in this manner: teasing, amused, explaining. Say only the line.",
+  "text": "ほら、入口に機械あるでしょ。あれで買ってから座るんだよ。"
+ },
+ {
+  "out": "rm_05.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: complaining, half laughing. Say only the line.",
+  "text": "えっ、先に言ってくれればいいのに！"
+ },
+ {
+  "out": "rm_06.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, playful voice, talking to a close friend. Speak this Japanese line naturally, at normal native speed, in this manner: laughing, playful. Say only the line.",
+  "text": "だって、面白そうだったから。あはは"
+ },
+ {
+  "out": "rm_07.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: overwhelmed, muttering. Say only the line.",
+  "text": "全部漢字じゃん……。これ、ラーメンっぽい？"
+ },
+ {
+  "out": "rm_08.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, playful voice, talking to a close friend. Speak this Japanese line naturally, at normal native speed, in this manner: flat deadpan, holding back a laugh. Say only the line.",
+  "text": "それ、ギョーザ。"
+ },
+ {
+  "out": "rm_09.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: proud and confident, handing over the ticket. Say only the line.",
+  "text": "お願いします！"
+ },
+ {
+  "out": "rm_10.wav",
+  "voice": "Algenib",
+  "style": "A friendly Japanese ramen shop cook about 45; warm, energetic, a little gruff, typical ramen shop voice. Speak this Japanese line naturally, at normal native speed, in this manner: quick routine question, friendly. Say only the line.",
+  "text": "麺のかたさは、どうしますか？"
+ },
+ {
+  "out": "rm_11.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: caught off guard, stammering. Say only the line.",
+  "text": "か、かたさ……？"
+ },
+ {
+  "out": "rm_12.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, playful voice, talking to a close friend. Speak this Japanese line naturally, at normal native speed, in this manner: whispering quietly. Say only the line.",
+  "text": "「ふつうで」って言えばいいよ。"
+ },
+ {
+  "out": "rm_13.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: nervous but trying hard, a little loud. Say only the line.",
+  "text": "ふ、ふつうでお願いします！"
+ },
+ {
+  "out": "rm_14.wav",
+  "voice": "Algenib",
+  "style": "A friendly Japanese ramen shop cook about 45; warm, energetic, a little gruff, typical ramen shop voice. Speak this Japanese line naturally, at normal native speed, in this manner: quick and cheerful follow-up question. Say only the line.",
+  "text": "ニンニク入れますか？"
+ },
+ {
+  "out": "rm_15.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: panicking, tiny weak voice. Say only the line.",
+  "text": "……だ、大丈夫です。"
+ },
+ {
+  "out": "rm_16.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, playful voice, talking to a close friend. Speak this Japanese line naturally, at normal native speed, in this manner: laughing, teasing. Say only the line.",
+  "text": "また「大丈夫」？"
+ },
+ {
+  "out": "rm_17.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: eating, then truly moved and happy. Say only the line.",
+  "text": "うまっ！　日本語は難しいけど、ラーメンは最高だな。"
  }
 ]
