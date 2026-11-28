@@ -240,6 +240,11 @@ def sfx_audio(kind, dur):
         while t < dur - 0.1:
             i = int(t * SR); b = rng.standard_normal(1200).astype(np.float32) * np.exp(-np.arange(1200) / 180)
             x[i:i + 1200] += b * rng.uniform(0.6, 1.0); t += rng.uniform(0.28, 0.4)
+    elif kind == "don":      # comedy "freeze" hit: low thump + falling tone
+        t = np.arange(n) / SR
+        x += (np.sin(2 * np.pi * 55 * t) * np.exp(-t * 5) * 0.9).astype(np.float32)
+        f = 520 * np.exp(-t * 2.2)
+        x += (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 3) * 0.25).astype(np.float32)
     elif kind == "steps":
         t = 0.05
         while t < dur - 0.1:
