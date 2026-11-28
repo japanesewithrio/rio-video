@@ -215,5 +215,65 @@
   "speaker": "玄野武宏",
   "style": "ノーマル",
   "text": "えっ……！"
+ },
+ {
+  "out": "v5_01.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "今日は、ミャンマー料理を作ったよ！"
+ },
+ {
+  "out": "v5_02.wav",
+  "speaker": "WhiteCUL",
+  "style": "たのしい",
+  "text": "わあ、いいにおい！ これ、なに？"
+ },
+ {
+  "out": "v5_03.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "モヒンガー。ミャンマーの朝ごはんなんだ。"
+ },
+ {
+  "out": "v5_04.wav",
+  "speaker": "WhiteCUL",
+  "style": "たのしい",
+  "text": "いただきます！ ん、おいしい！"
+ },
+ {
+  "out": "v5_05.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "でしょ？ ちょっと辛いけど、大丈夫？"
+ },
+ {
+  "out": "v5_06.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "うん、ぜんぜん大丈夫。"
+ },
+ {
+  "out": "v5_07.wav",
+  "speaker": "WhiteCUL",
+  "style": "びえーん",
+  "text": "からい！ 水、水！"
+ },
+ {
+  "out": "v5_08.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "あはは、ごめんごめん！ はい、お水。"
+ },
+ {
+  "out": "v5_09.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "ふう。でも、また食べたいな。"
+ },
+ {
+  "out": "v5_10.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "ほんと？ じゃあ、また作るね！"
  }
 ]
