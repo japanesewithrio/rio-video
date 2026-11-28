@@ -100,7 +100,8 @@ For EVERY line return an object {"i": index, "who": speaker name or "", "jp": ..
 - jp: the corrected Japanese line exactly as spoken (fix recognition mistakes from context; keep it natural,
   don't add words). Add furigana after every kanji word in this format: 漢字《かんじ》, e.g. 部長《ぶちょう》、今日《きょう》.
 - mm: natural, spoken, funny Burmese (Myanmar Unicode) that a young Burmese person would really say,
-  not word-for-word. Keep jokes and tone. Short enough to read in the line's time.
+  not word-for-word. Keep jokes and tone. Write character names in mm exactly as the value in
+  'Character names' (e.g. Rio), not transliterated. Short enough to read in the line's time.
 Return only a JSON array.
 
 LINES:
