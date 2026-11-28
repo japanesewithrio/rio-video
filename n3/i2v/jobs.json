@@ -1,23 +1,16 @@
 [
  {
-  "in": "rm_cu_mio_laugh.jpg",
-  "out": "d213_laugh.mp4",
-  "dur": 2.5,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, talking",
-  "prompt": "The young woman laughs happily with her eyes closed, shoulders shaking, hand over her mouth. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
+  "in": "rm_ext.jpg",
+  "out": "d213_ext.mp4",
+  "dur": 3,
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, people",
+  "prompt": "Night street in front of the ramen shop: the noren curtain sways gently in the wind, the red lantern swings a little, steam drifts from the vent, light rain drops sparkle. Slow camera push in toward the door. Korean web animation style, keep exactly the same flat 2D art style. Smooth, natural motion."
  },
  {
-  "in": "rm_ramen.jpg",
-  "out": "d213_ramen.mp4",
+  "in": "rm_walk.jpg",
+  "out": "d213_walk.mp4",
   "dur": 2.5,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, talking",
-  "prompt": "Steam rises gently from the hot bowl of ramen, the soup shimmers. Slow camera push in. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
- },
- {
-  "in": "rm_cu_rio_freeze.jpg",
-  "out": "d213_freeze.mp4",
-  "dur": 2,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, talking, calm face",
-  "prompt": "The young man stays frozen in surprise, eyes wide, he blinks once, the small sweat drop slides down. Very slow push in. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake",
+  "prompt": "The young man walks away from the counter toward the ticket machine at the entrance; the young woman sitting at the counter watches him with an amused grin. Camera still. Korean web animation style, keep exactly the same flat 2D art style. Smooth, natural motion."
  }
 ]

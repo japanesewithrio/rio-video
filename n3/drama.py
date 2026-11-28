@@ -103,6 +103,7 @@ body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;ba
 .ej .pill{white-space:nowrap}
 .ej .j2 rt{font-size:.45em;color:#ffe08a;-webkit-text-stroke:5px #000}
 .recap{position:absolute;left:50px;right:50px;top:440px;background:#fff;border-radius:40px;padding:40px 46px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.nx{margin-top:26px;text-align:center;font-family:My,Round;font-size:38px;color:#e0607e;line-height:1.5}
 .recap h2{margin:0 0 26px;font-size:54px;color:#2a9d5f}
 .ri{border-bottom:2px dashed #e5e5e5;padding:16px 0}
 .ri .j{font-size:50px;color:#222}.ri .j rt{font-size:.5em;color:#888}
@@ -129,6 +130,9 @@ def frame(c, ev, t, total):
         for k, (j, m) in enumerate(r["items"]):
             e = ease(c01((lt - 0.5 - k * 0.6) / 0.35))
             s += "<div class='ri' style='opacity:%.2f;transform:translateX(%.0fpx)'><div class='j'>%s</div><div class='m'>%s</div></div>" % (e, (1 - e) * 60, hl(j), m)
+        if c.get("next"):
+            e = c01((lt - 0.5 - len(r["items"]) * 0.6) / 0.4)
+            s += "<div class='nx' style='opacity:%.2f'>%s</div>" % (e, c["next"])
         return s + "</div></body></html>"
     # ----- picture band -----
     s += "<div class='band'>"
@@ -258,6 +262,18 @@ def sfx_audio(kind, dur):
             i = int(t * SR); m = int(0.07 * SR)
             x[i:i + m] += (np.sin(2 * np.pi * 2900 * np.arange(m) / SR) * 0.25).astype(np.float32)[:len(x) - i]
             t += rng.uniform(0.45, 0.8)
+    elif kind == "slurp":    # noodle slurp: two short swishy bursts
+        for st in (0.0, 0.45):
+            i = int(st * SR); m = int(0.35 * SR)
+            b = rng.standard_normal(m).astype(np.float32)
+            b = np.convolve(b, np.ones(6) / 6, "same") - np.convolve(b, np.ones(60) / 60, "same")
+            env = np.sin(np.linspace(0, np.pi, m)) ** 2
+            x[i:i + m] += (b * env * 1.6)[:len(x) - i]
+    elif kind == "click":    # button press
+        m = int(0.03 * SR); x[:m] += (rng.standard_normal(m) * np.exp(-np.arange(m) / 80)).astype(np.float32) * 0.8
+    elif kind == "print":    # ticket printer buzz
+        m = min(n, int(0.6 * SR)); t = np.arange(m) / SR
+        x[:m] += (np.sign(np.sin(2 * np.pi * 140 * t)) * 0.12 * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t))).astype(np.float32)
     elif kind == "steps":
         t = 0.05
         while t < dur - 0.1:
