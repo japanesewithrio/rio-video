@@ -1,0 +1,80 @@
+[
+ {
+  "out": "v2_01.wav",
+  "speaker": "WhiteCUL",
+  "style": "たのしい",
+  "text": "じゃあ、面接の練習しよう！ 私が店長ね。"
+ },
+ {
+  "out": "v2_02.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "よろしくお願いします！"
+ },
+ {
+  "out": "v2_03.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "では、志望動機を教えてください。",
+  "speed": 1.0
+ },
+ {
+  "out": "v2_04.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "えっと……お腹が空いているからです！"
+ },
+ {
+  "out": "v2_05.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "……正直すぎ！",
+  "into": 1.5
+ },
+ {
+  "out": "v2_06.wav",
+  "speaker": "玄野武宏",
+  "style": "悲しみ",
+  "text": "え、だめ？"
+ },
+ {
+  "out": "v2_07.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "「御社で成長したいからです」って言うの。"
+ },
+ {
+  "out": "v2_08.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "おんしゃ……？",
+  "speed": 0.9,
+  "into": 1.4
+ },
+ {
+  "out": "v2_09.wav",
+  "speaker": "WhiteCUL",
+  "style": "ノーマル",
+  "text": "じゃあ、もう一回。志望動機は？"
+ },
+ {
+  "out": "v2_10.wav",
+  "speaker": "玄野武宏",
+  "style": "喜び",
+  "text": "御社で、まかないを食べて成長したいからです！"
+ },
+ {
+  "out": "v2_11.wav",
+  "speaker": "WhiteCUL",
+  "style": "たのしい",
+  "text": "あはは！……合格、かも。"
+ },
+ {
+  "out": "v2_12.wav",
+  "speaker": "玄野武宏",
+  "style": "ノーマル",
+  "text": "やった……のかな？",
+  "volume": 0.8,
+  "speed": 0.95
+ }
+]
