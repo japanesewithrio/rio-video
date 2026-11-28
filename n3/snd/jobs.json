@@ -1,7 +1,37 @@
-[{"out": "bgm_office_comedy", "dur": 45, "prompt": "Light playful comedy background music for a Japanese TV sitcom, pizzicato strings, soft marimba, bassoon, bouncy and cheeky, gentle, instrumental, 110 BPM, loopable"},
- {"out": "bgm_sad_comedy", "dur": 20, "prompt": "Short comedic sad trombone and slow pizzicato, funny disappointment sting for a sitcom, instrumental"},
- {"out": "amb_office", "dur": 30, "prompt": "Quiet Japanese office room tone, soft keyboard typing, distant phone ring, air conditioner hum, people murmuring far away, no music"},
- {"out": "amb_karaoke", "dur": 30, "prompt": "Small karaoke box room ambience, muffled music from neighboring rooms, air conditioning, glasses clinking, no clear music"},
- {"out": "karaoke_backing", "dur": 40, "prompt": "Japanese enka karaoke backing track, dramatic shamisen-free version with strings, electric piano, slow 4/4, cheesy and emotional, instrumental only, no vocals"},
- {"out": "sfx_clap", "dur": 4, "prompt": "Two people clapping politely, small room"},
- {"out": "sfx_footsteps_run", "dur": 4, "prompt": "Fast footsteps running away on an office floor, then a door closing"}]
+[
+ {
+  "out": "bgm_office_comedy",
+  "dur": 44,
+  "prompt": "Light playful comedy background music for a Japanese TV sitcom, pizzicato strings, soft marimba, bassoon, bouncy and cheeky, gentle, instrumental, 110 BPM, loopable"
+ },
+ {
+  "out": "bgm_sad_comedy",
+  "dur": 20,
+  "prompt": "Short comedic sad trombone and slow pizzicato, funny disappointment sting for a sitcom, instrumental"
+ },
+ {
+  "out": "amb_office",
+  "dur": 30,
+  "prompt": "Quiet Japanese office room tone, soft keyboard typing, distant phone ring, air conditioner hum, people murmuring far away, no music"
+ },
+ {
+  "out": "amb_karaoke",
+  "dur": 30,
+  "prompt": "Small karaoke box room ambience, muffled music from neighboring rooms, air conditioning, glasses clinking, no clear music"
+ },
+ {
+  "out": "karaoke_backing",
+  "dur": 40,
+  "prompt": "Japanese enka karaoke backing track, dramatic shamisen-free version with strings, electric piano, slow 4/4, cheesy and emotional, instrumental only, no vocals"
+ },
+ {
+  "out": "sfx_clap",
+  "dur": 4,
+  "prompt": "Two people clapping politely, small room"
+ },
+ {
+  "out": "sfx_footsteps_run",
+  "dur": 4,
+  "prompt": "Fast footsteps running away on an office floor, then a door closing"
+ }
+]
