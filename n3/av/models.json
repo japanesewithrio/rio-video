@@ -1,0 +1,659 @@
+{
+ "e9339137-2ae3-4d41-9394-fb757a7e61e6": {
+  "name": "まい",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 20647,
+  "likes": 183,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "妖艶な女性"
+  ]
+ },
+ "47e53151-a378-46f3-abee-ce13aa07feb1": {
+  "name": "阿井田 茂",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "MiddleAgedMale",
+  "downloads": 32497,
+  "likes": 182,
+  "desc": "阿井田 茂（あいだ しげる）　\nCV：古山キリヲ\n\n通称：モアイさん\nバリトンボイスの朗らかおじさん",
+  "styles": [
+   [
+    "ノーマル",
+    "Calm",
+    "Far",
+    "Heavy",
+    "Mid",
+    "Shout",
+    "Surprise"
+   ]
+  ],
+  "tags": [
+   "文化系心臓部"
+  ]
+ },
+ "a670e6b8-0852-45b2-8704-1bc9862f2fe6": {
+  "name": "花音",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 16324,
+  "likes": 170,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "Aivis",
+   "Cloud",
+   "API",
+   "は、高速かつ高品質な日本語音声合成をクラウドで利用できる音声合成",
+   "です。"
+  ]
+ },
+ "6d11c6c2-f4a4-4435-887e-23dd60f8b8dd": {
+  "name": "にせ",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulMale",
+  "downloads": 25208,
+  "likes": 132,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "自分の将来に不安を抱えている感じ"
+  ]
+ },
+ "4f281e78-eba6-495a-8e50-5c322d02b5b1": {
+  "name": "るな",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 10142,
+  "likes": 100,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "大好きだよ"
+  ]
+ },
+ "baaae3c0-7b22-4605-8ba5-80c959b41a48": {
+  "name": "morioki",
+  "license": null,
+  "category": "LivingPerson",
+  "voice_timbre": "AdultFemale",
+  "downloads": 21249,
+  "likes": 100,
+  "desc": "一般的な女性の声として使用できるボイスモデルです。\n\nボイス提供：もりおき (X：@morioki_5)\nモデル作成：yuki (X：@ai_shirohana)",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "「え？これ、ピアスじゃないの！？」",
+   "実は…樹脂ノンホールピアスなんです。"
+  ]
+ },
+ "3328da9a-8124-4619-a853-f7fc2f37889f": {
+  "name": "桜音",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 7487,
+  "likes": 95,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "ウェクェq"
+  ]
+ },
+ "22e8ed77-94fe-4ef2-871f-a86f94e9a579": {
+  "name": "コハク",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 78202,
+  "likes": 91,
+  "desc": "子猫のような甘い声。猫音コハク（©Oz Chat/Trippy）（CV: ねゆたろ / https://x.com/___neyu_zzz）\nクレジットして頂ける際は「AivisSpeech: コハク」をご利用ください。",
+  "styles": [
+   [
+    "ノーマル",
+    "あまあま",
+    "せつなめ",
+    "ねむたい"
+   ]
+  ],
+  "tags": [
+   "オズチャット"
+  ]
+ },
+ "71e72188-2726-4739-9aa9-39567396fb2a": {
+  "name": "fumifumi",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "AdultMale",
+  "downloads": 21010,
+  "likes": 88,
+  "desc": "落ち着いた青年をイメージして作成したボイスモデルです。\n\n制作 黒神(https://x.com/kokushing)\n声 サガワフミヤ(https://x.com/fumi_sagawa)",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "696c98a2-c0b7-4fe7-8cf2-c7e9b8a9bd82": {
+  "name": "ろてじん（長老ボイス）",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "ElderlyMale",
+  "downloads": 13219,
+  "likes": 86,
+  "desc": "老人の声を意識した演技でセリフ収録したボイスモデルです。",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "9107b8b6-1ed1-43f5-bebe-0de4df4d229d": {
+  "name": "中2",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 7444,
+  "likes": 84,
+  "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "f5017410-fbb5-49e1-97cb-e785f42e15f5": {
+  "name": "凛音エル",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 15663,
+  "likes": 82,
+  "desc": "電脳天使工業のAIキャラクター「凛音エル」のボイスモデルです。",
+  "styles": [
+   [
+    "ノーマル",
+    "Angry",
+    "Fear",
+    "Happy",
+    "Sad"
+   ]
+  ],
+  "tags": [
+   "1日目",
+   "6月12日",
+   "台湾到着",
+   "📍牛老大涮牛肉",
+   "台湾で人気の牛肉火鍋を堪能"
+  ]
+ },
+ "a59cb814-0083-4369-8542-f51a29e72af7": {
+  "name": "まお",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 91544,
+  "likes": 81,
+  "desc": "いたずらっ子な小悪魔ボイス。卯畑まお（©Oz Chat/Trippy）（CV: ねゆたろ / https://x.com/___neyu_zzz）\nクレジットして頂ける際は「AivisSpeech: まお」をご利用ください。",
+  "styles": [
+   [
+    "ノーマル",
+    "ふつー",
+    "あまあま",
+    "おちつき",
+    "からかい",
+    "せつなめ"
+   ]
+  ],
+  "tags": [
+   "オズチャット"
+  ]
+ },
+ "59f96896-64d2-4378-830a-4d5feb3d81aa": {
+  "name": "ほのか(~現実20代女子AIボイチェン~リアボVC公式モデル)",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 8125,
+  "likes": 66,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルほのかです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "kanasimi_kanasimi",
+    "uresii_uresii",
+    "hutuu_hutuu",
+    "odoroki_odoroki"
+   ]
+  ],
+  "tags": null
+ },
+ "7fc08a41-b64d-456d-8b22-8e1284674775": {
+  "name": "zonoko",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 4099,
+  "likes": 63,
+  "desc": "OpenGameArtのCC0英語ボイスから音声クローンツールZonosを使用して生成した日本語ボイスを学習させたものです。\n元ボイスのライセンスを継承してcc0とします\n",
+  "styles": [
+   [
+    "ノーマル",
+    "A",
+    "B",
+    "C",
+    "D"
+   ]
+  ],
+  "tags": null
+ },
+ "9f36ec0d-8dac-42dc-aff4-149c5f99faad": {
+  "name": "らせつん",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "Neutral",
+  "downloads": 7451,
+  "likes": 62,
+  "desc": "こずかた学園プロジェクト「らせつん」の音声合成モデルです。\n親しみやすさのある中性ボイスです。\n\n声：上戸恵里（ https://x.com/agato_eri )",
+  "styles": [
+   [
+    "標準",
+    "喜び",
+    "嫌悪",
+    "怒り",
+    "恐怖",
+    "悲しみ",
+    "標準２",
+    "驚き"
+   ]
+  ],
+  "tags": [
+   "はじめまして"
+  ]
+ },
+ "70a875a9-feae-41e6-a586-8cf9e47c6c0b": {
+  "name": "猩々博士 (雑談ボイス)",
+  "license": null,
+  "category": "LivingPerson",
+  "voice_timbre": "AdultMale",
+  "downloads": 5951,
+  "likes": 57,
+  "desc": "Vtuber 猩々博士の配信音声から作成したボイスモデルです",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "test"
+  ]
+ },
+ "2e1fdde8-d089-42d7-b64f-cf89952b1bdc": {
+  "name": "澤原 玄二郎",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulMale",
+  "downloads": 5935,
+  "likes": 52,
+  "desc": "澤原 玄二郎（さわばる げんじろう）\nCV：古山キリヲ\n\nせっかちでヤンチャな猫ヤロー\n好物はピッツァ\nノイズ強めなのは仕様です　\nちゃんと出力後にノイズ除去かけてあげてね",
+  "styles": [
+   [
+    "ノーマル",
+    "close",
+    "close-shout",
+    "far",
+    "far-shout"
+   ]
+  ],
+  "tags": [
+   "けものフレンズアブリッジ"
+  ]
+ },
+ "0f6821f4-9f86-4da1-a41a-fbe6fff9ca88": {
+  "name": "天深シノ",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 4086,
+  "likes": 48,
+  "desc": "人の世界で生活をするために人の格好をしている天使。\n優しい声で話します。",
+  "styles": [
+   [
+    "ノーマル",
+    "じょうきげん",
+    "ふきげん",
+    "ささやき"
+   ]
+  ],
+  "tags": null
+ },
+ "d1a7446f-230d-4077-afdf-923eddabe53c": {
+  "name": "M2",
+  "license": null,
+  "category": "FictionalPerson",
+  "voice_timbre": "YouthfulMale",
+  "downloads": 4398,
+  "likes": 46,
+  "desc": "Style-Bert-VITS2に付属のデフォルト男性２モデル\nボイスサンプル：スタイルの強さ2.0\n\nCC BY-SA 4.0のため再配布",
+  "styles": [
+   [
+    "ノーマル",
+    "怒り",
+    "嫌悪",
+    "恐れ",
+    "幸せ",
+    "悲しみ",
+    "驚き"
+   ]
+  ],
+  "tags": [
+   "あなたの",
+   "血をください"
+  ]
+ },
+ "55696911-05cb-4cd2-bdb9-dbc8bfe6e5c7": {
+  "name": "水巻咲_T2モデル",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 3224,
+  "likes": 41,
+  "desc": "水巻咲　みずまきさき　Mizumaki Saki　(CodeName:MIZUMAKI_SAKI)",
+  "styles": [
+   [
+    "ノーマル",
+    "Negative",
+    "Positive"
+   ]
+  ],
+  "tags": [
+   "朝の電車で、",
+   "ため息を飲み込んでいるお前,,,,オウは",
+   "よく知っている。"
+  ]
+ },
+ "18972473-ca36-4e06-a33a-5cc14adba0c4": {
+  "name": "かりん(現実20代女子AIボイチェン@リアボVC公式モデル)",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 4514,
+  "likes": 36,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルかりんです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "kanasimi_kanasimi",
+    "uresii_uresii",
+    "hutuu_hutuu",
+    "odoroki_odoroki"
+   ]
+  ],
+  "tags": null
+ },
+ "fb04b883-13cb-40ef-b0ea-fad060a408e8": {
+  "name": "大日椛_T2モデル",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 2199,
+  "likes": 35,
+  "desc": "大日椛　だいにちもみじ　Dainichi Momiji　(CodeName:DAINIC^I_MOMIZ^I)",
+  "styles": [
+   [
+    "ノーマル",
+    "Negative",
+    "Positive"
+   ]
+  ],
+  "tags": null
+ },
+ "baa6d55a-d751-49b8-bafb-b3a6555a100c": {
+  "name": "七日週_T2モデル",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 2519,
+  "likes": 31,
+  "desc": "七日週　なのかめぐる　Nanoka Meguru　(CodeName:NANOKA_MEGURU)",
+  "styles": [
+   [
+    "ノーマル",
+    "Negative",
+    "Positive"
+   ]
+  ],
+  "tags": null
+ },
+ "f83c385c-829b-40c4-8c11-639027e61636": {
+  "name": "わかな(現実20代女子AIボイチェン@リアボVC公式モデル)",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 4021,
+  "likes": 31,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルわかなです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "悲しい",
+    "嬉しい",
+    "普通",
+    "驚き"
+   ]
+  ],
+  "tags": [
+   "来月の食堂、お菓子を焼いて持っていこうかな"
+  ]
+ },
+ "80fe2db4-5891-4550-a3f3-dff9a91c0946": {
+  "name": "ろてじん（匿名インタビュー風）",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "MiddleAgedMale",
+  "downloads": 2310,
+  "likes": 30,
+  "desc": "匿名インタビュー風の演技でセリフ収録したボイスモデルです。\nピッチシフターで声を加工しています。",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "b1b8072f-809f-4c6d-9ba1-2ca94d9c3663": {
+  "name": "れな(現実20代女子AIボイチェン@リアボVC公式モデル)",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 3245,
+  "likes": 30,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルれなです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "kanasimi_kanasimi",
+    "uresii_uresii",
+    "hutuu_hutuu",
+    "odoroki_odoroki"
+   ]
+  ],
+  "tags": null
+ },
+ "ed47c952-c253-405e-adba-1172399816a1": {
+  "name": "観測症",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "AdultMale",
+  "downloads": 5421,
+  "likes": 30,
+  "desc": "滑舌がそんなに良くないので、頑張って出した声です。\n頑張った結果、少しマイクが近かったかもしれません。",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "21d8d535-f206-462d-a3bb-05f8252dede7": {
+  "name": "さつき(現実20代女子AIボイチェン@リアボVC公式モデル)",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 3048,
+  "likes": 27,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルさつきです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "kanasimi_kanasimi",
+    "uresii_uresii",
+    "hutuu_hutuu",
+    "odoroki_odoroki"
+   ]
+  ],
+  "tags": null
+ },
+ "9a7feb22-b6f3-4f79-92d9-26849e063fa1": {
+  "name": "もえ(現実20代女子AIボイチェン@リアボVC公式モデル)",
+  "license": null,
+  "category": "Other",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 2866,
+  "likes": 27,
+  "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルもえです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "styles": [
+   [
+    "ノーマル",
+    "kanasimi_kanasimi",
+    "uresii_uresii",
+    "hutuu_hutuu",
+    "odoroki_odoroki"
+   ]
+  ],
+  "tags": null
+ },
+ "1b2830f4-8cf1-4184-a0d9-3a1bace3a844": {
+  "name": "みちのくあいり",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulFemale",
+  "downloads": 9264,
+  "likes": 26,
+  "desc": "こずかた学園プロジェクト「みちのくあいり」の音声合成モデルです。\n落ち着きのあるかわいらしい女性ボイスです。\n\n声：上戸恵里（ https://x.com/agato_eri )",
+  "styles": [
+   [
+    "標準",
+    "悲しみ",
+    "怒り",
+    "嫌悪",
+    "驚き",
+    "恐怖",
+    "喜び"
+   ]
+  ],
+  "tags": [
+   "みちのくあいり"
+  ]
+ },
+ "470a41e2-863f-4bf2-8a20-bf7cde0d8f7b": {
+  "name": "TANAKA",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "ElderlyMale",
+  "downloads": 5312,
+  "likes": 26,
+  "desc": "YouTubeの自動字幕読上げナレーション用に自作してみました。\nまだ未完成なところは、少しずつ改善していきたいと思います。",
+  "styles": [
+   [
+    "ノーマル",
+    "Anger",
+    "Happy",
+    "Silly",
+    "surprise"
+   ]
+  ],
+  "tags": [
+   "はい、どーもー。おとんです"
+  ]
+ },
+ "3dabea2b-cc10-41da-955b-4618ce84e716": {
+  "name": "Lux",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulMale",
+  "downloads": 4790,
+  "likes": 27,
+  "desc": "Lux（ルクス）はStyle-Bert-VITS2 JP-Extra対応TTSモデル。96kHz/16bit録音のプロ音声（ノイズ・反響除去済）とITAコーパス424文で学習済み。",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": null
+ },
+ "098d4e66-2faf-4a00-889c-a1d2f05bde78": {
+  "name": "Shinjou Tomoharu",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "MiddleAgedMale",
+  "downloads": 4501,
+  "likes": 24,
+  "desc": "落ち着いた中年男性のモデルです。",
+  "styles": [
+   [
+    "ノーマル"
+   ]
+  ],
+  "tags": [
+   "あああああ"
+  ]
+ },
+ "1f04a608-916c-4d9e-bf6e-b9da5c176f85": {
+  "name": "yukyu",
+  "license": null,
+  "category": "OriginalCharacter",
+  "voice_timbre": "YouthfulMale",
+  "downloads": 3692,
+  "likes": 16,
+  "desc": "男声の音声モデルです\n\n作成者 : yukyu \n連絡先\nx: @yukyu30",
+  "styles": [
+   [
+    "デフォルト"
+   ]
+  ],
+  "tags": null
+ }
+}
