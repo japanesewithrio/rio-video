@@ -16,9 +16,13 @@ def sh(cmd): return subprocess.run(cmd, shell=True, capture_output=True, text=Tr
 def push(msg):
     sh('git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com; git add n3/dm n3/ws/out n3/i2v/out')
     sh('git commit -qm "%s [skip ci]"' % msg)
-    for _ in range(3):
-        sh("git pull -q --rebase"); r = subprocess.run("git push -q", shell=True)
+    for _ in range(5):
+        p = subprocess.run("git pull -q --rebase --autostash", shell=True, capture_output=True, text=True)
+        r = subprocess.run("git push -q", shell=True, capture_output=True, text=True)
         if r.returncode == 0: break
+        print("push retry:", p.stderr[-300:], r.stderr[-300:], flush=True); time.sleep(5)
+    else:
+        sys.exit("push failed")
     return sh("git rev-parse HEAD")
 def raw(path, sha): return "https://raw.githubusercontent.com/%s/%s/%s" % (REPO, sha, os.path.relpath(path, ROOT))
 def plain(t): return re.sub(r"《.*?》", "", t).replace("[", "").replace("]", "").replace(" ", "")
