@@ -1,23 +1,23 @@
 [
  {
-  "in": "kb_two.jpg",
-  "out": "d212_v00.mp4",
-  "dur": 3.5,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking",
-  "prompt": "At the convenience store counter, the young man places his items on the counter one by one; the clerk behind the counter smiles, bows slightly and starts scanning them with a handheld scanner. Camera still. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, subtle motion."
- },
- {
-  "in": "kb_cu_mio.jpg",
-  "out": "d212_v06.mp4",
-  "dur": 2.5,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking",
-  "prompt": "The young woman laughs happily with her eyes closed, shoulders shaking a little, hand over her mouth. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, subtle motion."
- },
- {
   "in": "kb_cu_freeze.jpg",
-  "out": "d212_v16.mp4",
+  "out": "d212_v16b.mp4",
   "dur": 3,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking, calm face",
-  "prompt": "The shocked young man stays frozen stiff; his eyes tremble, sweat drops slide down his face, he trembles slightly. Very slow camera push in. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, subtle motion."
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, crying, calm face, smiling",
+  "prompt": "The young man stays frozen in surprise, eyes wide; he blinks twice slowly, the small sweat drop slides down his temple. Very slow camera push in. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
+ },
+ {
+  "in": "kb_ins_drop.jpg",
+  "out": "d212_ins_drop.mp4",
+  "dur": 2,
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, crying",
+  "prompt": "Close-up: the young man's arms juggle the pile of items; a snack slips and falls to the ground, he quickly tightens his grip on the rest. Camera still. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
+ },
+ {
+  "in": "kb_mio_point.jpg",
+  "out": "d212_mio_point.mp4",
+  "dur": 2.5,
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, tears, crying",
+  "prompt": "The young woman points at the pile of items and laughs teasingly; the young man looks down at his items and smiles awkwardly, shoulders shrugging. Camera still. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, natural motion."
  }
 ]
