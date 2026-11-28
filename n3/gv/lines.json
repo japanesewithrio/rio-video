@@ -274,12 +274,77 @@
   "voice": "Achird",
   "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: surprised, then gently happy. Say only the line.",
   "text": "……うん。"
+ },
+ {
+  "out": "p2_01.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "じゃあ、面接の練習しよう！ 私が店長ね。"
+ },
+ {
+  "out": "p2_02.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "よろしくお願いします！"
+ },
+ {
+  "out": "p2_03.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "では、志望動機を教えてください。"
+ },
+ {
+  "out": "p2_04.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "えっと……お腹が空いているからです！"
+ },
+ {
+  "out": "p2_05.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "……正直すぎ！"
+ },
+ {
+  "out": "p2_06.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "え、だめ？"
+ },
+ {
+  "out": "p2_07.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "「御社で成長したいからです」って言うの。"
+ },
+ {
+  "out": "p2_08.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "おんしゃ……？"
+ },
+ {
+  "out": "p2_09.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "じゃあ、もう一回。志望動機は？"
+ },
+ {
+  "out": "p2_10.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "御社で、まかないを食べて成長したいからです！"
+ },
+ {
+  "out": "p2_11.wav",
+  "voice": "Laomedeia",
+  "style": "",
+  "text": "あはは！……合格、かも。"
+ },
+ {
+  "out": "p2_12.wav",
+  "voice": "Achird",
+  "style": "",
+  "text": "やった……のかな？"
  }
 ]
-
-
-
-
-
-
-

@@ -9,7 +9,7 @@ for j in json.load(open(os.path.join(H, "lines.json"))):
     dst = os.path.join(OUT, j["out"])
     if os.path.exists(dst):
         continue
-    body = {"contents": [{"parts": [{"text": j["style"] + "\n\n" + j["text"]}]}],
+    body = {"contents": [{"parts": [{"text": (j["style"] + "\n\n" + j["text"]) if j["style"] else j["text"]}]}],
             "generationConfig": {"responseModalities": ["AUDIO"],
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": j["voice"]}}}}}
     done = False
