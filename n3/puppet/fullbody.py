@@ -17,13 +17,13 @@ PAT = """<defs>
 
 
 def arm_down(c, side, sleeve, t, swing=0):
-    sx = 122 * side
+    sx = 128 * side
     a = math.sin(t * 2.2) * 3 + swing
-    hx, hy = sx + 22 * side + a, 540
+    hx, hy = sx + 26 * side + a, 545
     d = "M %d 230 Q %d 400 %d %d" % (sx, sx + 26 * side, hx, hy)
-    s = "<path d='%s' fill='none' %s stroke-width='50'/>" % (d, LN)
-    s += "<path d='%s' fill='none' stroke='%s' stroke-width='43' stroke-linecap='round'/>" % (d, sleeve)
-    s += "<circle cx='%d' cy='%d' r='23' fill='%s' %s/>" % (hx, hy, c["skin"], LN)
+    s = "<path d='%s' fill='none' %s stroke-width='62'/>" % (d, LN)
+    s += "<path d='%s' fill='none' stroke='%s' stroke-width='55' stroke-linecap='round'/>" % (d, sleeve)
+    s += "<circle cx='%d' cy='%d' r='28' fill='%s' %s/>" % (hx, hy, c["skin"], LN)
     return s
 
 

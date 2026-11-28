@@ -352,9 +352,12 @@ def main():
         if e.get("v"):
             path = os.path.join(V, e["v"] + ".wav")
             en, x = env_of(path, int(e["d"] * FPS) + 2)
+            act = x[np.abs(x) > .01]                     # even out loudness: every line to the same speech level
+            if len(act):
+                x = x * min(6.0, .09 / (np.sqrt(np.mean(act ** 2)) + 1e-6))
             a = int((e["st"] + .15) * FPS); env[e["who"]][a:a + len(en)] = en[:max(0, n - a)]
             s = int((e["st"] + .15) * SR); m = min(len(x), len(y) - s)
-            y[s:s + m] += x[:m] * (.85 if e.get("inner") else 1.0); vm[s:s + m] = 1
+            y[s:s + m] += x[:m] * (.8 if e.get("inner") else 1.0); vm[s:s + m] = 1
         if e.get("sfx"):
             z = sfx(e["sfx"]) * e.get("sfxv", 1); s = int((e["st"] + e.get("sfxat", 0)) * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
     if AMB == "train":
@@ -363,9 +366,9 @@ def main():
     mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
     mus = np.frombuffer(mus, np.float32).copy()[:len(y)]
-    duck = 1 - .55 * np.convolve(vm[:len(mus)], np.ones(SR // 4) / (SR // 4), "same")
+    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(SR // 4) / (SR // 4), "same")
     fade = np.minimum(1, np.arange(len(mus)) / SR) * np.minimum(1, (len(mus) - np.arange(len(mus))) / (1.5 * SR))
-    y[:len(mus)] += mus * .09 * duck * fade
+    y[:len(mus)] += mus * .06 * duck * fade
     tmp = tempfile.mkdtemp()
     bgs = {}
     im = Image.open(os.path.join(A, BG["two"][0])).convert("RGB").resize((1080, 608))
