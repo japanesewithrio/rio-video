@@ -10,7 +10,7 @@ permissions:
 jobs:
   n3:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 120
     services:
       vv:
         image: voicevox/voicevox_engine:cpu-latest
@@ -33,6 +33,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          WAVESPEED_API_KEY: ${{ secrets.WAVESPEED_API_KEY }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
           DRY: "1"

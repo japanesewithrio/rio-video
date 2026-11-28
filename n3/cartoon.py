@@ -9,7 +9,7 @@ Content n3/cartoon_enc/NNN (encrypted like the others):
    "cast": {"Rio": {"img", "x", "y", "h", "flip"}, "Yui": {...}}, "bg": name,
    "lines": [{"who", "jp", "mm", "note"?, "emoji"?}], "recap": {"title", "items": [[jp, mm], ...], "say"}}
 """
-import asyncio, base64, hashlib, io, json, os, re, shutil, subprocess, sys, tempfile, time, wave
+import sys, asyncio, base64, hashlib, io, json, os, re, shutil, subprocess, sys, tempfile, time, wave
 import numpy as np
 import requests
 
@@ -426,6 +426,18 @@ def main():
     if trig.startswith("ASSETS"):
         D.log("assets only", made)
         return
+    if trig.startswith("DM"):      # continuous film: acted Gemini voices + chained lip-synced / animated shots
+        ep = os.path.join(ROOT, "work", "n3", "ep.json")
+        json.dump(c, open(ep, "w"), ensure_ascii=False)
+        subprocess.run([sys.executable, "-u", os.path.join(HERE, "dm", "dmake.py"), ep], check=True)
+        subprocess.run("git pull -q --rebase", shell=True)
+        for i, l in enumerate(c["lines"]):
+            l["clip"] = "d%d_%02d.mp4" % (c["no"], i)
+            if l.get("who"):
+                l["vlead"] = 0
+        c["voice_dir"] = "n3/dm/%d/voice" % c["no"]
+        import drama
+        return drama.main(c)
     if trig.startswith("DR"):
         import drama
         return drama.main(c)

@@ -22,6 +22,14 @@ COL = ["#e0607e", "#2d7bd6", "#c07a2a", "#5a9e4b"]
 
 
 def voices(c, work):
+    if c.get("voice_dir"):      # acted Gemini voices made by dmake.py, one wav per spoken line
+        out = {}
+        for i, l in enumerate(c["lines"]):
+            f = os.path.join(ROOT, c["voice_dir"], "%02d.wav" % i)
+            if l.get("who") and os.path.exists(f):
+                out[i] = S.RS.R.pcm(f, 24000)
+        D.log("gemini voices", len(out))
+        return out
     for _ in range(90):
         try:
             if requests.get(CT.VV + "/version", timeout=5).ok:
