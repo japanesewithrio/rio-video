@@ -1,23 +1,16 @@
 [
  {
-  "in": "cu_rio_freeze.jpg",
-  "out": "d211_freeze.mp4",
-  "dur": 2,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking, mouth moving",
-  "prompt": "The shocked young man stays frozen stiff; his eyes tremble slightly, sweat drops slide down his face, a tiny shiver. Very slow camera push in toward his face. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes. Smooth, subtle motion."
- },
- {
-  "in": "cu_boss_doc.jpg",
-  "out": "d211_doc.mp4",
+  "in": "kb_s03.jpg",
+  "out": "d212_03.mp4",
   "dur": 3.5,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking, mouth moving",
-  "prompt": "The manager holds the documents in front of his face and slowly lowers his eyes to read them, then looks up over the papers; his glasses glint. Papers move slightly. Camera still. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes. Smooth, subtle motion."
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking",
+  "prompt": "The young man stands in front of the convenience store hugging too many items; he shifts the items awkwardly, one rice ball almost slips and he catches it, he sighs with a troubled face. Camera still. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, subtle motion."
  },
  {
-  "in": "cu_rio_dead.jpg",
-  "out": "d211_dead.mp4",
+  "in": "kb_s10.jpg",
+  "out": "d212_10.mp4",
   "dur": 3,
-  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking, mouth moving",
-  "prompt": "The tired young man with empty eyes slowly lets his shoulders drop and his head droops a little, a gloomy sigh, eyes half closed. Slow camera push in. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes. Smooth, subtle motion."
+  "neg": "extra person, new character, text, letters, watermark, deformed face, changing face, realistic photo, 3d render, blurry, camera shake, talking",
+  "prompt": "The young woman laughs softly and gives a small cheering fist pump; the young man holding many items smiles shyly and nods. Camera slowly pushes in. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes. Smooth, subtle motion."
  }
 ]

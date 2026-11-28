@@ -1,8 +1,50 @@
 [
  {
-  "img": "n3/i2v/in/d210_16.jpg",
-  "wav": "n3/dm/210/voice/16.wav",
-  "out": "d210_16.mp4",
-  "prompt": "A cheerful Japanese manager sings karaoke passionately into the microphone, eyes half closed, swaying with the music, dramatic hand gesture, slightly drunk rosy cheeks. Korean web animation style, keep exactly the same flat 2D art style, same faces, same hair and clothes, natural subtle acting, no exaggerated effects, no new people."
+  "img": "n3/i2v/in/kb_s01.jpg",
+  "wav": "n3/gv/out/kb_01.wav",
+  "out": "d212_01.mp4",
+  "prompt": "The convenience store clerk asks a quick polite question at the register with a small professional smile. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s02.jpg",
+  "wav": "n3/gv/out/kb_02.wav",
+  "out": "d212_02.mp4",
+  "prompt": "The young man is flustered, he did not catch the question; he hesitates, then answers quickly with an awkward polite smile. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s04.jpg",
+  "wav": "n3/gv/out/kb_04.wav",
+  "out": "d212_04.mp4",
+  "prompt": "The young woman looks at him and teases him, laughing a little, covering her smile. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s05.jpg",
+  "wav": "n3/gv/out/kb_05.wav",
+  "out": "d212_05.mp4",
+  "prompt": "The young man holding too many items explains with an embarrassed awkward laugh. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s05.jpg",
+  "wav": "n3/gv/out/kb_07.wav",
+  "out": "d212_07.mp4",
+  "prompt": "The young man holding many items explains honestly and sheepishly, looking a little down. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s04.jpg",
+  "wav": "n3/gv/out/kb_08.wav",
+  "out": "d212_08.mp4",
+  "prompt": "The young woman explains kindly with a warm encouraging smile and a small nod. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s05.jpg",
+  "wav": "n3/gv/out/kb_09.wav",
+  "out": "d212_09.mp4",
+  "prompt": "The young man nods, convinced, and answers cheerfully with a bright smile. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/kb_s11.jpg",
+  "wav": "n3/gv/out/kb_11.wav",
+  "out": "d212_11.mp4",
+  "prompt": "The young man talks thoughtfully to himself with a light wry smile, then looks toward the camera. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
  }
 ]
