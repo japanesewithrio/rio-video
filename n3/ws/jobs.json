@@ -1,26 +1,56 @@
 [
  {
-  "img": "n3/i2v/in/kb_ots_clerk.jpg",
-  "wav": "n3/gv/out/kb_01.wav",
-  "out": "d212_v01.mp4",
-  "prompt": "The clerk behind the counter asks a quick polite question with a small professional smile, looking at the young man in the foreground. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes, natural subtle acting, small head movements and blinking, the person in the blurred foreground stays still, no new people, background stays still."
+  "img": "n3/i2v/in/rm_rio_talk.jpg",
+  "wav": "n3/gv/out/rm_01.wav",
+  "out": "d213_01.mp4",
+  "prompt": "The young man calls the staff casually, relaxed, raising his chin a little. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
  },
  {
-  "img": "n3/i2v/in/kb_ots_rio.jpg",
-  "wav": "n3/gv/out/kb_02.wav",
-  "out": "d212_v02.mp4",
-  "prompt": "The young man at the counter is flustered, he did not catch the question; he hesitates and answers quickly with an awkward polite smile. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes, natural subtle acting, small head movements and blinking, the person in the blurred foreground stays still, no new people, background stays still."
+  "img": "n3/i2v/in/rm_ots_chef.jpg",
+  "wav": "n3/gv/out/rm_02.wav",
+  "out": "d213_02.mp4",
+  "prompt": "The ramen cook answers friendly and quickly, pointing with his thumb toward the shop entrance. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
  },
  {
-  "img": "n3/i2v/in/kb_ots_rio.jpg",
-  "wav": "n3/gv/out/kb_14.wav",
-  "out": "d212_v14.mp4",
-  "prompt": "The young man answers proudly and confidently with a big bright smile and a small nod. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes, natural subtle acting, small head movements and blinking, the person in the blurred foreground stays still, no new people, background stays still."
+  "img": "n3/i2v/in/rm_mio_talk.jpg",
+  "wav": "n3/gv/out/rm_04.wav",
+  "out": "d213_04.mp4",
+  "prompt": "The young woman explains with a teasing smile, pointing back over her shoulder with her thumb. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
  },
  {
-  "img": "n3/i2v/in/kb_ots_clerk.jpg",
-  "wav": "n3/gv/out/kb_15.wav",
-  "out": "d212_v15.mp4",
-  "prompt": "The clerk asks one more quick polite question with a friendly smile, holding up a pair of wooden chopsticks. Korean web animation style, keep exactly the same flat 2D art style, same faces, hair and clothes, natural subtle acting, small head movements and blinking, the person in the blurred foreground stays still, no new people, background stays still."
+  "img": "n3/i2v/in/rm_rio_talk.jpg",
+  "wav": "n3/gv/out/rm_05.wav",
+  "out": "d213_05.mp4",
+  "prompt": "The young man complains, half laughing, a little frustrated. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/rm_cu_mio_flat.jpg",
+  "wav": "n3/gv/out/rm_08.wav",
+  "out": "d213_08.mp4",
+  "prompt": "The young woman says one short word flatly, deadpan, trying not to laugh. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/rm_ots_chef.jpg",
+  "wav": "n3/gv/out/rm_10.wav",
+  "out": "d213_10.mp4",
+  "prompt": "The ramen cook asks a quick routine question with a friendly grin. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/rm_rio_talk.jpg",
+  "wav": "n3/gv/out/rm_13.wav",
+  "out": "d213_13.mp4",
+  "prompt": "The young man answers nervously but trying hard, nodding. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/rm_ots_chef.jpg",
+  "wav": "n3/gv/out/rm_14.wav",
+  "out": "d213_14.mp4",
+  "prompt": "The ramen cook asks one more quick cheerful question, leaning forward a little. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
+ },
+ {
+  "img": "n3/i2v/in/rm_rio_eat.jpg",
+  "wav": "n3/gv/out/rm_17.wav",
+  "out": "d213_17.mp4",
+  "prompt": "The young man chews the noodles, his eyes sparkle, then he speaks happily and moved. Korean web animation style, keep exactly the same flat 2D art style, same face, hair and clothes, natural subtle acting, small head movements and blinking, no exaggerated effects, no new people, background stays still."
  }
 ]
