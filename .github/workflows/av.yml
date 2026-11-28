@@ -28,6 +28,8 @@ jobs:
                     styles=[[st.get('name') for st in sp.get('styles',[])] for sp in m.get('speakers',[])],
                     tags=[t.get('name') for t in m.get('tags',[])] if m.get('tags') else None)
           json.dump(out,open('n3/av/models.json','w'),ensure_ascii=False,indent=1)
+          d=json.load(open('/tmp/s_download.json')); m=d['aivm_models'][0]; m.pop('description',None)
+          json.dump({k:(v if k!='speakers' else str(v)[:800]) for k,v in m.items()},open('n3/av/raw0.json','w'),ensure_ascii=False,indent=1)
           print(len(out))
           PY
       - name: synth
