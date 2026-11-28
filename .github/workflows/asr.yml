@@ -1,0 +1,17 @@
+name: asr
+on:
+  push:
+    paths: ["n3/dm/*/raw/all.wav"]
+permissions:
+  contents: write
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q faster-whisper
+      - run: |
+          f=$(ls n3/dm/*/raw/all.wav | head -1); python -u n3/dm/asr.py $f ${f%.wav}.json
+          git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com
+          git add n3/dm && git commit -qm "asr [skip ci]" && git pull -q --rebase && git push -q || true
