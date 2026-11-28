@@ -388,7 +388,7 @@ def main():
     mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
     mus = np.frombuffer(mus, np.float32).copy()[:len(y)]
-    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(SR // 4) / (SR // 4), "same")
+    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(SR) / SR, "same")
     fade = np.minimum(1, np.arange(len(mus)) / SR) * np.minimum(1, (len(mus) - np.arange(len(mus))) / (1.5 * SR))
     y[:len(mus)] += mus * .06 * duck * fade
     tmp = tempfile.mkdtemp()
@@ -400,12 +400,13 @@ def main():
     if BG.get("moon"):
         Image.open(os.path.join(A, BG["moon"])).convert("RGB").resize((1080, 608)).save(os.path.join(tmp, "moon.jpg")); bgs["moon"] = os.path.join(tmp, "moon.jpg")
     asyncio.run(shoot(evs, total, env, bgs, tmp))
+    y = y * (0.89 / (np.max(np.abs(y)) + 1e-6))      # one fixed gain for the whole mix (no wobble)
     wv = os.path.join(tmp, "a.wav")
     with wave.open(wv, "wb") as o:
         o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
     out = os.path.join(HERE, "out", OUT); os.makedirs(os.path.dirname(out), exist_ok=True)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wv,
-                    "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-af", "loudnorm=I=-14:TP=-1.5", "-ar", "48000",
+                    "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-ar", "48000",
                     "-c:a", "aac", "-shortest", "-movflags", "+faststart", out], check=True)
     print(out, "%.1fs" % total)
 
