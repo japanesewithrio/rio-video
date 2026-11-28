@@ -1,0 +1,74 @@
+[
+ {
+  "out": "kb_01.wav",
+  "voice": "Puck",
+  "style": "A young Japanese convenience store clerk; quick, polite, routine service voice. Speak this Japanese line naturally, at normal native speed, in this manner: polite and quick, the usual question at the register. Say only the line.",
+  "text": "袋、いりますか？"
+ },
+ {
+  "out": "kb_02.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: flustered, he did not really catch the question, hesitant then answering too fast. Say only the line.",
+  "text": "あっ、えっと……大丈夫です。"
+ },
+ {
+  "out": "kb_03.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: muttering quietly to himself, regretful, almost a whisper. Say only the line.",
+  "text": "いや、全然大丈夫じゃないんだけど……。"
+ },
+ {
+  "out": "kb_04.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: amused, teasing, laughing a little. Say only the line.",
+  "text": "ちょっと、持ちすぎじゃない？　ふふっ"
+ },
+ {
+  "out": "kb_05.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: embarrassed, with an awkward little laugh. Say only the line.",
+  "text": "いや、袋いらないって言っちゃってさ。"
+ },
+ {
+  "out": "kb_06.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: surprised, then laughing. Say only the line.",
+  "text": "えっ、なんで？　あはは"
+ },
+ {
+  "out": "kb_07.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: sheepish, scratching his head, honest. Say only the line.",
+  "text": "聞き取れたと思ったんだけど、よく分かってなかったんだよね。"
+ },
+ {
+  "out": "kb_08.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: kind and encouraging, warm smile. Say only the line.",
+  "text": "まあ、最初はそんなもんだよ。次から「お願いします」って言えばいいよ。"
+ },
+ {
+  "out": "kb_09.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: convinced and cheerful again. Say only the line.",
+  "text": "なるほどね。じゃあ、次はちゃんと言ってみるわ。"
+ },
+ {
+  "out": "kb_10.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: cheering him on with a small laugh. Say only the line.",
+  "text": "うん、頑張って。ふふ"
+ },
+ {
+  "out": "kb_11.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: talking to the camera, thoughtful, with a light wry smile. Say only the line.",
+  "text": "日本語って、分かったつもりでも、実際に話すと難しいんだよな。"
+ },
+ {
+  "out": "kb_12.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a friendly, cheerful Japanese young woman about 22; soft, lively, natural casual voice, like talking to a friend. Speak this Japanese line naturally, at normal native speed, in this manner: gentle warm narration, slow and calm. Say only the line.",
+  "text": "でも、少しずつ慣れていけばいい。"
+ }
+]
