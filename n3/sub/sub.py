@@ -109,7 +109,7 @@ LINES:
 
 def gemini(prompt):
     key = os.environ["GEMINI_API_KEY"]
-    for model in ["gemini-2.5-pro", "gemini-2.5-flash"]:
+    for model in ["gemini-3.1-pro-preview", "gemini-3.8-flash", "gemini-3.6-flash"]:
         for _ in range(3):
             r = requests.post("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent" % model,
                               params={"key": key}, timeout=600,
@@ -118,6 +118,8 @@ def gemini(prompt):
             if r.ok:
                 return json.loads(r.json()["candidates"][0]["content"]["parts"][0]["text"])
             print(model, r.status_code, r.text[:200])
+            if r.status_code == 404:
+                break
             time.sleep(20)
     raise RuntimeError("gemini failed")
 
