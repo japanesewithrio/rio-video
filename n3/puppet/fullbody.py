@@ -54,24 +54,35 @@ def outfit(c, style, t):
         s += "<path d='M -140 540 C -140 260 -104 184 -46 162 L -8 250 L -20 540 Z' fill='%s' %s/>" % (c["cloth"], LN)
         s += "<path d='M 140 540 C 140 260 104 184 46 162 L 8 250 L 20 540 Z' fill='%s' %s/>" % (c["cloth"], LN)
         s += arm_down(c, -1, c["cloth"], t) + arm_down(c, 1, c["cloth"], t)
-    elif style == "myanmar" and k == "rio":      # white taikpon jacket over shirt + plaid longyi with front knot, velvet slippers
-        s += "<path d='M -120 455 L 120 455 L 138 1000 L -138 1000 Z' fill='url(#plaid)' %s/>" % LN
-        s += "<path d='M -34 462 q 34 44 68 0 q -12 34 -34 58 q -22 -24 -34 -58 Z' fill='#7a3d4c' %s/>" % LN   # paso knot
+    elif style == "myanmar" and k == "rio":
+        # paso (longyi) with the bunched front knot, velvet slippers
+        s += "<path d='M -118 455 L 118 455 L 136 1000 L -136 1000 Z' fill='url(#plaid)' %s/>" % LN
+        s += "<path d='M -128 1000 L -112 470' stroke='#3b1f28' stroke-width='3' opacity='.6'/>"
+        s += "<path d='M -40 458 C -46 500 -10 540 0 560 C 10 540 46 500 40 458 C 20 478 -20 478 -40 458 Z' fill='#6e3443' %s/>" % LN
+        s += "<path d='M -18 470 Q 0 520 18 470' fill='none' stroke='#3b1f28' stroke-width='3'/>"
         for side in (-1, 1):
-            s += "<ellipse cx='%d' cy='1018' rx='50' ry='18' fill='#2a2a2a' %s/>" % (60 * side, LN)
-        s += "<path d='M -140 470 C -140 290 -104 182 -40 160 L 40 160 C 104 182 140 290 140 470 Z' fill='#fbfaf5' %s/>" % LN
-        s += "<path d='M 0 170 L 0 470' stroke='#d8d4c6' stroke-width='4'/>"
-        for yy in (230, 300, 370, 435):
-            s += "<circle cx='0' cy='%d' r='6' fill='#e0c36a' %s stroke-width='2'/>" % (yy, LN)
-        s += "<path d='M -40 160 Q 0 185 40 160' fill='none' %s/>" % LN      # mandarin collar
-        s += arm_down(c, -1, "#fbfaf5", t) + arm_down(c, 1, "#fbfaf5", t)
-    elif style == "myanmar" and k == "mio":      # fitted yinphone blouse with side fastening + acheik htamein, sandals, padauk flowers
-        s += "<path d='M -100 420 L 100 420 L 128 1005 L -128 1005 Z' fill='url(#acheik)' %s/>" % LN
+            s += "<ellipse cx='%d' cy='1018' rx='50' ry='17' fill='#1e1e24' %s/>" % (60 * side, LN)
+            s += "<path d='M %d 1006 q 18 -14 36 0' stroke='#3b2a24' stroke-width='9' fill='none'/>" % (60 * side - 18)
+        # white eingyi shirt (mandarin collar) underneath
+        s += "<path d='M -120 480 C -124 300 -100 182 -40 160 L 40 160 C 100 182 124 300 120 480 Z' fill='#fbfaf5' %s/>" % LN
+        s += "<path d='M -30 158 L -30 176 Q 0 186 30 176 L 30 158' fill='#fbfaf5' %s/>" % LN
+        # navy taikpon jacket: short, open at the front, knot buttons on the edge
+        s += "<path d='M -146 488 C -150 300 -112 184 -46 166 L -24 182 L -30 488 Z' fill='#2c3550' %s/>" % LN
+        s += "<path d='M 146 488 C 150 300 112 184 46 166 L 24 182 L 30 488 Z' fill='#2c3550' %s/>" % LN
+        for yy in (230, 285, 340, 395, 450):
+            s += "<path d='M 24 %d q 10 -8 18 0 q -8 8 -18 0 Z' fill='#e8e2cf' %s stroke-width='1.5'/>" % (yy, LN)
+        s += arm_down(c, -1, "#2c3550", t) + arm_down(c, 1, "#2c3550", t)
+    elif style == "myanmar" and k == "mio":
+        # htamein: wrap skirt with black waistband, the overlapping front edge and a short train
+        s += "<path d='M -100 420 L 100 420 L 132 1012 L -150 1012 Z' fill='url(#acheik)' %s/>" % LN
+        s += "<path d='M 46 432 L 70 1012' stroke='#1f4d50' stroke-width='5'/><path d='M 46 432 L 70 1012' stroke='#f2d27a' stroke-width='2'/>"
+        s += "<rect x='-104' y='412' width='208' height='34' rx='6' fill='#1c1c22' %s/>" % LN
         for side in (-1, 1):
-            s += "<ellipse cx='%d' cy='1018' rx='40' ry='15' fill='#c9a36a' %s/>" % (45 * side, LN)
-        s += "<path d='M -122 430 C -128 290 -100 182 -40 160 L 40 160 C 100 182 128 290 122 430 Z' fill='#f7c6d0' %s/>" % LN
-        s += "<path d='M -40 165 Q 20 230 70 300 L 86 430' fill='none' stroke='#d58fa0' stroke-width='5'/>"
-        for yy, xx in ((215, 18), (255, 44), (295, 66)):
+            s += "<ellipse cx='%d' cy='1020' rx='40' ry='14' fill='#2a2228' %s/>" % (45 * side, LN)
+        # fitted ingyi blouse with side fastening (rin-bon), slim sleeves
+        s += "<path d='M -116 424 C -122 290 -98 182 -40 160 L 40 160 C 98 182 122 290 116 424 Z' fill='#f7c6d0' %s/>" % LN
+        s += "<path d='M -40 165 C 0 200 50 250 66 300 L 80 424' fill='none' stroke='#c47b90' stroke-width='4'/>"
+        for yy, xx in ((212, 16), (252, 44), (292, 64), (340, 72)):
             s += "<circle cx='%d' cy='%d' r='6' fill='#f2d27a' %s stroke-width='2'/>" % (xx, yy, LN)
         s += arm_down(c, -1, "#f7c6d0", t) + arm_down(c, 1, "#f7c6d0", t)
     s += "<rect x='-34' y='110' width='68' height='60' fill='%s' %s/>" % (c["skin"], LN)    # neck
