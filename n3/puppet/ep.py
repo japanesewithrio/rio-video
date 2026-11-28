@@ -205,7 +205,7 @@ def env_of(path, n):
 def plan():
     t, evs = 0.2, []
     for L in EP:
-        d = L.get("dur") or (wave.open(os.path.join(V, L["v"] + ".wav")).getnframes() / SR + L.get("gap", 0.32))
+        d = L.get("dur") or (wave.open(os.path.join(V, L["v"] + ".wav")).getnframes() / SR + L.get("gap", 0.45))
         d += L.get("post", 0)
         evs.append(dict(L, st=t, d=d)); t += d
     rec = dict(shot="recap", st=t, d=5.5); evs.append(rec)
@@ -374,12 +374,9 @@ def main():
         if e.get("v"):
             path = os.path.join(V, e["v"] + ".wav")
             en, x = env_of(path, int(e["d"] * FPS) + 2)
-            act = x[np.abs(x) > .01]                     # even out loudness: every line to the same speech level
-            if len(act):
-                x = x * min(6.0, .09 / (np.sqrt(np.mean(act ** 2)) + 1e-6))
             a = int((e["st"] + .15) * FPS); env[e["who"]][a:a + len(en)] = en[:max(0, n - a)]
             s = int((e["st"] + .15) * SR); m = min(len(x), len(y) - s)
-            y[s:s + m] += x[:m] * (.8 if e.get("inner") else 1.0); vm[s:s + m] = 1
+            y[s:s + m] += x[:m] * (.85 if e.get("inner") else 1.0); vm[s:s + m] = 1
         if e.get("sfx"):
             z = sfx(e["sfx"]) * e.get("sfxv", 1); s = int((e["st"] + e.get("sfxat", 0)) * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
     if AMB == "train":
@@ -388,9 +385,9 @@ def main():
     mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
     mus = np.frombuffer(mus, np.float32).copy()[:len(y)]
-    duck = 1 - .7 * np.convolve(vm[:len(mus)], np.ones(int(2.5 * SR)) / (2.5 * SR), "same")
+    duck = 1 - .55 * np.convolve(vm[:len(mus)], np.ones(SR // 4) / (SR // 4), "same")
     fade = np.minimum(1, np.arange(len(mus)) / SR) * np.minimum(1, (len(mus) - np.arange(len(mus))) / (1.5 * SR))
-    y[:len(mus)] += mus * .06 * duck * fade
+    y[:len(mus)] += mus * .09 * duck * fade
     tmp = tempfile.mkdtemp()
     bgs = {}
     im = Image.open(os.path.join(A, BG["two"][0])).convert("RGB").resize((1080, 608))
@@ -400,15 +397,12 @@ def main():
     if BG.get("moon"):
         Image.open(os.path.join(A, BG["moon"])).convert("RGB").resize((1080, 608)).save(os.path.join(tmp, "moon.jpg")); bgs["moon"] = os.path.join(tmp, "moon.jpg")
     asyncio.run(shoot(evs, total, env, bgs, tmp))
-    act = y[np.abs(y) > .01]                          # one fixed gain (no wobble) + soft limiter for the peaks
-    y = y * (.16 / (np.sqrt(np.mean(act ** 2)) + 1e-6))
-    y = np.tanh(y * 1.1) * .92
     wv = os.path.join(tmp, "a.wav")
     with wave.open(wv, "wb") as o:
         o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
     out = os.path.join(HERE, "out", OUT); os.makedirs(os.path.dirname(out), exist_ok=True)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wv,
-                    "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-ar", "48000",
+                    "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-af", "loudnorm=I=-14:TP=-1.5", "-ar", "48000",
                     "-c:a", "aac", "-shortest", "-movflags", "+faststart", out], check=True)
     print(out, "%.1fs" % total)
 

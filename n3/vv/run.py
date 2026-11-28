@@ -33,7 +33,7 @@ def synth(j, p):
     q["intonationScale"] = g("into", 1.15); q["prePhonemeLength"] = .05; q["postPhonemeLength"] = .1
     for a in q["accent_phrases"]:            # shorter breaths at 、 so the line flows in one go
         if a.get("pause_mora"):
-            a["pause_mora"]["vowel_length"] *= g("pause", .55)
+            a["pause_mora"]["vowel_length"] *= g("pause", 1.0)
     if p.get("laugh"):
         q = laughify(q); q["speedScale"] = g("speed", 1.12)
     b = requests.post(VV + "/synthesis", params={"speaker": sid}, json=q, timeout=300).content
