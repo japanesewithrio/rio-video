@@ -76,7 +76,7 @@ CSS = """
 @font-face{font-family:Round;src:url('file://%(F)s/MPLUSRounded1c-Bold.ttf')}
 @font-face{font-family:My;src:url('file://%(F)s/NotoSansMyanmar.ttf')}
 body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Round,My;background:#111}
-.hook{position:absolute;top:170px;left:40px;right:40px;text-align:center;font-family:My,Round;color:#fff;font-size:50px;line-height:1.5}
+.hook{position:absolute;top:170px;left:40px;right:40px;text-align:center;font-family:My,Round;color:#fff;font-size:46px;line-height:1.5;text-wrap:balance}.hook .hl{white-space:nowrap}
 .ep{display:inline-block;background:#e0607e;color:#fff;border-radius:14px;padding:2px 18px;font-family:Round;font-size:34px;margin-bottom:10px}
 .band{position:absolute;left:0;top:%(BT)dpx;width:1080px;height:%(BH)dpx;overflow:hidden;background:#000}
 .world{position:absolute;left:0;top:0;width:1080px;height:%(BH)dpx;transform-origin:0 0}
@@ -113,7 +113,7 @@ def frame(c, ev, t, total):
     F = os.path.join(ROOT, "fonts")
     css = CSS % {"F": F, "BT": BT, "BH": BH, "SUBT": BT + BH + 70}
     s = "<html><head><meta charset='utf-8'><style>%s</style></head><body>" % css
-    s += "<div class='hook'><div class='ep'>%s</div><br>%s</div>" % (c.get("ep", ""), c["hook"])
+    s += "<div class='hook'><div class='ep'>%s</div><br>%s</div>" % (c.get("ep", ""), "<br>".join("<span class='hl'>%s</span>" % h for h in c["hook"].split("|")))
     lt = t - ev["st"]
     if ev["kind"] == "recap":
         r = c["recap"]
