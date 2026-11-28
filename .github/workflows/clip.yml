@@ -18,12 +18,14 @@ jobs:
           mkdir -p fonts
           curl -fsSL -o fonts/MPLUSRounded1c-Bold.ttf "$G/mplusrounded1c/MPLUSRounded1c-Bold.ttf"
           curl -fsSL -o fonts/NotoSansMyanmar.ttf     "$G/notosansmyanmar/NotoSansMyanmar%5Bwdth%2Cwght%5D.ttf"
+      - uses: denoland/setup-deno@v2
       - name: Fetch the clip (line 1 of clip.txt = "NAME URL START END STEP")
         run: |
           read name url a b step < n3/sub/clip.txt
           mkdir -p n3/sub/in
-          yt-dlp -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b" --download-sections "*$a-$b" --force-keyframes-at-cuts \
-                 --merge-output-format mp4 -o "n3/sub/in/$name.mp4" "$url" 2>&1 | tail -20
+          yt-dlp --extractor-args "youtube:player_client=tv_simply,web_safari,mweb,android_vr" -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b" --download-sections "*$a-$b" --force-keyframes-at-cuts \
+                 --merge-output-format mp4 -o "n3/sub/in/$name.mp4" "$url" 2>&1 | tail -20 || true
+          test -f "n3/sub/in/$name.mp4" || { echo "DOWNLOAD BLOCKED"; exit 1; }
           ls -la n3/sub/in
           echo "name=$name" >> $GITHUB_ENV; echo "step=$step" >> $GITHUB_ENV
       - name: Subtitles
