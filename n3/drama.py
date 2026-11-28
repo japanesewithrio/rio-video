@@ -246,6 +246,17 @@ def sfx_audio(kind, dur):
         x += (np.sin(2 * np.pi * 55 * t) * np.exp(-t * 5) * 0.9).astype(np.float32)
         f = 520 * np.exp(-t * 2.2)
         x += (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 3) * 0.25).astype(np.float32)
+    elif kind == "chime":    # generic two-tone shop door chime (not any chain's melody)
+        t = np.arange(n) / SR
+        for st, f in ((0.0, 659.3), (0.32, 523.3)):
+            m = t >= st; tt = t[m] - st
+            x[m] += (np.sin(2 * np.pi * f * tt) + 0.3 * np.sin(2 * np.pi * 2 * f * tt)).astype(np.float32) * np.exp(-tt * 2.2).astype(np.float32) * 0.35
+    elif kind == "beep":     # barcode scanner beeps
+        t = 0.0
+        while t < dur - 0.1:
+            i = int(t * SR); m = int(0.07 * SR)
+            x[i:i + m] += (np.sin(2 * np.pi * 2900 * np.arange(m) / SR) * 0.25).astype(np.float32)[:len(x) - i]
+            t += rng.uniform(0.45, 0.8)
     elif kind == "steps":
         t = 0.05
         while t < dur - 0.1:
@@ -318,6 +329,7 @@ def render(c, V, out, tmp):
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wv,
+                    *(["-vf", c["grade"]] if c.get("grade") else []),
                     "-c:v", "libx264", "-crf", "20", "-preset", "veryfast", "-pix_fmt", "yuv420p",
                     "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "48000", "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", out],
                    check=True)
