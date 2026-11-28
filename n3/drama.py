@@ -329,7 +329,7 @@ def render(c, V, out, tmp):
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wv,
-                    *(["-vf", c["grade"]] if c.get("grade") else []),
+                    *(["-vf", "split[a][b];[b]crop=%d:%d:0:%d,%s[g];[a][g]overlay=0:%d" % (W, BH, 560 if c.get("look") == "ejls" else BT, c["grade"], 560 if c.get("look") == "ejls" else BT)] if c.get("grade") else []),
                     "-c:v", "libx264", "-crf", "20", "-preset", "veryfast", "-pix_fmt", "yuv420p",
                     "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "48000", "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart", out],
                    check=True)
