@@ -202,8 +202,77 @@
   "voice": "Achird",
   "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: eating, then truly moved and happy. Say only the line.",
   "text": "うまっ！　日本語は難しいけど、ラーメンは最高だな。"
+ },
+ {
+  "out": "pp_01.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: whispering to himself, nervous but determined. Say only the line.",
+  "text": "今日こそ……言うぞ。"
+ },
+ {
+  "out": "pp_02.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a cheerful, warm Japanese young woman about 22; soft, bright, natural voice. Speak this Japanese line naturally at normal native speed, in this manner: curious and a little worried, gentle. Say only the line.",
+  "text": "リオくん、どうしたの？ 顔、赤いよ。"
+ },
+ {
+  "out": "pp_03.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: very nervous, voice shaking a little, then trying to sound cool. Say only the line.",
+  "text": "え、えっと……ミオさん。月が、綺麗ですね。"
+ },
+ {
+  "out": "pp_04.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a cheerful, warm Japanese young woman about 22; soft, bright, natural voice. Speak this Japanese line naturally at normal native speed, in this manner: innocent and delighted, looking up at the sky. Say only the line.",
+  "text": "ほんとだ！ まんまるだね〜。"
+ },
+ {
+  "out": "pp_05.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: panicking whisper to himself. Say only the line.",
+  "text": "……伝わってない！"
+ },
+ {
+  "out": "pp_06.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: flustered, stumbling over words. Say only the line.",
+  "text": "い、いや、そうじゃなくて……ずっと前から、その……"
+ },
+ {
+  "out": "pp_07.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a cheerful, warm Japanese young woman about 22; soft, bright, natural voice. Speak this Japanese line naturally at normal native speed, in this manner: softly curious. Say only the line.",
+  "text": "うん？"
+ },
+ {
+  "out": "pp_08.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: barely audible, embarrassed. Say only the line.",
+  "text": "……す、すき……"
+ },
+ {
+  "out": "pp_09.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a cheerful, warm Japanese young woman about 22; soft, bright, natural voice. Speak this Japanese line naturally at normal native speed, in this manner: excited and happy. Say only the line.",
+  "text": "すき焼き？ いいね！ 今度一緒に食べに行こう！"
+ },
+ {
+  "out": "pp_10.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: deflated, sighing to himself. Say only the line.",
+  "text": "……すき焼きじゃない……。"
+ },
+ {
+  "out": "pp_11.wav",
+  "voice": "Laomedeia",
+  "style": "Mio is a cheerful, warm Japanese young woman about 22; soft, bright, natural voice. Speak this Japanese line naturally at normal native speed, in this manner: quiet and tender, smiling, almost shy. Say only the line.",
+  "text": "……でも、月、ほんとに綺麗だね。"
+ },
+ {
+  "out": "pp_12.wav",
+  "voice": "Achird",
+  "style": "Rio is a shy young Burmese man in his twenties living in Japan, secretly in love with his friend Mio; soft, nervous, natural young male voice. Speak this Japanese line naturally at normal native speed, in this manner: surprised, then gently happy. Say only the line.",
+  "text": "……うん。"
  }
 ]
-
-
-
