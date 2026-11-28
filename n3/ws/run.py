@@ -28,6 +28,10 @@ def make_voices(jobs):
         f = os.path.join(ROOT, j["wav"]); os.makedirs(os.path.dirname(f), exist_ok=True)
         open(f, "wb").write(requests.post(VV + "/synthesis", params={"speaker": sid}, json=q).content)
     return True
+try:
+    print("balance", requests.get("https://api.wavespeed.ai/api/v3/balance", headers=HD, timeout=30).text[:200], flush=True)
+except Exception as e:
+    print("balance?", e)
 JOBS = json.load(open(os.path.join(H, "jobs.json")))
 if make_voices(JOBS):
     os.system('git config user.name rio-bot; git config user.email rio-bot@users.noreply.github.com; git add n3/ws n3/i2v/in; '
