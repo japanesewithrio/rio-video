@@ -376,7 +376,7 @@ def main():
             en, x = env_of(path, int(e["d"] * FPS) + 2)
             a = int((e["st"] + .15) * FPS); env[e["who"]][a:a + len(en)] = en[:max(0, n - a)]
             s = int((e["st"] + .15) * SR); m = min(len(x), len(y) - s)
-            y[s:s + m] += x[:m] * (.85 if e.get("inner") else 1.0); vm[s:s + m] = 1
+            y[s:s + m] += x[:m] * e.get("gain", 1.0) * (.85 if e.get("inner") else 1.0); vm[s:s + m] = 1
         if e.get("sfx"):
             z = sfx(e["sfx"]) * e.get("sfxv", 1); s = int((e["st"] + e.get("sfxat", 0)) * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
     if AMB == "train":
