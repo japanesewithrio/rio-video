@@ -1,7 +1,7 @@
 """Royalty-free music (Kevin MacLeod / incompetech, CC BY 4.0 - credit in the description) + ACE-Step karaoke try."""
 import os, json, requests, shutil, time
 H = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(H, "out"); os.makedirs(OUT, exist_ok=True)
-T = {"bgm_monkeys": "Monkeys Spinning Monkeys", "bgm_snitch": "Sneaky Snitch", "bgm_duck": "Fluffing a Duck", "bgm_pixel": "Pixel Peeker Polka - faster", "bgm_karaoke_enka": "Hep Cats"}
+T = {"bgm_monkeys": "Monkeys Spinning Monkeys", "bgm_snitch": "Sneaky Snitch", "bgm_duck": "Fluffing a Duck", "bgm_pixel": "Pixel Peeker Polka - faster", "bgm_karaoke_enka": "Hep Cats", "bgm_carefree": "Carefree", "bgm_wholesome": "Wholesome"}
 for k, name in T.items():
     dst = os.path.join(OUT, k + ".mp3")
     if os.path.exists(dst): continue

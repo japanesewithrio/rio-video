@@ -70,5 +70,29 @@
   "voice": "Laomedeia",
   "style": "Say this in Japanese, as a gentle warm female narrator:",
   "text": "でも、少しずつ慣れていけばいい。"
+ },
+ {
+  "out": "kb_14.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: proud and confident, a bit too loud, very pleased with himself. Say only the line.",
+  "text": "お願いします！"
+ },
+ {
+  "out": "kb_15.wav",
+  "voice": "Puck",
+  "style": "A young Japanese convenience store clerk; quick, polite, routine service voice. Speak this Japanese line naturally, at normal native speed, in this manner: polite and quick, the usual follow-up question. Say only the line.",
+  "text": "お箸はおつけしますか？"
+ },
+ {
+  "out": "kb_16.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: panicking, tiny weak voice, stammering. Say only the line.",
+  "text": "だ、大丈夫です……。"
+ },
+ {
+  "out": "kb_17.wav",
+  "voice": "Achird",
+  "style": "Rio is a young Burmese man in his twenties who recently moved to Japan and is still learning Japanese; natural, slightly shy, casual young male voice. Speak this Japanese line naturally, at normal native speed, in this manner: muttering to himself in despair, almost a whisper, then a small sigh. Say only the line.",
+  "text": "……また、やっちゃった。"
  }
 ]
