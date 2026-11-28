@@ -132,7 +132,7 @@ def frame(c, ev, t, total):
             s += "<div class='ri' style='opacity:%.2f;transform:translateX(%.0fpx)'><div class='j'>%s</div><div class='m'>%s</div></div>" % (e, (1 - e) * 60, hl(j), m)
         if c.get("next"):
             e = c01((lt - 0.5 - len(r["items"]) * 0.6) / 0.4)
-            s += "<div class='nx' style='opacity:%.2f'>%s</div>" % (e, c["next"])
+            s += "<div class='nx' style='opacity:%.2f'>%s</div>" % (e, hl(c["next"]))
         return s + "</div></body></html>"
     # ----- picture band -----
     s += "<div class='band'>"
