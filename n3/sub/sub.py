@@ -240,7 +240,8 @@ def render(name, tmp):
             o.write("file '%s'\nduration %.3f\n" % (os.path.join(tmp, n + ".png"), d))
         o.write("file '%s'\n" % os.path.join(tmp, lst[-1][0] + ".png"))
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
-    out = os.path.join(HERE, "out", name + ".mp4") if j["own"] else os.path.join(tmp, name + ".mp4")
+    os.makedirs("/tmp/sub_out", exist_ok=True)      # licensed clips: workflow artifact + Telegram only, never committed
+    out = os.path.join(HERE, "out", name + ".mp4") if j["own"] else os.path.join("/tmp/sub_out", name + ".mp4")
     cut = ["-ss", str(a0), "-t", "%.3f" % total]
     if j["mode"] == "band":
         fg = ("[0:v]scale=%d:%d:force_original_aspect_ratio=decrease,pad=%d:%d:(ow-iw)/2:(oh-ih)/2:color=black[v];"
