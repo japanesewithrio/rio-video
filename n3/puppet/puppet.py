@@ -30,6 +30,7 @@ def eye(x, side, c, openv, happy, look):
     # upper lash line (thick) + small outer flick
     g += ("<path d='M %d %.1f Q %d %.1f %d %.1f' stroke='#1b1210' stroke-width='7' fill='none' stroke-linecap='round'/>"
           % (x - 30, -18 * o + 2, x, -36 * o, x + 30, -20 * o + 2))
+    g += "<path d='M %d %.1f Q %d %.1f %d %.1f' stroke='#6b4a3e' stroke-width='3' fill='none' stroke-linecap='round'/>" % (x - 18, 26 * o, x, 31 * o, x + 18, 26 * o)   # lower lash
     fl = 1 if side > 0 else -1
     g += "<path d='M %d %.1f l %d -8' stroke='#1b1210' stroke-width='5' stroke-linecap='round'/>" % (x + 30 * fl, -20 * o + 2, 8 * fl)
     return g

@@ -52,6 +52,8 @@ RECAP = ("月《つき》が綺麗《きれい》ですね",
 
 OUT = "puppet_ep1.mp4"
 MUSIC = "n3/snd/out/bgm_wholesome.mp3"
+SWAY = 0
+AMB = None
 BG = {"two": ("pp_bg_night.png", 4), "cu": ("pp_bg_night.png", 9), "moon": "pp_moon.png"}
 LN = "stroke='#3b2a24' stroke-linejoin='round' stroke-linecap='round'"
 
@@ -83,13 +85,25 @@ def arms(c, pose, t):
         return arm(c, (150, 230), (170, 380), (50, 290), fist="point")
     if pose == "wave":
         return arm(c, (-150, 230), (-240, 150), (-210, 10), fist="palm", osc=o * .6)
+    if pose == "phone_ear":    # holding a phone to the right ear
+        a = arm(c, (150, 230), (215, 170), (112, 20))
+        return a + "<rect x='92' y='-62' width='34' height='70' rx='8' fill='#2f3440' %s stroke-width='3'/>" % LN + \
+            "<circle cx='%d' cy='%d' r='27' fill='%s' %s stroke-width='3.5'/>" % (112, 20, c["skin"], LN)
+    if pose == "shh":          # index finger on the lips
+        a = arm(c, (150, 230), (150, 230), (24, 150))
+        return a + "<rect x='14' y='62' width='16' height='70' rx='8' fill='%s' %s stroke-width='3'/>" % (c["skin"], LN)
+    if pose == "phone_out":    # phone held up in front (panicking)
+        o2 = math.sin(t * 30) * 4
+        a = arm(c, (150, 230), (190, 330), (80 + o2, 190))
+        return a + "<rect x='%d' y='120' width='46' height='82' rx='9' fill='#ff7aa8' %s stroke-width='3'/>" % (58 + o2, LN) + \
+            "<circle cx='%d' cy='190' r='27' fill='%s' %s stroke-width='3.5'/>" % (80 + o2, c["skin"], LN)
     if pose == "clap":
         g = abs(math.sin(t * 12)) * 26
         return arm(c, (-150, 230), (-190, 300), (-24 - g, 150)) + arm(c, (150, 230), (190, 300), (24 + g, 150))
     return ""
 
 DEF = dict(shut=0, mouth=0, wide=.5, smile=.4, eye=1, happy=0, look=0, lookup=0, brow=0, worry=0, blush=0, nod=0, tilt=0,
-           sweat=0, wavy=0, droop=0, bounce=0, shake=0, bow=0)
+           sweat=0, wavy=0, droop=0, bounce=0, shake=0, bow=0, spark=0)
 
 
 # ---- small additions to the puppet drawing: look up, wavy panic mouth, droop ----
@@ -129,6 +143,11 @@ def char(c, x, y, sc, p, t, pose=""):
     s += P.body(c)
     s += "<g transform='rotate(%.2f 0 120) translate(0 %.1f)'>%s</g>" % (rot + bow * 4, p["nod"] + bow * 45, head(c, p))
     s += arms(c, pose, t)
+    if p.get("spark"):
+        for k, (sx2, sy2) in enumerate(((-170, -120), (175, -90), (-150, 40), (160, 60))):
+            a2 = .5 + .5 * math.sin(t * 8 + k * 1.7)
+            s += ("<path d='M %d %d l 6 -16 l 6 16 l 16 6 l -16 6 l -6 16 l -6 -16 l -16 -6 Z' fill='#ffe066' opacity='%.2f'/>"
+                  % (sx2, sy2, .35 + .65 * a2))
     return s + "</g></g>"
 
 
@@ -208,6 +227,10 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
                 max(0, min(1, (lt - .4 - kk * .5) / .3)), ruby(j), m)
         return "<html><head><meta charset='utf-8'><style>%s</style></head><body>%s</div></body></html>" % (css, body)
     zoom = 1 + .025 * lt
+    if ev.get("zoom"):
+        z0, z1 = ev["zoom"]; k2 = min(1, lt / .35)
+        zoom = z0 + (z1 - z0) * (1 - (1 - k2) ** 3)
+    sway = math.sin(t * 1.9) * 5 if ev.get("sway", SWAY) else 0
     if ev["shot"] == "moon":
         body += "<div class='band'><img src='file://%s' style='transform:scale(%.3f)'><div class='cap'>%s</div></div>" % (bgs["moon"], 1 + .04 * lt, ev["mm"])
     else:
@@ -219,8 +242,8 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
         else:
             chars = char(P.MIO, 540, 305, 1.27, params(ev, "mio", t, env, i), t, ev.get("pose", {}).get("mio", ""))
         svg = ("<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='608' viewBox='0 0 1080 608'>%s"
-               "<g transform='translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS, zoom, chars))
-        body += "<div class='band'><img src='file://%s'>%s</div>" % (bgs["two" if ev["shot"] in ("two", "two_up") else "cu"], svg)
+               "<g transform='translate(%.1f 0) translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS, sway, zoom, chars))
+        body += "<div class='band'><img src='file://%s' style='transform:translate(%.1fpx,0) scale(1.02)'>%s</div>" % (bgs["two" if ev["shot"] in ("two", "two_up") else "cu"], sway * .6, svg)
     if ev.get("jp") and lt <= ev["d"]:
         n = len(re.sub(r"《.+?》|[\[\]]", "", ev["jp"]))
         px = 66 if n <= 15 else max(int(66 * 15 / n), 42)
@@ -239,7 +262,29 @@ def sfx(kind):
     elif kind == "fall":    # comic descending slide whistle
         f = 900 * np.exp(-t * 1.4)
         x += (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 1.2) * .18).astype(np.float32)
+    elif kind == "ring":     # simple phone ring (marimba-like)
+        for k in range(6):
+            for j2, f in enumerate((880, 1175)):
+                st2 = k * .26 + j2 * .12; m = t >= st2; tt = t[m] - st2
+                x[m] += (np.sin(2 * np.pi * f * tt) * np.exp(-tt * 9) * .22).astype(np.float32)
+    elif kind == "ring2":    # loud silly ringtone
+        notes = (784, 988, 1175, 1568, 1175, 988, 784, 1568)
+        for k, f in enumerate(notes):
+            st2 = k * .16; m = (t >= st2) & (t < st2 + .15); tt = t[m] - st2
+            x[m] += (np.sign(np.sin(2 * np.pi * f * tt)) * .1).astype(np.float32)
     return x
+
+
+def train_amb(n):
+    rng = np.random.default_rng(3); t = np.arange(n) / SR
+    rum = np.convolve(rng.standard_normal(n).astype(np.float32), np.ones(400) / 400, "same") * 2.5
+    clack = np.zeros(n, np.float32)
+    for k in np.arange(0.3, n / SR, 1.15):
+        for d2 in (0, .14):
+            i2 = int((k + d2) * SR); m = min(int(.05 * SR), n - i2)
+            if m > 0:
+                clack[i2:i2 + m] += rng.standard_normal(m).astype(np.float32) * np.exp(-np.arange(m) / 300) * .25
+    return (rum + clack) * .35
 
 
 async def shoot(evs, total, env, bgs, tmp):
@@ -270,7 +315,9 @@ def main():
             s = int((e["st"] + .15) * SR); m = min(len(x), len(y) - s)
             y[s:s + m] += x[:m] * (.85 if e.get("inner") else 1.0); vm[s:s + m] = 1
         if e.get("sfx"):
-            z = sfx(e["sfx"]); s = int(e["st"] * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
+            z = sfx(e["sfx"]) * e.get("sfxv", 1); s = int((e["st"] + e.get("sfxat", 0)) * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
+    if AMB == "train":
+        y += train_amb(len(y)) * .5
     # music bed (CC BY Kevin MacLeod), ducked under voices
     mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
@@ -301,7 +348,7 @@ if __name__ == "__main__":
     import sys, importlib
     if len(sys.argv) > 1:          # python ep.py script_ep2  -> use EP/RECAP/HOOK/BG/OUT/MUSIC from that module
         m = importlib.import_module(sys.argv[1])
-        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC"):
+        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC", "SWAY", "AMB"):
             if hasattr(m, k):
                 globals()[k] = getattr(m, k)
     main()
