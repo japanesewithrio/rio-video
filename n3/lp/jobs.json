@@ -1,11 +1,11 @@
 [
  {
-  "src": "n3/lp/in/mio_kb.jpg",
+  "src": "n3/lp/in/mio_sq.jpg",
   "drive": "n3/ws/out/d213_04.mp4",
   "out": "lp_mio.mp4"
  },
  {
-  "src": "n3/lp/in/rio_rm.jpg",
+  "src": "n3/lp/in/rio_sq.jpg",
   "drive": "n3/ws/out/d213_05.mp4",
   "out": "lp_rio.mp4"
  }
