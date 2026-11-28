@@ -201,6 +201,44 @@ async def film(c, evs, total, tmp):
         await b.close()
 
 
+def load_audio(path, offset, n):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", str(offset), "-i", path, "-t", "%.2f" % (n / SR + 0.5), "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
+                         capture_output=True).stdout
+    return np.frombuffer(raw, np.float32).copy()
+
+
+def ambience(kind, n):
+    """synthetic room tone: soft filtered noise + (office) random keyboard ticks"""
+    rng = np.random.default_rng(3)
+    x = rng.standard_normal(n).astype(np.float32)
+    k = int(SR * 0.004); x = np.convolve(x, np.ones(k) / k, "same") * 0.25         # low-passed hum
+    if kind == "amb:office":
+        t = 0.0
+        while t < n / SR:
+            t += rng.uniform(0.07, 0.35) if rng.random() > 0.15 else rng.uniform(0.8, 2.0)
+            i = int(t * SR)
+            if i + 400 < n:
+                click = rng.standard_normal(400).astype(np.float32) * np.exp(-np.arange(400) / 50) * rng.uniform(0.3, 0.8)
+                x[i:i + 400] += click
+    return x
+
+
+def sfx_audio(kind, dur):
+    rng = np.random.default_rng(5); n = int(dur * SR); x = np.zeros(n, np.float32)
+    if kind == "clap":
+        t = 0.05
+        while t < dur - 0.1:
+            i = int(t * SR); b = rng.standard_normal(1200).astype(np.float32) * np.exp(-np.arange(1200) / 180)
+            x[i:i + 1200] += b * rng.uniform(0.6, 1.0); t += rng.uniform(0.28, 0.4)
+    elif kind == "steps":
+        t = 0.05
+        while t < dur - 0.1:
+            i = int(t * SR); b = rng.standard_normal(1600).astype(np.float32) * np.exp(-np.arange(1600) / 260)
+            b = np.convolve(b, np.ones(12) / 12, "same")
+            x[i:i + 1600] += b * 2.5; t += 0.16
+    return x
+
+
 def render(c, V, out, tmp):
     evs, total = plan(c, V)
     total = round(total * FPS) / FPS
@@ -210,7 +248,13 @@ def render(c, V, out, tmp):
         i = int(at * SR); m = min(len(v), len(y) - i)
         if m > 0:
             y[i:i + m] += v[:m]
-    put(0.1, usfx("whoosh") * 0.7)
+    cine = bool(c.get("beds") is not None)     # cinematic sound: no UI whooshes, music/ambience beds instead
+    if not cine:
+        put(0.1, usfx("whoosh") * 0.7)
+    voice_mask = np.zeros_like(y)
+    for e in evs:
+        if e["kind"] == "line" and e["i"] in V:
+            a = int((e["st"] + e.get("vlead", 0.15)) * SR); voice_mask[a:a + len(V[e["i"]])] = 1
     for e in evs:
         if e["kind"] == "recap":
             put(e["st"], usfx("swish"))
@@ -219,8 +263,12 @@ def render(c, V, out, tmp):
             continue
         if e["i"] in V:
             put(e["st"] + e.get("vlead", 0.15), V[e["i"]])   # talking clips (lip-synced) start with the voice: vlead 0
+        for sx in e.get("sfx", []):
+            put(e["st"] + sx.get("at", 0), sfx_audio(sx["kind"], sx.get("dur", 2.0)) * sx.get("vol", 0.5))
         fx = e.get("fx", [])
-        if "lines" in fx or "shake" in fx:
+        if cine:
+            pass
+        elif "lines" in fx or "shake" in fx:
             put(e["st"], usfx("whoosh") * 0.9)
         elif "sparkle" in fx or "heart" in fx:
             put(e["st"] + 0.15, usfx("ding") * 0.6)
@@ -233,6 +281,21 @@ def render(c, V, out, tmp):
                             "-q:v", "2", os.path.join(d, "%04d.jpg")], check=True)
             e["_cf"] = sorted(os.path.join(d, f) for f in os.listdir(d))
     y = y[:int(total * SR)]
+    if cine:   # music / ambience beds, ducked under the voices
+        duck = 1 - 0.55 * np.convolve(voice_mask[:len(y)], np.ones(int(SR * 0.25)) / (SR * 0.25), "same")
+        starts = {e["i"]: e["st"] for e in evs if e["kind"] == "line"}
+        ends = {e["i"]: e["st"] + e["d"] for e in evs if e["kind"] == "line"}
+        for b in c["beds"]:
+            a, z = starts[b["from"]], ends[b["to"]]
+            n = int((z - a) * SR)
+            src = ambience(b["file"], n) if b["file"].startswith("amb:") else load_audio(os.path.join(ROOT, b["file"]), b.get("offset", 0), n)
+            if len(src) < n: src = np.pad(src, (0, n - len(src)))
+            src = src[:n] * b.get("vol", 0.15)
+            fi, fo = int(SR * b.get("fade_in", 0.4)), int(SR * b.get("fade_out", 0.6))
+            env = np.ones(n); env[:fi] = np.linspace(0, 1, fi)[:n]
+            if fo: env[-fo:] = np.minimum(env[-fo:], np.linspace(1, 0, fo))
+            i = int(a * SR); m = min(n, len(y) - i)
+            y[i:i + m] += (src * env)[:m] * (duck[i:i + m] if b.get("duck", True) else 1)
     asyncio.run(film(c, evs, total, tmp))
     wv = os.path.join(tmp, "mix.wav")
     with wave.open(wv, "wb") as w:
