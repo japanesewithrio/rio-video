@@ -112,7 +112,16 @@ for i, l in enumerate(c["lines"]):
         t0 = time.time()
         if l.get("who"):
             sha = push("drama %d shot %d start" % (no, i))
-            ok = s2v(raw(png, sha), raw(os.path.join(VD, "%02d.wav" % i), sha), l["motion"] + STYLE, dst)
+            urls = [raw(png, sha), raw(os.path.join(VD, "%02d.wav" % i), sha)]
+            for u in urls:      # wait until GitHub serves the just-pushed files
+                for _ in range(30):
+                    if requests.head(u, timeout=20).status_code == 200: break
+                    time.sleep(4)
+            ok = False
+            for _ in range(3):
+                ok = s2v(urls[0], urls[1], l["motion"] + STYLE, dst)
+                if ok: break
+                time.sleep(20)
         else:
             ok = i2v(png, "Korean web animation. " + l["motion"] + STYLE, l.get("dur", 4), dst)
         print("shot", i, "OK" if ok else "FAIL", "%.0fs" % (time.time() - t0), flush=True)
