@@ -1,10 +1,4 @@
-{"out": "sample.wav",
- "speakers": {"Rio": "Achird", "Bucho": "Algenib"},
- "style": "TTS a short comedy scene in a Japanese office. Rio: a young office worker in his twenties, gentle and polite, very natural real-life speech. Bucho: his cheerful department manager in his fifties, warm, relaxed, a bit pushy. Sound like real people in a real office, natural Japanese conversation, not anime and not an announcer. Follow the acting notes in brackets but keep it subtle and realistic. Leave about one second of silence between lines.",
- "lines": [
-  ["Bucho", "casually, friendly, calling from his desk", "リオくん、ちょっといい？"],
-  ["Rio", "startled, a small nervous voice", "は、はい…"],
-  ["Rio", "muttering quietly to himself, disappointed, almost a whisper", "…あと五分だったのに。"],
-  ["Bucho", "happy, inviting, slightly excited", "今夜、飲みに行かない？"],
-  ["Rio", "forcing a cheerful polite reply, but tired underneath", "よ、喜んで！"],
-  ["Rio", "whispering to himself, giving up", "…さよなら、僕の金曜日。"]]}
+{"out": "bucho_sing.wav",
+ "speakers": {"Bucho": "Algenib", "Rio": "Achird"},
+ "style": "Bucho is a cheerful Japanese office manager in his fifties, a little drunk, SINGING an old-fashioned enka karaoke song with exaggerated vibrato and long dramatic notes, slightly off-key, very passionate and proud of himself. This must be sung with a melody, not spoken.",
+ "lines": [["Bucho", "singing slowly with heavy enka vibrato, stretching the vowels", "きんようびの よるは〜 ぶかと ふたりで〜 ああ〜 さけよ〜 あしたも がんばろう〜"]]}
