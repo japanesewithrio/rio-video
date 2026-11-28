@@ -1,0 +1,20 @@
+name: snd
+on:
+  push:
+    paths: ["n3/snd/jobs.json"]
+permissions:
+  contents: write
+jobs:
+  s:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q gradio_client
+      - env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python -u n3/snd/run.py
+      - if: always()
+        run: |
+          git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
+          git add n3/snd/out 2>/dev/null; git commit -qm "sound [skip ci]" && git pull -q --rebase && git push -q || echo nothing
