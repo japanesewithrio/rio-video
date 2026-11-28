@@ -68,7 +68,10 @@ def asr(name, tmp):
     sh("ffmpeg", "-v", "error", "-y", *cut, "-i", src, "-ac", "1", "-ar", "16000", wav)
     m = WhisperModel(j.get("model", "medium"), device="cpu", compute_type="int8")
     out = []
-    segs, _ = m.transcribe(wav, language="ja", vad_filter=True, word_timestamps=True,
+    import wave, numpy as np        # numpy input: faster-whisper's own decoder breaks with new PyAV
+    w = wave.open(wav)
+    audio = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
+    segs, _ = m.transcribe(audio, language="ja", vad_filter=True, word_timestamps=True,
                            initial_prompt="、。！？を使った自然な日本語の会話。")
     for s in segs:
         # split long segments at 。！？ so each subtitle stays short
