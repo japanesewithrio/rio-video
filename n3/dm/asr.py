@@ -11,3 +11,4 @@ segs, _ = m.transcribe(audio, language="ja", word_timestamps=True, vad_filter=Fa
 out = [[round(w.start, 2), round(w.end, 2), w.word] for s in segs for w in s.words]
 json.dump(out, open(sys.argv[2], "w"), ensure_ascii=False)
 print(" ".join("%.2f:%s" % (a, t) for a, b, t in out))
+# check
