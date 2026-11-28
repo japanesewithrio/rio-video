@@ -14,6 +14,8 @@ for j in json.load(open(os.path.join(H, "lines.json"))):
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": j["voice"]}}}}}
     done = False
     for model in [m for m in MODELS if m not in bad]:
+        if "3.8" in model:     # this model reads any instructions aloud: give it the bare line only
+            body["contents"][0]["parts"][0]["text"] = j["text"]
         for i in range(3):
             r = requests.post("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent" % model, params={"key": KEY}, json=body, timeout=300)
             if r.ok and "inlineData" in str(r.json().get("candidates", [{}])[0].get("content", {})):
