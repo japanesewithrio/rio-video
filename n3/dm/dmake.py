@@ -94,6 +94,16 @@ def s2v(img_url, wav_url, prompt, dst):
             open(dst, "wb").write(requests.get(d["outputs"][0], timeout=300).content); return True
         if d["status"] == "failed": print("s2v failed", d.get("error")); return False
     return False
+def ws_upload(path):
+    """put a file on WaveSpeed's own storage (no dependency on GitHub raw)"""
+    try:
+        r = requests.post("https://api.wavespeed.ai/api/v3/media/upload/binary", headers={"Authorization": "Bearer " + WSK},
+                          files={"file": open(path, "rb")}, timeout=120)
+        u = (r.json().get("data") or {}).get("download_url")
+        if not u: print("upload:", r.status_code, r.text[:200], flush=True)
+        return u
+    except Exception as e:
+        print("upload:", type(e).__name__, str(e)[:200], flush=True)
 def i2v(png, prompt, dur, dst):
     from gradio_client import Client, handle_file
     cl = Client("zerogpu-aoti/wan2-2-fp8da-aoti-faster", token=os.environ.get("HF_TOKEN"))
@@ -115,8 +125,12 @@ for i, l in enumerate(c["lines"]):
             still(l).save(png)
         t0 = time.time()
         if l.get("who"):
-            sha = push("drama %d shot %d start" % (no, i))
-            urls = [raw(png, sha), raw(os.path.join(VD, "%02d.wav" % i), sha)]
+            wavp = os.path.join(VD, "%02d.wav" % i)
+            urls = [ws_upload(png), ws_upload(wavp)]
+            if not all(urls):
+                sha = push("drama %d shot %d start" % (no, i))
+                print("git status:", sh("git status --short | head -5"), "| head", sha, flush=True)
+                urls = [raw(png, sha), raw(wavp, sha)]
             for u in urls:      # wait until GitHub serves the just-pushed files
                 for _ in range(30):
                     if requests.head(u, timeout=20).status_code == 200: break
