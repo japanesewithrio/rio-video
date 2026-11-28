@@ -25,13 +25,17 @@ jobs:
                   out[m['aivm_model_uuid']]=dict(name=m.get('name'),license=m.get('license_type') or m.get('license'),
                     category=m.get('category'),voice_timbre=m.get('voice_timbre'),downloads=m.get('total_download_count'),
                     likes=m.get('like_count'),desc=(m.get('description') or '')[:200],
-                    styles=[[st.get('name') for st in sp.get('styles',[])] for sp in m.get('speakers',[])],
+                    lic=(m.get('model_files') or [{}])[0].get('license_type'),styles=[[st.get('name') for st in sp.get('styles',[])] for sp in m.get('speakers',[])],
                     tags=[t.get('name') for t in m.get('tags',[])] if m.get('tags') else None)
           json.dump(out,open('n3/av/models.json','w'),ensure_ascii=False,indent=1)
           d=json.load(open('/tmp/s_download.json')); m=d['aivm_models'][0]; m.pop('description',None)
           json.dump({k:(v if k!='speakers' else str(v)[:800]) for k,v in m.items()},open('n3/av/raw0.json','w'),ensure_ascii=False,indent=1)
           print(len(out))
           PY
+      - name: license text
+        run: |
+          for u in https://raw.githubusercontent.com/Aivis-Project/ACML/master/ACML-1.0.md https://raw.githubusercontent.com/Aivis-Project/ACML/main/ACML-1.0.md https://raw.githubusercontent.com/Aivis-Project/ACML/master/README.md https://raw.githubusercontent.com/Aivis-Project/ACML/main/README.md; do curl -sfL $u -o n3/av/$(basename $u) && echo got $u; done; true
+          curl -s "https://api.github.com/repos/Aivis-Project/ACML/contents" | head -c 3000 > n3/av/acml_ls.txt || true
       - name: synth
         if: hashFiles('n3/av/pick.json') != ''
         run: |

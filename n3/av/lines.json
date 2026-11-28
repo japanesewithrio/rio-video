@@ -1,0 +1,212 @@
+[
+ {
+  "out": "a5_nise_01.wav",
+  "model": "にせ",
+  "text": "今日は、ミャンマー料理を作ったよ！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_nise_03.wav",
+  "model": "にせ",
+  "text": "モヒンガー。ミャンマーの朝ごはんなんだ。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_nise_05.wav",
+  "model": "にせ",
+  "text": "でしょ？ ちょっと辛いけど、大丈夫？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_nise_08.wav",
+  "model": "にせ",
+  "text": "ごめんごめん！ はい、お水。",
+  "into": 1.2
+ },
+ {
+  "out": "a5_nise_10.wav",
+  "model": "にせ",
+  "text": "ほんと？ じゃあ、また作るね！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_fumi_01.wav",
+  "model": "fumifumi",
+  "text": "今日は、ミャンマー料理を作ったよ！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_fumi_03.wav",
+  "model": "fumifumi",
+  "text": "モヒンガー。ミャンマーの朝ごはんなんだ。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_fumi_05.wav",
+  "model": "fumifumi",
+  "text": "でしょ？ ちょっと辛いけど、大丈夫？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_fumi_08.wav",
+  "model": "fumifumi",
+  "text": "ごめんごめん！ はい、お水。",
+  "into": 1.2
+ },
+ {
+  "out": "a5_fumi_10.wav",
+  "model": "fumifumi",
+  "text": "ほんと？ じゃあ、また作るね！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_lux_01.wav",
+  "model": "Lux",
+  "text": "今日は、ミャンマー料理を作ったよ！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_lux_03.wav",
+  "model": "Lux",
+  "text": "モヒンガー。ミャンマーの朝ごはんなんだ。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_lux_05.wav",
+  "model": "Lux",
+  "text": "でしょ？ ちょっと辛いけど、大丈夫？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_lux_08.wav",
+  "model": "Lux",
+  "text": "ごめんごめん！ はい、お水。",
+  "into": 1.2
+ },
+ {
+  "out": "a5_lux_10.wav",
+  "model": "Lux",
+  "text": "ほんと？ じゃあ、また作るね！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_yukyu_01.wav",
+  "model": "yukyu",
+  "text": "今日は、ミャンマー料理を作ったよ！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_yukyu_03.wav",
+  "model": "yukyu",
+  "text": "モヒンガー。ミャンマーの朝ごはんなんだ。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_yukyu_05.wav",
+  "model": "yukyu",
+  "text": "でしょ？ ちょっと辛いけど、大丈夫？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_yukyu_08.wav",
+  "model": "yukyu",
+  "text": "ごめんごめん！ はい、お水。",
+  "into": 1.2
+ },
+ {
+  "out": "a5_yukyu_10.wav",
+  "model": "yukyu",
+  "text": "ほんと？ じゃあ、また作るね！",
+  "into": 1.2
+ },
+ {
+  "out": "a5_mao_02.wav",
+  "model": "まお",
+  "text": "わあ、いいにおい！ これ、なに？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_mao_04.wav",
+  "model": "まお",
+  "text": "いただきます！ ん、おいしい！",
+  "into": 1.1
+ },
+ {
+  "out": "a5_mao_06.wav",
+  "model": "まお",
+  "text": "うん、ぜんぜん大丈夫。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_mao_07.wav",
+  "model": "まお",
+  "text": "からい！ 水、水！",
+  "into": 1.3
+ },
+ {
+  "out": "a5_mao_09.wav",
+  "model": "まお",
+  "text": "ふう……。でも、また食べたいな。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_koha_02.wav",
+  "model": "コハク",
+  "text": "わあ、いいにおい！ これ、なに？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_koha_04.wav",
+  "model": "コハク",
+  "text": "いただきます！ ん、おいしい！",
+  "into": 1.1
+ },
+ {
+  "out": "a5_koha_06.wav",
+  "model": "コハク",
+  "text": "うん、ぜんぜん大丈夫。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_koha_07.wav",
+  "model": "コハク",
+  "text": "からい！ 水、水！",
+  "into": 1.3
+ },
+ {
+  "out": "a5_koha_09.wav",
+  "model": "コハク",
+  "text": "ふう……。でも、また食べたいな。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_airi_02.wav",
+  "model": "みちのくあいり",
+  "text": "わあ、いいにおい！ これ、なに？",
+  "into": 1.0
+ },
+ {
+  "out": "a5_airi_04.wav",
+  "model": "みちのくあいり",
+  "text": "いただきます！ ん、おいしい！",
+  "into": 1.1
+ },
+ {
+  "out": "a5_airi_06.wav",
+  "model": "みちのくあいり",
+  "text": "うん、ぜんぜん大丈夫。",
+  "into": 1.0
+ },
+ {
+  "out": "a5_airi_07.wav",
+  "model": "みちのくあいり",
+  "text": "からい！ 水、水！",
+  "into": 1.3
+ },
+ {
+  "out": "a5_airi_09.wav",
+  "model": "みちのくあいり",
+  "text": "ふう……。でも、また食べたいな。",
+  "into": 1.0
+ }
+]
