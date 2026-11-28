@@ -59,10 +59,11 @@ def plan(c, V):
     for i, l in enumerate(c["lines"]):
         if i in V:
             L = len(V[i]) / SR
-            d = max(L + 0.9, 2.2) + (1.0 if l.get("note") else 0)
+            gap, mn = c.get("gap", 0.9), c.get("min_shot", 2.2)     # Ye 11/28: tighter, anime-like pacing via gap/min_shot
+            d = max(L + l.get("vlead", 0.15) + gap, mn) + (1.0 if l.get("note") else 0) + l.get("post", 0)
         else:
             L = 0
-            d = min(4.5, 1.6 + len(l.get("mm", "")) / 16.0)
+            d = l.get("dur") or min(4.5, 1.6 + len(l.get("mm", "")) / 16.0)
         evs.append(dict(l, kind="line", st=t, d=d, L=L, i=i))
         t += d
     if c.get("recap"):
