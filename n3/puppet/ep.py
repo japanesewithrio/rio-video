@@ -49,8 +49,47 @@ RECAP = ("月《つき》が綺麗《きれい》ですね",
           ("〜じゃなくて", "…မဟုတ်ဘဲ"),
           ("食《た》べに行《い》こう", "သွားစားရအောင်")])
 
+
+OUT = "puppet_ep1.mp4"
+MUSIC = "n3/snd/out/bgm_wholesome.mp3"
+BG = {"two": ("pp_bg_night.png", 4), "cu": ("pp_bg_night.png", 9), "moon": "pp_moon.png"}
+LN = "stroke='#3b2a24' stroke-linejoin='round' stroke-linecap='round'"
+
+def arm(c, sh, el, hd, front=False, fist=None, osc=0):
+    """sleeve from shoulder (sh) via elbow (el) to hand (hd); hand drawn on top."""
+    hx, hy = hd[0], hd[1] + osc
+    d = "M %d %d Q %d %d %d %d" % (sh[0], sh[1], el[0], el[1], hx, hy)
+    s = "<path d='%s' fill='none' %s stroke-width='60'/>" % (d, LN)
+    s += "<path d='%s' fill='none' stroke='%s' stroke-width='53' stroke-linecap='round'/>" % (d, c["cloth"])
+    s += "<circle cx='%d' cy='%d' r='27' fill='%s' %s stroke-width='3.5'/>" % (hx, hy, c["skin"], LN)
+    if fist == "thumb":
+        s += "<rect x='%d' y='%d' width='16' height='34' rx='8' fill='%s' %s stroke-width='3.5'/>" % (hx - 8, hy - 52, c["skin"], LN)
+    if fist == "point":
+        s += "<rect x='%d' y='%d' width='40' height='14' rx='7' fill='%s' %s stroke-width='3'/>" % (hx - 54, hy - 10, c["skin"], LN)
+    if fist == "palm":
+        for k in range(4):
+            s += "<rect x='%d' y='%d' width='13' height='40' rx='6' fill='%s' %s stroke-width='3'/>" % (hx - 28 + k * 14, hy - 56, c["skin"], LN)
+    return s
+
+def arms(c, pose, t):
+    o = math.sin(t * 14) * 10
+    if pose == "scratch":      # hand scratching the side of the head
+        return arm(c, (150, 230), (250, 120), (118, -70), osc=o)
+    if pose == "facepalm":     # hand over the eyes
+        return arm(c, (150, 230), (170, 140), (20, -5), fist="palm")
+    if pose == "thumb":
+        return arm(c, (150, 230), (215, 320), (110, 170), fist="thumb")
+    if pose == "point_self":
+        return arm(c, (150, 230), (170, 380), (50, 290), fist="point")
+    if pose == "wave":
+        return arm(c, (-150, 230), (-240, 150), (-210, 10), fist="palm", osc=o * .6)
+    if pose == "clap":
+        g = abs(math.sin(t * 12)) * 26
+        return arm(c, (-150, 230), (-190, 300), (-24 - g, 150)) + arm(c, (150, 230), (190, 300), (24 + g, 150))
+    return ""
+
 DEF = dict(shut=0, mouth=0, wide=.5, smile=.4, eye=1, happy=0, look=0, lookup=0, brow=0, worry=0, blush=0, nod=0, tilt=0,
-           sweat=0, wavy=0, droop=0, bounce=0, shake=0)
+           sweat=0, wavy=0, droop=0, bounce=0, shake=0, bow=0)
 
 
 # ---- small additions to the puppet drawing: look up, wavy panic mouth, droop ----
@@ -80,14 +119,17 @@ def head(c, p):
     return s
 
 
-def char(c, x, y, sc, p, t):
+def char(c, x, y, sc, p, t, pose=""):
     bob = math.sin(t * 2.1 + x) * 2.5 + p["bounce"] * abs(math.sin(t * 9)) * 7
     sx = p["shake"] * math.sin(t * 60) * 4
     rot = p["tilt"] + math.sin(t * .9 + x) * 1.2
-    s = "<g transform='translate(%.1f %.1f) scale(%.3f)'>" % (x + sx, y + bob, sc)
+    bow = p.get("bow", 0)
+    s = "<g transform='translate(%.1f %.1f) scale(%.3f)'>" % (x + sx, y + bob + bow * 70, sc)
+    s += "<g transform='rotate(%.2f 0 460)'>" % (bow * 8)
     s += P.body(c)
-    s += "<g transform='rotate(%.2f 0 120) translate(0 %.1f)'>%s</g>" % (rot, p["nod"], head(c, p))
-    return s + "</g>"
+    s += "<g transform='rotate(%.2f 0 120) translate(0 %.1f)'>%s</g>" % (rot + bow * 4, p["nod"] + bow * 45, head(c, p))
+    s += arms(c, pose, t)
+    return s + "</g></g>"
 
 
 def lerp(a, b, k):
@@ -170,11 +212,12 @@ body{margin:0;width:1080px;height:1920px;background:#111;overflow:hidden}
         body += "<div class='band'><img src='file://%s' style='transform:scale(%.3f)'><div class='cap'>%s</div></div>" % (bgs["moon"], 1 + .04 * lt, ev["mm"])
     else:
         if ev["shot"] in ("two", "two_up"):
-            chars = char(P.RIO, 330, 250, .95, params(ev, "rio", t, env, i), t) + char(P.MIO, 750, 262, .92, params(ev, "mio", t, env, i), t)
+            po = ev.get("pose", {})
+            chars = char(P.RIO, 330, 250, .95, params(ev, "rio", t, env, i), t, po.get("rio", "")) + char(P.MIO, 750, 262, .92, params(ev, "mio", t, env, i), t, po.get("mio", ""))
         elif ev["shot"] == "rio":
-            chars = char(P.RIO, 540, 300, 1.3, params(ev, "rio", t, env, i), t)
+            chars = char(P.RIO, 540, 300, 1.3, params(ev, "rio", t, env, i), t, ev.get("pose", {}).get("rio", ""))
         else:
-            chars = char(P.MIO, 540, 305, 1.27, params(ev, "mio", t, env, i), t)
+            chars = char(P.MIO, 540, 305, 1.27, params(ev, "mio", t, env, i), t, ev.get("pose", {}).get("mio", ""))
         svg = ("<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='608' viewBox='0 0 1080 608'>%s"
                "<g transform='translate(540 304) scale(%.4f) translate(-540 -304)'>%s</g></svg>" % (P.DEFS, zoom, chars))
         body += "<div class='band'><img src='file://%s'>%s</div>" % (bgs["two" if ev["shot"] in ("two", "two_up") else "cu"], svg)
@@ -229,7 +272,7 @@ def main():
         if e.get("sfx"):
             z = sfx(e["sfx"]); s = int(e["st"] * SR); m = min(len(z), len(y) - s); y[s:s + m] += z[:m]
     # music bed (CC BY Kevin MacLeod), ducked under voices
-    mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, "n3/snd/out/bgm_wholesome.mp3"), "-t", "%.2f" % total,
+    mus = subprocess.run(["ffmpeg", "-v", "error", "-i", os.path.join(ROOT, MUSIC), "-t", "%.2f" % total,
                           "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True).stdout
     mus = np.frombuffer(mus, np.float32).copy()[:len(y)]
     duck = 1 - .55 * np.convolve(vm[:len(mus)], np.ones(SR // 4) / (SR // 4), "same")
@@ -237,15 +280,17 @@ def main():
     y[:len(mus)] += mus * .09 * duck * fade
     tmp = tempfile.mkdtemp()
     bgs = {}
-    im = Image.open(os.path.join(A, "pp_bg_night.png")).convert("RGB").resize((1080, 608))
-    im.filter(ImageFilter.GaussianBlur(4)).save(os.path.join(tmp, "two.jpg")); bgs["two"] = os.path.join(tmp, "two.jpg")
-    im.crop((180, 60, 900, 465)).resize((1080, 608)).filter(ImageFilter.GaussianBlur(9)).save(os.path.join(tmp, "cu.jpg")); bgs["cu"] = os.path.join(tmp, "cu.jpg")
-    Image.open(os.path.join(A, "pp_moon.png")).convert("RGB").resize((1080, 608)).save(os.path.join(tmp, "moon.jpg")); bgs["moon"] = os.path.join(tmp, "moon.jpg")
+    im = Image.open(os.path.join(A, BG["two"][0])).convert("RGB").resize((1080, 608))
+    im.filter(ImageFilter.GaussianBlur(BG["two"][1])).save(os.path.join(tmp, "two.jpg")); bgs["two"] = os.path.join(tmp, "two.jpg")
+    im = Image.open(os.path.join(A, BG["cu"][0])).convert("RGB").resize((1080, 608))
+    im.crop((180, 60, 900, 465)).resize((1080, 608)).filter(ImageFilter.GaussianBlur(BG["cu"][1])).save(os.path.join(tmp, "cu.jpg")); bgs["cu"] = os.path.join(tmp, "cu.jpg")
+    if BG.get("moon"):
+        Image.open(os.path.join(A, BG["moon"])).convert("RGB").resize((1080, 608)).save(os.path.join(tmp, "moon.jpg")); bgs["moon"] = os.path.join(tmp, "moon.jpg")
     asyncio.run(shoot(evs, total, env, bgs, tmp))
     wv = os.path.join(tmp, "a.wav")
     with wave.open(wv, "wb") as o:
         o.setnchannels(1); o.setsampwidth(2); o.setframerate(SR); o.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
-    out = os.path.join(HERE, "out", "puppet_ep1.mp4"); os.makedirs(os.path.dirname(out), exist_ok=True)
+    out = os.path.join(HERE, "out", OUT); os.makedirs(os.path.dirname(out), exist_ok=True)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(tmp, "%05d.jpg"), "-i", wv,
                     "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-af", "loudnorm=I=-14:TP=-1.5", "-ar", "48000",
                     "-c:a", "aac", "-shortest", "-movflags", "+faststart", out], check=True)
@@ -253,4 +298,10 @@ def main():
 
 
 if __name__ == "__main__":
+    import sys, importlib
+    if len(sys.argv) > 1:          # python ep.py script_ep2  -> use EP/RECAP/HOOK/BG/OUT/MUSIC from that module
+        m = importlib.import_module(sys.argv[1])
+        for k in ("EP", "RECAP", "HOOK", "BG", "OUT", "MUSIC"):
+            if hasattr(m, k):
+                globals()[k] = getattr(m, k)
     main()
