@@ -16,7 +16,7 @@ for j in json.load(open(os.path.join(H, "lines.json"))):
     for model in [m for m in MODELS if m not in bad]:
         for i in range(3):
             r = requests.post("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent" % model, params={"key": KEY}, json=body, timeout=300)
-            if r.ok and "candidates" in r.json():
+            if r.ok and "inlineData" in str(r.json().get("candidates", [{}])[0].get("content", {})):
                 pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
                 with wave.open(dst, "wb") as w:
                     w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000); w.writeframes(pcm)
