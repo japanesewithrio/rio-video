@@ -1,7 +1,7 @@
 name: asr
 on:
   push:
-    paths: ["n3/dm/*/raw/all.wav"]
+    paths: ["n3/dm/*/raw/all.wav", "n3/dm/asr.py"]
 permissions:
   contents: write
 jobs:
