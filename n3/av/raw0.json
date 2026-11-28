@@ -28,7 +28,7 @@
  "voice_timbre": "YouthfulFemale",
  "visibility": "Public",
  "is_tag_locked": true,
- "total_download_count": 91544,
+ "total_download_count": 91550,
  "model_files": [
   {
    "aivm_model_uuid": "a59cb814-0083-4369-8542-f51a29e72af7",
@@ -74,9 +74,9 @@
    "version": "1.2.0",
    "file_size": 258037076,
    "checksum": "f87ccea2e8e2de0e0bfe52e803945af903b4086bf25621a015111628f00e4119",
-   "download_count": 91108,
+   "download_count": 91114,
    "created_at": "2025-11-02T22:28:21.739934+09:00",
-   "updated_at": "2026-11-29T06:09:14.639034+09:00"
+   "updated_at": "2026-11-29T06:13:56.300284+09:00"
   }
  ],
  "tags": [
@@ -90,5 +90,5 @@
  "publish_request_status": null,
  "speakers": "[{'aivm_speaker_uuid': 'e756b8e4-b606-4e15-99b1-3f9c6a1b2317', 'name': 'まお', 'icon_url': 'https://assets.aivis-project.com/aivm-models/fd0d9420-7eee-40de-826d-7fe16b562e84/speakers/f6c7343c-a7fd-4d42-b0dc-38fe18c6ab7f/icon.jpg', 'supported_languages': ['ja'], 'local_id': 0, 'styles': [{'name': 'ノーマル', 'icon_url': 'https://assets.aivis-project.com/aivm-models/fd0d9420-7eee-40de-826d-7fe16b562e84/speakers/f6c7343c-a7fd-4d42-b0dc-38fe18c6ab7f/styles/7d39a003-1f4b-4154-800d-bdf8d1e0cd7d/icon.jpg', 'local_id': 0, 'voice_samples': [{'audio_url': 'https://assets.aivis-project.com/aivm-models/fd0d9420-7eee-40de-826d-7fe16b562e84/speakers/f6c7343c-a7fd-4d42-b0dc-38fe18c6ab7f/styles/7d39a003-1f4b-4154-800d-bdf8d1e0cd7d/voice-samples/0.m4a', 'transcript': 'おはようございます！現在時刻は7時30分です。今日の東京の気温は18度で、天気は雨です。",
  "created_at": "2025-10-18T22:27:24.681983+09:00",
- "updated_at": "2026-11-29T06:09:14.639034+09:00"
+ "updated_at": "2026-11-29T06:13:56.300284+09:00"
 }

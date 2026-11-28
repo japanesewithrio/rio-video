@@ -7,6 +7,7 @@
   "downloads": 20647,
   "likes": 183,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -24,6 +25,7 @@
   "downloads": 32497,
   "likes": 182,
   "desc": "阿井田 茂（あいだ しげる）　\nCV：古山キリヲ\n\n通称：モアイさん\nバリトンボイスの朗らかおじさん",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -47,6 +49,7 @@
   "downloads": 16324,
   "likes": 170,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -68,6 +71,7 @@
   "downloads": 25208,
   "likes": 132,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -85,6 +89,7 @@
   "downloads": 10142,
   "likes": 100,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -102,6 +107,7 @@
   "downloads": 21249,
   "likes": 100,
   "desc": "一般的な女性の声として使用できるボイスモデルです。\n\nボイス提供：もりおき (X：@morioki_5)\nモデル作成：yuki (X：@ai_shirohana)",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -120,6 +126,7 @@
   "downloads": 7487,
   "likes": 95,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -137,6 +144,7 @@
   "downloads": 78202,
   "likes": 91,
   "desc": "子猫のような甘い声。猫音コハク（©Oz Chat/Trippy）（CV: ねゆたろ / https://x.com/___neyu_zzz）\nクレジットして頂ける際は「AivisSpeech: コハク」をご利用ください。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -157,6 +165,7 @@
   "downloads": 21010,
   "likes": 88,
   "desc": "落ち着いた青年をイメージして作成したボイスモデルです。\n\n制作 黒神(https://x.com/kokushing)\n声 サガワフミヤ(https://x.com/fumi_sagawa)",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -172,6 +181,7 @@
   "downloads": 13219,
   "likes": 86,
   "desc": "老人の声を意識した演技でセリフ収録したボイスモデルです。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -187,6 +197,7 @@
   "downloads": 7444,
   "likes": 84,
   "desc": "研究開発用の試作音声合成モデル。自由に使用可",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -202,6 +213,7 @@
   "downloads": 15663,
   "likes": 82,
   "desc": "電脳天使工業のAIキャラクター「凛音エル」のボイスモデルです。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -224,9 +236,10 @@
   "license": null,
   "category": "OriginalCharacter",
   "voice_timbre": "YouthfulFemale",
-  "downloads": 91544,
+  "downloads": 91550,
   "likes": 81,
   "desc": "いたずらっ子な小悪魔ボイス。卯畑まお（©Oz Chat/Trippy）（CV: ねゆたろ / https://x.com/___neyu_zzz）\nクレジットして頂ける際は「AivisSpeech: まお」をご利用ください。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -249,6 +262,7 @@
   "downloads": 8125,
   "likes": 66,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルほのかです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -268,6 +282,7 @@
   "downloads": 4099,
   "likes": 63,
   "desc": "OpenGameArtのCC0英語ボイスから音声クローンツールZonosを使用して生成した日本語ボイスを学習させたものです。\n元ボイスのライセンスを継承してcc0とします\n",
+  "lic": "CC0",
   "styles": [
    [
     "ノーマル",
@@ -287,6 +302,7 @@
   "downloads": 7451,
   "likes": 62,
   "desc": "こずかた学園プロジェクト「らせつん」の音声合成モデルです。\n親しみやすさのある中性ボイスです。\n\n声：上戸恵里（ https://x.com/agato_eri )",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "標準",
@@ -311,6 +327,7 @@
   "downloads": 5951,
   "likes": 57,
   "desc": "Vtuber 猩々博士の配信音声から作成したボイスモデルです",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -328,6 +345,7 @@
   "downloads": 5935,
   "likes": 52,
   "desc": "澤原 玄二郎（さわばる げんじろう）\nCV：古山キリヲ\n\nせっかちでヤンチャな猫ヤロー\n好物はピッツァ\nノイズ強めなのは仕様です　\nちゃんと出力後にノイズ除去かけてあげてね",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -349,6 +367,7 @@
   "downloads": 4086,
   "likes": 48,
   "desc": "人の世界で生活をするために人の格好をしている天使。\n優しい声で話します。",
+  "lic": "ACML-NC 1.0",
   "styles": [
    [
     "ノーマル",
@@ -367,6 +386,7 @@
   "downloads": 4398,
   "likes": 46,
   "desc": "Style-Bert-VITS2に付属のデフォルト男性２モデル\nボイスサンプル：スタイルの強さ2.0\n\nCC BY-SA 4.0のため再配布",
+  "lic": "Custom",
   "styles": [
    [
     "ノーマル",
@@ -391,6 +411,7 @@
   "downloads": 3224,
   "likes": 41,
   "desc": "水巻咲　みずまきさき　Mizumaki Saki　(CodeName:MIZUMAKI_SAKI)",
+  "lic": "Custom",
   "styles": [
    [
     "ノーマル",
@@ -412,6 +433,7 @@
   "downloads": 4514,
   "likes": 36,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルかりんです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -431,6 +453,7 @@
   "downloads": 2199,
   "likes": 35,
   "desc": "大日椛　だいにちもみじ　Dainichi Momiji　(CodeName:DAINIC^I_MOMIZ^I)",
+  "lic": "Custom",
   "styles": [
    [
     "ノーマル",
@@ -448,6 +471,7 @@
   "downloads": 2519,
   "likes": 31,
   "desc": "七日週　なのかめぐる　Nanoka Meguru　(CodeName:NANOKA_MEGURU)",
+  "lic": "Custom",
   "styles": [
    [
     "ノーマル",
@@ -465,6 +489,7 @@
   "downloads": 4021,
   "likes": 31,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルわかなです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -486,6 +511,7 @@
   "downloads": 2310,
   "likes": 30,
   "desc": "匿名インタビュー風の演技でセリフ収録したボイスモデルです。\nピッチシフターで声を加工しています。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -501,6 +527,7 @@
   "downloads": 3245,
   "likes": 30,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルれなです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -520,6 +547,7 @@
   "downloads": 5421,
   "likes": 30,
   "desc": "滑舌がそんなに良くないので、頑張って出した声です。\n頑張った結果、少しマイクが近かったかもしれません。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -535,6 +563,7 @@
   "downloads": 3048,
   "likes": 27,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルさつきです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -554,6 +583,7 @@
   "downloads": 2866,
   "likes": 27,
   "desc": "🌸現実20代女子に声変わり無料最新AIボイチェンソフト「リアボVC」搭載モデルもえです🌸\n入手→ poipoipoi.booth.pm\n[声は(x.com/dopoiro)のAI]等とクレジット表記お願いします\n声提供アルバイト一般女性から権利購入&マージ済み&顔画像はAI",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -573,6 +603,7 @@
   "downloads": 9264,
   "likes": 26,
   "desc": "こずかた学園プロジェクト「みちのくあいり」の音声合成モデルです。\n落ち着きのあるかわいらしい女性ボイスです。\n\n声：上戸恵里（ https://x.com/agato_eri )",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "標準",
@@ -596,6 +627,7 @@
   "downloads": 5312,
   "likes": 26,
   "desc": "YouTubeの自動字幕読上げナレーション用に自作してみました。\nまだ未完成なところは、少しずつ改善していきたいと思います。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル",
@@ -617,6 +649,7 @@
   "downloads": 4790,
   "likes": 27,
   "desc": "Lux（ルクス）はStyle-Bert-VITS2 JP-Extra対応TTSモデル。96kHz/16bit録音のプロ音声（ノイズ・反響除去済）とITAコーパス424文で学習済み。",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "ノーマル"
@@ -632,6 +665,7 @@
   "downloads": 4501,
   "likes": 24,
   "desc": "落ち着いた中年男性のモデルです。",
+  "lic": "ACML-NC 1.0",
   "styles": [
    [
     "ノーマル"
@@ -649,6 +683,7 @@
   "downloads": 3692,
   "likes": 16,
   "desc": "男声の音声モデルです\n\n作成者 : yukyu \n連絡先\nx: @yukyu30",
+  "lic": "ACML 1.0",
   "styles": [
    [
     "デフォルト"

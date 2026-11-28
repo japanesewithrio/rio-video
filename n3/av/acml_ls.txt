@@ -1,0 +1,57 @@
+[
+  {
+    "name": ".editorconfig",
+    "path": ".editorconfig",
+    "sha": "500e93194083a8f00d930e1621db5d6e58ad1b66",
+    "size": 214,
+    "url": "https://api.github.com/repos/Aivis-Project/ACML/contents/.editorconfig?ref=master",
+    "html_url": "https://github.com/Aivis-Project/ACML/blob/master/.editorconfig",
+    "git_url": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/500e93194083a8f00d930e1621db5d6e58ad1b66",
+    "download_url": "https://raw.githubusercontent.com/Aivis-Project/ACML/master/.editorconfig",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/Aivis-Project/ACML/contents/.editorconfig?ref=master",
+      "git": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/500e93194083a8f00d930e1621db5d6e58ad1b66",
+      "html": "https://github.com/Aivis-Project/ACML/blob/master/.editorconfig"
+    }
+  },
+  {
+    "name": "ACML-1.0.md",
+    "path": "ACML-1.0.md",
+    "sha": "afde8e8a4ea63df23de8501e7801f7c358923d59",
+    "size": 10025,
+    "url": "https://api.github.com/repos/Aivis-Project/ACML/contents/ACML-1.0.md?ref=master",
+    "html_url": "https://github.com/Aivis-Project/ACML/blob/master/ACML-1.0.md",
+    "git_url": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/afde8e8a4ea63df23de8501e7801f7c358923d59",
+    "download_url": "https://raw.githubusercontent.com/Aivis-Project/ACML/master/ACML-1.0.md",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/Aivis-Project/ACML/contents/ACML-1.0.md?ref=master",
+      "git": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/afde8e8a4ea63df23de8501e7801f7c358923d59",
+      "html": "https://github.com/Aivis-Project/ACML/blob/master/ACML-1.0.md"
+    }
+  },
+  {
+    "name": "ACML-NC-1.0.md",
+    "path": "ACML-NC-1.0.md",
+    "sha": "0bcd1f3e5d4ee25272d28aa4fe72c007d971164a",
+    "size": 10325,
+    "url": "https://api.github.com/repos/Aivis-Project/ACML/contents/ACML-NC-1.0.md?ref=master",
+    "html_url": "https://github.com/Aivis-Project/ACML/blob/master/ACML-NC-1.0.md",
+    "git_url": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/0bcd1f3e5d4ee25272d28aa4fe72c007d971164a",
+    "download_url": "https://raw.githubusercontent.com/Aivis-Project/ACML/master/ACML-NC-1.0.md",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/Aivis-Project/ACML/contents/ACML-NC-1.0.md?ref=master",
+      "git": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/0bcd1f3e5d4ee25272d28aa4fe72c007d971164a",
+      "html": "https://github.com/Aivis-Project/ACML/blob/master/ACML-NC-1.0.md"
+    }
+  },
+  {
+    "name": "License.txt",
+    "path": "License.txt",
+    "sha": "36575afbaf514966be4d33a763fbe4923d58d9f0",
+    "size": 1080,
+    "url": "https://api.github.com/repos/Aivis-Project/ACML/contents/License.txt?ref=master",
+    "html_url": "https://github.com/Aivis-Project/ACML/blob/master/License.txt",
+    "git_url": "https://api.github.com/repos/Aivis-Project/ACML/git/blobs/36575afbaf514966b
