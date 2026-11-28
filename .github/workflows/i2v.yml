@@ -16,4 +16,4 @@ jobs:
         run: python -u n3/i2v/run.py
       - run: |
           git config user.name "rio-bot"; git config user.email "rio-bot@users.noreply.github.com"
-          git add n3/i2v/out 2>/dev/null; git commit -qm "i2v clips [skip ci]" && git pull -q --rebase && git push -q || echo nothing
+          git add n3/i2v/out 2>/dev/null; git commit -qm "i2v clips [skip ci]" && for k in 1 2 3 4 5; do git pull -q --rebase && git push -q && break; sleep 7; done || echo nothing
